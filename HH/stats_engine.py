@@ -1,0 +1,245 @@
+import numpy as np
+import json
+from collections import defaultdict
+from scipy.signal import savgol_filter
+
+class StatsEngine:
+    def __init__(self, fps=30):
+        self.fps = fps
+        self.dt = 1.0 / fps
+        # Table dimensions (standard ITTF)
+        self.TABLE_LENGTH = 274.0  # cm (or relative units)
+        self.TABLE_WIDTH = 152.5   # cm
+        
+    def process_match(self, match_data):
+        """
+        Main pipeline: Enriched JSON -> Enhanced Stats
+        match_data: Single JSON object containing 'frames', 'shots', 'rallies', 'court'
+        """
+        if not match_data or "shots" not in match_data:
+            return {"error": "Invalid match data format"}
+
+        # Extract core data
+        self.court = match_data.get("court", {})
+        self.net_y = self.court.get("net_y", 335.0) # Default if missing
+        
+        # 1. Enrich Shots with Advanced Metrics
+        enriched_rallies = []
+        
+        # Process rallies existing in the input
+        for rally in match_data.get("rallies", []):
+            rally_id = rally.get("rally_id")
+            # Find shots for this rally
+            rally_shot_ids = rally.get("shots", [])
+            
+            # Get actual shot objects
+            rally_shots_data = [
+                s for s in match_data.get("shots", []) 
+                if s["shot_id"] in rally_shot_ids
+            ]
+            
+            # Analyze this rally
+            stats = self._analyze_rally_enriched(rally_id, rally, rally_shots_data, match_data)
+            enriched_rallies.append(stats)
+            
+        # 2. Aggregated Match Stats
+        match_summary = self._aggregate_match_stats(enriched_rallies)
+        
+        return {
+            "match_summary": match_summary,
+            "rallies": enriched_rallies
+        }
+
+    def _analyze_rally_enriched(self, rally_id, rally_meta, shots_data, full_data):
+        """
+        Compute shot-by-shot metrics using the pre-detected shots and adding new physics metrics.
+        """
+        # Calculate Rhythm (Inter-shot intervals)
+        intervals = []
+        if len(shots_data) > 1:
+            # Sort by time just in case
+            sorted_shots = sorted(shots_data, key=lambda x: x['t_contact'])
+            for i in range(1, len(sorted_shots)):
+                interval = sorted_shots[i]['t_contact'] - sorted_shots[i-1]['t_contact']
+                intervals.append(interval) 
+            rhythm_consistency = np.std(intervals) if intervals else 0
+        else:
+            rhythm_consistency = 0
+
+        # Enhance each shot with new metrics
+        enriched_shots = []
+        for shot in shots_data:
+            # 1. Contact Height & Timing Analysis
+            # We need ball trajectory AROUND the contact time to find peak
+            contact_t = shot['t_contact']
+            trajectory = self._get_trajectory_segment(full_data['frame_level_perception']['samples'], contact_t - 0.5, contact_t + 0.5)
+            
+            # Timing Score
+            timing_stats = self._calculate_timing_metrics(shot, trajectory)
+            
+            # Aggression/Tactical Score
+            tactical_stats = self._calculate_aggression_opportunity(shot, timing_stats['contact_height'])
+            
+            # Merge into shot object
+            shot_enriched = shot.copy()
+            shot_enriched.update(timing_stats)
+            shot_enriched.update(tactical_stats)
+            
+            # Add Skeleton Analysis if available (at contact frame)
+            shot_enriched['skeleton_analysis'] = self._analyze_skeleton(full_data, contact_t)
+            
+            enriched_shots.append(shot_enriched)
+
+        return {
+            "id": rally_id,
+            "duration_sec": rally_meta.get('t_end', 0) - rally_meta.get('t_start', 0),
+            "shot_count": len(shots_data),
+            "rhythm_consistency": round(rhythm_consistency, 2),
+            "shots": enriched_shots
+        }
+
+    def _get_trajectory_segment(self, frames, t_start, t_end):
+        """Extract ball sequence [t, x, y] for a time window."""
+        segment = []
+        for f in frames:
+            if t_start <= f['t'] <= t_end:
+                b = f.get('ball', {})
+                if b and b.get('x') is not None:
+                    segment.append({'t': f['t'], 'y': b['y'], 'x': b['x']})
+        return segment
+
+    def _calculate_timing_metrics(self, shot, trajectory):
+        """
+        Calculate if shot was taken at Peak, Early (Rising), or Late (Falling).
+        Input: shot dict, trajectory list [{'t', 'y', 'x'}]
+        """
+        if not trajectory:
+            return {"timing": "Unknown", "contact_height": 0, "timing_score": 0}
+            
+        # Find contact frame (closest matching timestamp)
+        contact_t = shot['t_contact']
+        contact_point = min(trajectory, key=lambda p: abs(p['t'] - contact_t))
+        contact_y = contact_point['y']
+        
+        # Find Peak Height (Minimum Y value in image coords) in this trajectory segment
+        # We search a bit before contact to find the bounce peak
+        peak_point = min(trajectory, key=lambda p: p['y'])
+        peak_y = peak_point['y']
+        
+        # Calculate Height Diff (Positive = Hit below peak)
+        # Image coords: Peak Y is smaller. So Contact Y - Peak Y = drop amount in pixels
+        drop_pixels = contact_y - peak_y
+        
+        # Heuristics (Pixels)
+        if drop_pixels < 15: # < ~5-10cm
+            timing = "Peak"
+            score = 100
+        elif contact_point['t'] < peak_point['t']: 
+            timing = "Early (Rising)"
+            score = 80 # Taking it early is often good for aggression
+        else:
+            timing = "Late (Falling)"
+            score = max(0, 100 - (drop_pixels / 2)) # Penalty for dropping too low
+            
+        # Ball Height relative to Net (Positive = Above Net)
+        # Net Y is typically "lower" in screen (higher Y value) than a high ball? 
+        # Wait, Y=0 is top. Net Y is e.g. 335. 
+        # If Ball Y is 200, it is ABOVE the net (200 < 335).
+        # Height Over Net = Net_Y - Ball_Y
+        height_over_net = self.net_y - contact_y
+            
+        return {
+            "timing_class": timing,
+            "timing_score": round(score),
+            "height_over_net": height_over_net,
+            "contact_height": contact_y
+        }
+
+    def _calculate_aggression_opportunity(self, shot, contact_height_y):
+        """
+        Detect Tactical Errors: Passive shot on High Ball vs Risky shot on Low Ball.
+        """
+        # Height relative to Net
+        rel_height = self.net_y - contact_height_y # Positive = Above net
+        
+        shot_type = shot.get('shot_type', 'unknown').lower()
+        
+        tactical_assessment = "Neutral"
+        opportunity_score = 50 # 0=Bad Choice, 50=Neutral, 100=Great Choice
+        
+        # Scenario 1: High Ball Opportunity (> 40px above net ~ 15cm)
+        if rel_height > 40:
+            if shot_type in ['smash', 'drive', 'offensive']:
+                tactical_assessment = "Good Aggression"
+                opportunity_score = 100
+            elif shot_type in ['push', 'block', 'defensive']:
+                tactical_assessment = "Passive Error" # Missed opportunity
+                opportunity_score = 20
+        
+        # Scenario 2: Low Ball Risk (< 0px, below net)
+        elif rel_height < 0:
+            if shot_type in ['smash', 'flat hit']:
+                tactical_assessment = "High Risk Error"
+                opportunity_score = 10
+            elif shot_type in ['loop', 'push', 'drop']:
+                tactical_assessment = "Smart Safe Play"
+                opportunity_score = 90
+                
+        return {
+            "tactical_class": tactical_assessment,
+            "tactical_score": opportunity_score
+        }
+
+    def _analyze_skeleton(self, full_data, contact_t):
+        """
+        Extract Knee/Shoulder data at contact time if available.
+        """
+        # Find frame samples near contact
+        samples = full_data.get('frame_level_perception', {}).get('samples', [])
+        frame = min(samples, key=lambda f: abs(f['t'] - contact_t), default=None)
+        
+        if not frame: return {}
+        
+        player = frame.get('player', {})
+        knees = player.get('knees') # [[x,y], [x,y]]
+        shoulders = player.get('shoulders')
+        
+        # Simple Knee Bend Metric (Vertical distance between Hip/Knee or just absolute Y comparison?)
+        # For now, let's just return raw availability or a simple score
+        # Ideally we calculate angle: Hip-Knee-Ankle. 
+        # Without full skeleton, let's look at "Stance Width" (Left Knee X - Right Knee X)
+        
+        stance_width = 0
+        if knees and len(knees) == 2:
+            stance_width = abs(knees[0][0] - knees[1][0])
+            
+        return {
+            "has_skeleton": True if knees else False,
+            "stance_width": stance_width
+        }
+
+    def _aggregate_match_stats(self, rally_stats):
+        if not rally_stats:
+            return {}
+            
+        total_shots = sum(r['shot_count'] for r in rally_stats)
+        
+        # Rhythm consistency (lower is better)
+        rhythms = [r['rhythm_consistency'] for r in rally_stats]
+        avg_rhythm = np.mean(rhythms) if rhythms else 0
+        
+        # Timing Stats
+        timings = [s['timing_score'] for r in rally_stats for s in r['shots'] if 'timing_score' in s]
+        avg_timing = np.mean(timings) if timings else 0
+
+        # Tactical Stats
+        tactics = [s['tactical_score'] for r in rally_stats for s in r['shots'] if 'tactical_score' in s]
+        avg_tactics = np.mean(tactics) if tactics else 0
+
+        return {
+            "total_rallies": len(rally_stats),
+            "total_shots": total_shots,
+            "avg_rhythm_score": round(avg_rhythm, 2),
+            "avg_timing_score": round(avg_timing, 1),
+            "avg_tactical_score": round(avg_tactics, 1)
+        }

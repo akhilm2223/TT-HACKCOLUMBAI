@@ -1,0 +1,1890 @@
+{
+  "video": "Videos/Recording 2026-02-07 134224.mp4",
+  "frames": 487,
+  "fps": 30,
+  "court": {
+    "corners": [
+      [
+        504.0,
+        280.0
+      ],
+      [
+        775.0,
+        280.0
+      ],
+      [
+        775.0,
+        391.0
+      ],
+      [
+        504.0,
+        391.0
+      ]
+    ],
+    "net_y": 335.0,
+    "width_px": 271,
+    "height_px": 111
+  },
+  "frame_level_perception": {
+    "sample_interval": 10,
+    "fps": 30,
+    "samples": [
+      {
+        "t": 0.333,
+        "frame_id": 10,
+        "ball": {
+          "x": 493,
+          "y": 325,
+          "z_est": 0.0,
+          "speed": 7.2,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              430,
+              508
+            ],
+            [
+              535,
+              517
+            ]
+          ],
+          "center_of_mass": [
+            468,
+            421
+          ],
+          "footwork_speed": 0.0,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            833,
+            248
+          ]
+        }
+      },
+      {
+        "t": 0.667,
+        "frame_id": 20,
+        "ball": {
+          "x": 548,
+          "y": 339,
+          "z_est": 0.0,
+          "speed": 41.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              494,
+              513
+            ],
+            [
+              506,
+              510
+            ]
+          ],
+          "center_of_mass": [
+            489,
+            418
+          ],
+          "footwork_speed": 2.16,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            828,
+            242
+          ]
+        }
+      },
+      {
+        "t": 1.0,
+        "frame_id": 30,
+        "ball": {
+          "x": 621,
+          "y": 371,
+          "z_est": 0.0,
+          "speed": 74.6,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              496,
+              523
+            ],
+            [
+              526,
+              490
+            ]
+          ],
+          "center_of_mass": [
+            506,
+            420
+          ],
+          "footwork_speed": 1.74,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            807,
+            244
+          ]
+        }
+      },
+      {
+        "t": 1.333,
+        "frame_id": 40,
+        "ball": {
+          "x": 649,
+          "y": 337,
+          "z_est": 0.0,
+          "speed": 42.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              499,
+              522
+            ],
+            [
+              499,
+              519
+            ]
+          ],
+          "center_of_mass": [
+            588,
+            430
+          ],
+          "footwork_speed": 8.21,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            776,
+            233
+          ]
+        }
+      },
+      {
+        "t": 1.667,
+        "frame_id": 50,
+        "ball": {
+          "x": 617,
+          "y": 341,
+          "z_est": 0.0,
+          "speed": 4.3,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              514,
+              520
+            ],
+            [
+              555,
+              492
+            ]
+          ],
+          "center_of_mass": [
+            592,
+            433
+          ],
+          "footwork_speed": 0.55,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            749,
+            232
+          ]
+        }
+      },
+      {
+        "t": 2.0,
+        "frame_id": 60,
+        "ball": {
+          "x": 570,
+          "y": 397,
+          "z_est": 0.0,
+          "speed": 47.3,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              385,
+              532
+            ],
+            [
+              577,
+              555
+            ]
+          ],
+          "center_of_mass": [
+            565,
+            428
+          ],
+          "footwork_speed": 2.77,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            750,
+            236
+          ]
+        }
+      },
+      {
+        "t": 2.333,
+        "frame_id": 70,
+        "ball": {
+          "x": 469,
+          "y": 347,
+          "z_est": 0.0,
+          "speed": 77.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              307,
+              544
+            ],
+            [
+              485,
+              560
+            ]
+          ],
+          "center_of_mass": [
+            445,
+            429
+          ],
+          "footwork_speed": 11.98,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            761,
+            230
+          ]
+        }
+      },
+      {
+        "t": 2.667,
+        "frame_id": 80,
+        "ball": {
+          "x": null,
+          "y": null,
+          "z_est": 0.0,
+          "speed": 0.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              284,
+              544
+            ],
+            [
+              469,
+              580
+            ]
+          ],
+          "center_of_mass": [
+            391,
+            433
+          ],
+          "footwork_speed": 5.45,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            760,
+            228
+          ]
+        }
+      },
+      {
+        "t": 3.0,
+        "frame_id": 90,
+        "ball": {
+          "x": null,
+          "y": null,
+          "z_est": 0.0,
+          "speed": 0.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              239,
+              563
+            ],
+            [
+              440,
+              569
+            ]
+          ],
+          "center_of_mass": [
+            361,
+            453
+          ],
+          "footwork_speed": 3.61,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            760,
+            217
+          ]
+        }
+      },
+      {
+        "t": 3.333,
+        "frame_id": 100,
+        "ball": {
+          "x": null,
+          "y": null,
+          "z_est": 0.0,
+          "speed": 0.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              260,
+              558
+            ],
+            [
+              458,
+              571
+            ]
+          ],
+          "center_of_mass": [
+            333,
+            453
+          ],
+          "footwork_speed": 2.85,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            757,
+            221
+          ]
+        }
+      },
+      {
+        "t": 3.667,
+        "frame_id": 110,
+        "ball": {
+          "x": 787,
+          "y": 275,
+          "z_est": 0.0,
+          "speed": 104.8,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              282,
+              567
+            ],
+            [
+              468,
+              595
+            ]
+          ],
+          "center_of_mass": [
+            361,
+            450
+          ],
+          "footwork_speed": 2.83,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            813,
+            232
+          ]
+        }
+      },
+      {
+        "t": 4.0,
+        "frame_id": 120,
+        "ball": {
+          "x": 792,
+          "y": 257,
+          "z_est": 0.0,
+          "speed": 72.1,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              251,
+              576
+            ],
+            [
+              420,
+              568
+            ]
+          ],
+          "center_of_mass": [
+            353,
+            464
+          ],
+          "footwork_speed": 1.57,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            854,
+            223
+          ]
+        }
+      },
+      {
+        "t": 4.333,
+        "frame_id": 130,
+        "ball": {
+          "x": 736,
+          "y": 232,
+          "z_est": 0.0,
+          "speed": 34.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              377,
+              580
+            ],
+            [
+              409,
+              573
+            ]
+          ],
+          "center_of_mass": [
+            387,
+            458
+          ],
+          "footwork_speed": 3.44,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            811,
+            214
+          ]
+        }
+      },
+      {
+        "t": 4.667,
+        "frame_id": 140,
+        "ball": {
+          "x": 632,
+          "y": 190,
+          "z_est": 0.0,
+          "speed": 59.6,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              539,
+              588
+            ],
+            [
+              628,
+              608
+            ]
+          ],
+          "center_of_mass": [
+            507,
+            455
+          ],
+          "footwork_speed": 12.02,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            699,
+            197
+          ]
+        }
+      },
+      {
+        "t": 5.0,
+        "frame_id": 150,
+        "ball": {
+          "x": 600,
+          "y": 194,
+          "z_est": 0.0,
+          "speed": 50.3,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              600,
+              564
+            ],
+            [
+              730,
+              585
+            ]
+          ],
+          "center_of_mass": [
+            615,
+            453
+          ],
+          "footwork_speed": 10.81,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            579,
+            180
+          ]
+        }
+      },
+      {
+        "t": 5.333,
+        "frame_id": 160,
+        "ball": {
+          "x": 596,
+          "y": 195,
+          "z_est": 0.0,
+          "speed": 33.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              595,
+              615
+            ],
+            [
+              738,
+              600
+            ]
+          ],
+          "center_of_mass": [
+            662,
+            458
+          ],
+          "footwork_speed": 4.7,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            581,
+            160
+          ]
+        }
+      },
+      {
+        "t": 5.667,
+        "frame_id": 170,
+        "ball": {
+          "x": 638,
+          "y": 192,
+          "z_est": 0.0,
+          "speed": 3.2,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              530,
+              642
+            ],
+            [
+              673,
+              652
+            ]
+          ],
+          "center_of_mass": [
+            626,
+            473
+          ],
+          "footwork_speed": 3.91,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            647,
+            164
+          ]
+        }
+      },
+      {
+        "t": 6.0,
+        "frame_id": 180,
+        "ball": {
+          "x": 685,
+          "y": 197,
+          "z_est": 0.0,
+          "speed": 19.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              499,
+              671
+            ],
+            [
+              651,
+              687
+            ]
+          ],
+          "center_of_mass": [
+            590,
+            494
+          ],
+          "footwork_speed": 4.18,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            697,
+            180
+          ]
+        }
+      },
+      {
+        "t": 6.333,
+        "frame_id": 190,
+        "ball": {
+          "x": 737,
+          "y": 247,
+          "z_est": 0.0,
+          "speed": 50.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              522,
+              710
+            ],
+            [
+              706,
+              706
+            ]
+          ],
+          "center_of_mass": [
+            606,
+            532
+          ],
+          "footwork_speed": 4.1,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            749,
+            218
+          ]
+        }
+      },
+      {
+        "t": 6.667,
+        "frame_id": 200,
+        "ball": {
+          "x": 738,
+          "y": 271,
+          "z_est": 0.0,
+          "speed": 42.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              451,
+              704
+            ],
+            [
+              605,
+              709
+            ]
+          ],
+          "center_of_mass": [
+            555,
+            561
+          ],
+          "footwork_speed": 5.91,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            792,
+            244
+          ]
+        }
+      },
+      {
+        "t": 7.0,
+        "frame_id": 210,
+        "ball": {
+          "x": 755,
+          "y": 261,
+          "z_est": 0.0,
+          "speed": 31.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              354,
+              715
+            ],
+            [
+              517,
+              711
+            ]
+          ],
+          "center_of_mass": [
+            454,
+            556
+          ],
+          "footwork_speed": 10.07,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            812,
+            229
+          ]
+        }
+      },
+      {
+        "t": 7.333,
+        "frame_id": 220,
+        "ball": {
+          "x": 793,
+          "y": 339,
+          "z_est": 0.0,
+          "speed": 57.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              331,
+              707
+            ],
+            [
+              511,
+              705
+            ]
+          ],
+          "center_of_mass": [
+            426,
+            551
+          ],
+          "footwork_speed": 2.84,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            835,
+            226
+          ]
+        }
+      },
+      {
+        "t": 7.667,
+        "frame_id": 230,
+        "ball": {
+          "x": 673,
+          "y": 382,
+          "z_est": 0.0,
+          "speed": 62.6,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              286,
+              709
+            ],
+            [
+              485,
+              712
+            ]
+          ],
+          "center_of_mass": [
+            409,
+            554
+          ],
+          "footwork_speed": 1.78,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            903,
+            236
+          ]
+        }
+      },
+      {
+        "t": 8.0,
+        "frame_id": 240,
+        "ball": {
+          "x": 775,
+          "y": 349,
+          "z_est": 0.0,
+          "speed": 21.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              328,
+              681
+            ],
+            [
+              536,
+              694
+            ]
+          ],
+          "center_of_mass": [
+            412,
+            564
+          ],
+          "footwork_speed": 1.04,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            955,
+            240
+          ]
+        }
+      },
+      {
+        "t": 8.333,
+        "frame_id": 250,
+        "ball": {
+          "x": 789,
+          "y": 318,
+          "z_est": 0.0,
+          "speed": 18.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              342,
+              678
+            ],
+            [
+              526,
+              690
+            ]
+          ],
+          "center_of_mass": [
+            438,
+            547
+          ],
+          "footwork_speed": 3.12,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            915,
+            220
+          ]
+        }
+      },
+      {
+        "t": 8.667,
+        "frame_id": 260,
+        "ball": {
+          "x": 786,
+          "y": 309,
+          "z_est": 0.0,
+          "speed": 15.7,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              345,
+              664
+            ],
+            [
+              541,
+              684
+            ]
+          ],
+          "center_of_mass": [
+            445,
+            522
+          ],
+          "footwork_speed": 2.56,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            906,
+            198
+          ]
+        }
+      },
+      {
+        "t": 9.0,
+        "frame_id": 270,
+        "ball": {
+          "x": 782,
+          "y": 301,
+          "z_est": 0.0,
+          "speed": 14.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              337,
+              668
+            ],
+            [
+              539,
+              687
+            ]
+          ],
+          "center_of_mass": [
+            449,
+            536
+          ],
+          "footwork_speed": 1.41,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            981,
+            188
+          ]
+        }
+      },
+      {
+        "t": 9.333,
+        "frame_id": 280,
+        "ball": {
+          "x": 772,
+          "y": 288,
+          "z_est": 0.0,
+          "speed": 17.1,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              292,
+              656
+            ],
+            [
+              494,
+              679
+            ]
+          ],
+          "center_of_mass": [
+            424,
+            524
+          ],
+          "footwork_speed": 2.78,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            963,
+            190
+          ]
+        }
+      },
+      {
+        "t": 9.667,
+        "frame_id": 290,
+        "ball": {
+          "x": 762,
+          "y": 297,
+          "z_est": 0.0,
+          "speed": 11.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              359,
+              662
+            ],
+            [
+              536,
+              685
+            ]
+          ],
+          "center_of_mass": [
+            408,
+            512
+          ],
+          "footwork_speed": 1.94,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            861,
+            189
+          ]
+        }
+      },
+      {
+        "t": 10.0,
+        "frame_id": 300,
+        "ball": {
+          "x": 750,
+          "y": 281,
+          "z_est": 0.0,
+          "speed": 17.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              417,
+              614
+            ],
+            [
+              407,
+              672
+            ]
+          ],
+          "center_of_mass": [
+            406,
+            513
+          ],
+          "footwork_speed": 0.23,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            829,
+            184
+          ]
+        }
+      },
+      {
+        "t": 10.333,
+        "frame_id": 310,
+        "ball": {
+          "x": 734,
+          "y": 260,
+          "z_est": 0.0,
+          "speed": 23.1,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              230,
+              605
+            ],
+            [
+              387,
+              667
+            ]
+          ],
+          "center_of_mass": [
+            338,
+            520
+          ],
+          "footwork_speed": 6.86,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            822,
+            203
+          ]
+        }
+      },
+      {
+        "t": 10.667,
+        "frame_id": 320,
+        "ball": {
+          "x": 760,
+          "y": 285,
+          "z_est": 0.0,
+          "speed": 4.2,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              209,
+              645
+            ],
+            [
+              382,
+              662
+            ]
+          ],
+          "center_of_mass": [
+            286,
+            514
+          ],
+          "footwork_speed": 5.24,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            834,
+            208
+          ]
+        }
+      },
+      {
+        "t": 11.0,
+        "frame_id": 330,
+        "ball": {
+          "x": 781,
+          "y": 312,
+          "z_est": 0.0,
+          "speed": 20.1,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              251,
+              642
+            ],
+            [
+              427,
+              663
+            ]
+          ],
+          "center_of_mass": [
+            298,
+            494
+          ],
+          "footwork_speed": 2.43,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            887,
+            214
+          ]
+        }
+      },
+      {
+        "t": 11.333,
+        "frame_id": 340,
+        "ball": {
+          "x": 686,
+          "y": 403,
+          "z_est": 0.0,
+          "speed": 63.6,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              454,
+              567
+            ],
+            [
+              435,
+              662
+            ]
+          ],
+          "center_of_mass": [
+            374,
+            510
+          ],
+          "footwork_speed": 7.7,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            958,
+            224
+          ]
+        }
+      },
+      {
+        "t": 11.667,
+        "frame_id": 350,
+        "ball": {
+          "x": null,
+          "y": null,
+          "z_est": 0.0,
+          "speed": 0.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              598,
+              641
+            ],
+            [
+              596,
+              656
+            ]
+          ],
+          "center_of_mass": [
+            511,
+            523
+          ],
+          "footwork_speed": 13.82,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            940,
+            204
+          ]
+        }
+      },
+      {
+        "t": 12.0,
+        "frame_id": 360,
+        "ball": {
+          "x": 668,
+          "y": 235,
+          "z_est": 0.0,
+          "speed": 50.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              626,
+              657
+            ],
+            [
+              767,
+              686
+            ]
+          ],
+          "center_of_mass": [
+            647,
+            542
+          ],
+          "footwork_speed": 13.74,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            798,
+            197
+          ]
+        }
+      },
+      {
+        "t": 12.333,
+        "frame_id": 370,
+        "ball": {
+          "x": 652,
+          "y": 183,
+          "z_est": 0.0,
+          "speed": 59.2,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              622,
+              681
+            ],
+            [
+              817,
+              686
+            ]
+          ],
+          "center_of_mass": [
+            712,
+            525
+          ],
+          "footwork_speed": 6.7,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            679,
+            188
+          ]
+        }
+      },
+      {
+        "t": 12.667,
+        "frame_id": 380,
+        "ball": {
+          "x": 599,
+          "y": 190,
+          "z_est": 0.0,
+          "speed": 44.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              749,
+              642
+            ],
+            [
+              827,
+              685
+            ]
+          ],
+          "center_of_mass": [
+            786,
+            524
+          ],
+          "footwork_speed": 7.43,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            593,
+            200
+          ]
+        }
+      },
+      {
+        "t": 13.0,
+        "frame_id": 390,
+        "ball": {
+          "x": 608,
+          "y": 232,
+          "z_est": 0.0,
+          "speed": 13.5,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              870,
+              653
+            ],
+            [
+              1051,
+              654
+            ]
+          ],
+          "center_of_mass": [
+            902,
+            511
+          ],
+          "footwork_speed": 11.66,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            552,
+            199
+          ]
+        }
+      },
+      {
+        "t": 13.333,
+        "frame_id": 400,
+        "ball": {
+          "x": 618,
+          "y": 257,
+          "z_est": 0.0,
+          "speed": 17.4,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              861,
+              644
+            ],
+            [
+              889,
+              600
+            ]
+          ],
+          "center_of_mass": [
+            940,
+            518
+          ],
+          "footwork_speed": 3.85,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            565,
+            205
+          ]
+        }
+      },
+      {
+        "t": 13.667,
+        "frame_id": 410,
+        "ball": {
+          "x": 622,
+          "y": 237,
+          "z_est": 0.0,
+          "speed": 5.5,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              710,
+              677
+            ],
+            [
+              889,
+              670
+            ]
+          ],
+          "center_of_mass": [
+            876,
+            505
+          ],
+          "footwork_speed": 6.58,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            579,
+            200
+          ]
+        }
+      },
+      {
+        "t": 14.0,
+        "frame_id": 420,
+        "ball": {
+          "x": 609,
+          "y": 236,
+          "z_est": 0.0,
+          "speed": 4.2,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              858,
+              606
+            ],
+            [
+              901,
+              667
+            ]
+          ],
+          "center_of_mass": [
+            889,
+            518
+          ],
+          "footwork_speed": 1.86,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            578,
+            200
+          ]
+        }
+      },
+      {
+        "t": 14.333,
+        "frame_id": 430,
+        "ball": {
+          "x": 583,
+          "y": 254,
+          "z_est": 0.0,
+          "speed": 17.5,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              1139,
+              615
+            ],
+            [
+              1062,
+              537
+            ]
+          ],
+          "center_of_mass": [
+            976,
+            512
+          ],
+          "footwork_speed": 8.75,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            543,
+            192
+          ]
+        }
+      },
+      {
+        "t": 14.667,
+        "frame_id": 440,
+        "ball": {
+          "x": 590,
+          "y": 255,
+          "z_est": 0.0,
+          "speed": 8.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              965,
+              634
+            ],
+            [
+              1118,
+              634
+            ]
+          ],
+          "center_of_mass": [
+            1046,
+            510
+          ],
+          "footwork_speed": 7.05,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            532,
+            205
+          ]
+        }
+      },
+      {
+        "t": 15.0,
+        "frame_id": 450,
+        "ball": {
+          "x": 592,
+          "y": 253,
+          "z_est": 0.0,
+          "speed": 3.0,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              803,
+              690
+            ],
+            [
+              974,
+              667
+            ]
+          ],
+          "center_of_mass": [
+            968,
+            521
+          ],
+          "footwork_speed": 7.89,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            542,
+            220
+          ]
+        }
+      },
+      {
+        "t": 15.333,
+        "frame_id": 460,
+        "ball": {
+          "x": 652,
+          "y": 247,
+          "z_est": 0.0,
+          "speed": 28.9,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              727,
+              683
+            ],
+            [
+              755,
+              697
+            ]
+          ],
+          "center_of_mass": [
+            822,
+            535
+          ],
+          "footwork_speed": 14.69,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            569,
+            210
+          ]
+        }
+      },
+      {
+        "t": 15.667,
+        "frame_id": 470,
+        "ball": {
+          "x": 743,
+          "y": 244,
+          "z_est": 0.0,
+          "speed": 61.2,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              602,
+              712
+            ],
+            [
+              635,
+              673
+            ]
+          ],
+          "center_of_mass": [
+            678,
+            532
+          ],
+          "footwork_speed": 14.37,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            635,
+            197
+          ]
+        }
+      },
+      {
+        "t": 16.0,
+        "frame_id": 480,
+        "ball": {
+          "x": 779,
+          "y": 262,
+          "z_est": 0.0,
+          "speed": 57.1,
+          "spin_est": "unknown"
+        },
+        "player": {
+          "id": "self",
+          "foot_pos": [
+            [
+              449,
+              734
+            ],
+            [
+              541,
+              705
+            ]
+          ],
+          "center_of_mass": [
+            554,
+            534
+          ],
+          "footwork_speed": 12.42,
+          "stance": "neutral"
+        },
+        "opponent": {
+          "center_of_mass": [
+            738,
+            192
+          ]
+        }
+      }
+    ]
+  },
+  "shots": [
+    {
+      "shot_id": 1,
+      "t_start": 0.1,
+      "t_contact": 0.35,
+      "t_end": 0.4,
+      "player": "opponent",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 501,
+        "y": 322,
+        "in": true,
+        "depth": "long"
+      }
+    },
+    {
+      "shot_id": 2,
+      "t_start": 0.45,
+      "t_contact": 1.18,
+      "t_end": 1.23,
+      "player": "self",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 658,
+        "y": 345,
+        "in": true,
+        "depth": "short"
+      }
+    },
+    {
+      "shot_id": 3,
+      "t_start": 1.28,
+      "t_contact": 2.15,
+      "t_end": 2.2,
+      "player": "opponent",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 496,
+        "y": 355,
+        "in": true,
+        "depth": "short"
+      }
+    },
+    {
+      "shot_id": 4,
+      "t_start": 2.25,
+      "t_contact": 3.38,
+      "t_end": 3.43,
+      "player": "self",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 683,
+        "y": 320,
+        "in": true,
+        "depth": "long"
+      }
+    },
+    {
+      "shot_id": 5,
+      "t_start": 3.48,
+      "t_contact": 11.68,
+      "t_end": 11.73,
+      "player": "opponent",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 642,
+        "y": 320,
+        "in": true,
+        "depth": "long"
+      }
+    }
+  ],
+  "rallies": [
+    {
+      "rally_id": 1,
+      "t_start": 0.1,
+      "t_end": 3.43,
+      "shots": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "winner": "opponent",
+      "length": 4,
+      "pressure": {
+        "score": "unknown",
+        "is_game_point": false
+      }
+    },
+    {
+      "rally_id": 2,
+      "t_start": 3.48,
+      "t_end": 11.73,
+      "shots": [
+        5
+      ],
+      "winner": "self",
+      "length": 1,
+      "pressure": {
+        "score": "unknown",
+        "is_game_point": false
+      }
+    }
+  ],
+  "behavioral_metrics": {
+    "footwork_drop_pct": 35,
+    "avg_swing_duration": 2.78,
+    "baseline_distance": 0.0,
+    "aggression_index": 5.7
+  },
+  "match_context": {
+    "player_level": "intermediate",
+    "opponent_style": "unknown",
+    "score_state": "unknown",
+    "set": 1
+  },
+  "semantic_summary": "Video: 5 landings detected, 2 rallies. Footwork drop %: 35. Average swing duration: 2.78s. Perception separated from reasoning; frame samples give behavior, shots give intent, rallies give pressure context."
+}

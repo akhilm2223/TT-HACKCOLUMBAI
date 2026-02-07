@@ -7,3 +7,5 @@ mediapipe>=0.10.0
 filterpy
 openai>=1.0
 python-dotenv
+snowflake-connector-python
+python-dotenv

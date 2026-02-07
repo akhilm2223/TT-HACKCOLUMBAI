@@ -1078,6 +1078,23 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
     print(f"\nProcessing {total_frames} frames...")
     print("-" * 60)
 
+    # --- DB SETUP ---
+    tracking_db = None
+    match_id = None
+    if DB_AVAILABLE:
+        try:
+            tracking_db = TrackingDB()
+            if tracking_db.connect():
+                # Use video filename as identifier
+                vid_name = os.path.basename(video_path)
+                match_id = tracking_db.create_new_match(video_file=vid_name)
+                print(f"[DB] Match created: {match_id}")
+            else:
+                track_db = None
+        except Exception as e:
+            print(f"[DB] Error initializing DB: {e}")
+            tracking_db = None
+
     try:
         while cap.isOpened():
             ret, frame = cap.read()
@@ -1352,11 +1369,17 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
     except KeyboardInterrupt:
         print("\nInterrupted")
 
-    # Cleanup
-    cap.release()
-    out.release()
-    if show_preview:
-        cv2.destroyAllWindows()
+    finally:
+        # Cleanup
+        cap.release()
+        out.release()
+        if show_preview:
+            cv2.destroyAllWindows()
+        
+        if tracking_db:
+            print("[DB] Flushing data...")
+            tracking_db.close()
+            print("[DB] Closed.")
 
     print(f"\n{'=' * 60}")
     print(f"Done! {frame_count} frames processed")
