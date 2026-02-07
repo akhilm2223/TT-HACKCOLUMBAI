@@ -1,19 +1,30 @@
 """
 Quick test for Kimi K2 / Moonshot or IFM K2 Think API key.
 Run: py -3 test_kimi_api.py
+
+If .env has MOONSHOT_API_KEY set, it will be loaded. You can also pass the key inline:
+  set MOONSHOT_API_KEY=IFM-yourkey && py -3 test_kimi_api.py
 """
 import os
 
+# Load .env from project root (same directory as this script's parent if run from repo root)
+_env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    loaded = load_dotenv(_env_path)
+    if loaded:
+        print(f"Loaded .env from: {_env_path}")
+    else:
+        load_dotenv()  # fallback: cwd
 except ImportError:
     pass
 
-api_key = os.environ.get("MOONSHOT_API_KEY") or os.environ.get("KIMI_K2_API_KEY")
+api_key = (os.environ.get("MOONSHOT_API_KEY") or os.environ.get("KIMI_K2_API_KEY") or "").strip()
 
 if not api_key:
-    print("FAIL: No API key found. Set MOONSHOT_API_KEY in .env or environment.")
+    print("FAIL: No API key found.")
+    print("  Set MOONSHOT_API_KEY=yourkey in .env (e.g. IFM-xxx for DevFest K2 Think).")
+    print(f"  Or run: set MOONSHOT_API_KEY=yourkey && py -3 test_kimi_api.py")
     exit(1)
 
 # Determine base URL and model (IFM K2 Think vs Moonshot)

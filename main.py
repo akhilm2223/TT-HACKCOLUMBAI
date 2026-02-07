@@ -71,6 +71,15 @@ except ImportError:
     detect_table_corners_ttnet = None
     TTNET_TABLE_AVAILABLE = False
 
+# Optional: Snowflake (match + analysis storage for K2 / analytics)
+DB_AVAILABLE = False
+TrackingDB = None
+try:
+    from modules.snowflake_db import TrackingDB
+    DB_AVAILABLE = bool(os.getenv("SNOWFLAKE_ACCOUNT") and os.getenv("SNOWFLAKE_USER"))
+except ImportError:
+    pass
+
 
 # ============================================================
 # TABLE DETECTION (automatic + manual fallback)
@@ -91,7 +100,8 @@ def auto_detect_table(frame):
     GrabCut, and improved Hough -- no hardcoded pink/blue assumptions.
     Detects ONCE and locks.
     """
-    corners = detect_table_corners(frame)
+    result = detect_table_corners(frame)
+    corners = result[0] if isinstance(result, tuple) else result
     if corners is not None:
         tw = np.linalg.norm(corners[1] - corners[0])
         th = np.linalg.norm(corners[3] - corners[0])
@@ -712,7 +722,7 @@ class TableTennisBallDetector:
 # ============================================================
 
 def main(video_path, output_path=None, table_calibration_path=None, show_preview=True, use_kimi=False,
-         use_ttnet_table=False, ttnet_checkpoint_path=None):
+         use_ttnet_table=False, ttnet_checkpoint_path=None, use_cortex_coach=False):
     """
     Table tennis analysis pipeline.
 
@@ -1090,7 +1100,7 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
                 match_id = tracking_db.create_new_match(video_file=vid_name)
                 print(f"[DB] Match created: {match_id}")
             else:
-                track_db = None
+                tracking_db = None
         except Exception as e:
             print(f"[DB] Error initializing DB: {e}")
             tracking_db = None
@@ -1617,6 +1627,31 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         json.dump(analysis, f, indent=2, ensure_ascii=False)
     print(f"Analysis JSON: {json_path}")
 
+    # --- Push full analysis + Cortex vector embedding to Snowflake ---
+    if tracking_db is not None and match_id is not None:
+        try:
+            success = tracking_db.db.insert_full_analysis(match_id, analysis)
+            if success:
+                print("[Snowflake] Full analysis + vector embedding stored in ANALYSIS_OUTPUT")
+
+                # Optionally run Cortex coaching (if --coach flag)
+                if use_cortex_coach:
+                    try:
+                        from modules.llm_coach import CortexCoach
+                        coach = CortexCoach()
+                        coach.db = tracking_db.db  # reuse connection
+                        print("\n[Cortex] Generating AI coaching insight...")
+                        insight = coach.analyze_match(match_id)
+                        print(f"\n{'=' * 60}")
+                        print("AI COACHING INSIGHT (Cortex)")
+                        print(f"{'=' * 60}")
+                        print(insight)
+                        print(f"{'=' * 60}\n")
+                    except Exception as e:
+                        print(f"[Cortex] Coaching failed: {e}")
+        except Exception as e:
+            print(f"[Snowflake] Push failed: {e}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Table Tennis Analysis Pipeline')
@@ -1632,6 +1667,8 @@ if __name__ == "__main__":
                         help='Use TTNet (tt/) segmentation to track table lines (same code as tt)')
     parser.add_argument('--ttnet-checkpoint', type=str, default=None,
                         help='Path to TTNet .pth checkpoint (required for --ttnet; e.g. tt/checkpoints/ttnet_best.pth)')
+    parser.add_argument('--coach', action='store_true',
+                        help='Run Cortex AI coaching after analysis (requires Snowflake + Cortex)')
 
     args = parser.parse_args()
 
@@ -1640,4 +1677,5 @@ if __name__ == "__main__":
          show_preview=not args.no_preview,
          use_kimi=args.kimi,
          use_ttnet_table=args.ttnet,
-         ttnet_checkpoint_path=args.ttnet_checkpoint)
+         ttnet_checkpoint_path=args.ttnet_checkpoint,
+         use_cortex_coach=args.coach)
