@@ -1,0 +1,7 @@
+# Minimal requirements to run main_table_tennis.py only
+# Install: pip install -r requirements_table_tennis_only.txt
+
+numpy<2
+opencv-python>=4.8.0
+mediapipe>=0.10.0
+filterpy

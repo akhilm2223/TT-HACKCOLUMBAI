@@ -1,0 +1,13 @@
+# Exclude tt/ directory
+tt/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.claude/
+
+# Large video files
+Recording 2026-02-05 165944.mp4
