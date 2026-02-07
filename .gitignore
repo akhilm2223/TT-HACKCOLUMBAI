@@ -9,5 +9,9 @@ __pycache__/
 # IDE
 .claude/
 
+# Environment / secrets (do not commit API keys)
+.env
+.env.local
+
 # Large video files
 Recording 2026-02-05 165944.mp4

@@ -5,3 +5,5 @@ numpy<2
 opencv-python>=4.8.0
 mediapipe>=0.10.0
 filterpy
+openai>=1.0
+python-dotenv

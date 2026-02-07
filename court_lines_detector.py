@@ -10,13 +10,11 @@ Key insights from Paris 2024 video analysis:
   - Scattered noise pixels stretch x-extent to frame edges
 
 Strategy order:
-  1. Pink/white peak-based detection (with pair scoring to reject barriers)
-  2. All-color peak detection
-  3. Zone profile scan
-  4. Rectangle detector (detect-rectangles.cpp)
-  5. K-means + Hough
-  6. Direct Canny → Hough
-  7. Surface color contour (last resort)
+  1. Pink/white peak-based + profile scan (most reliable)
+  2. Rectangle detector
+  3. K-means + Hough
+  4. Direct Canny + Hough
+  5. Surface color contour (last resort)
 """
 import cv2
 import numpy as np
@@ -26,7 +24,7 @@ import numpy as np
 # ============================================================
 
 def _line_intersection(p1, p2, p3, p4):
-    """Intersection of line(p1→p2) and line(p3→p4). Returns (x,y) or None."""
+    """Intersection of line(p1->p2) and line(p3->p4). Returns (x,y) or None."""
     d1 = np.array([p2[0] - p1[0], p2[1] - p1[1]], dtype=np.float64)
     d2 = np.array([p4[0] - p3[0], p4[1] - p3[1]], dtype=np.float64)
     cross = d1[0] * d2[1] - d1[1] * d2[0]
@@ -38,7 +36,6 @@ def _line_intersection(p1, p2, p3, p4):
 
 
 def _angle_deg(dx, dy):
-    """Angle 0-90: 0=horizontal, 90=vertical."""
     return np.degrees(np.arctan2(abs(dy), abs(dx)))
 
 
@@ -47,7 +44,6 @@ def _seg_length(seg):
 
 
 def _order_corners(pts):
-    """Order 4 points as TL, TR, BR, BL."""
     pts = np.array(pts, dtype=np.float32)
     s = pts.sum(axis=1)
     d = np.diff(pts, axis=1).flatten()
@@ -59,7 +55,6 @@ def _order_corners(pts):
 
 
 def _valid_table(corners, frame_h=0, frame_w=0, min_area=2000, aspect_range=(1.4, 5.0)):
-    """Sanity-check 4 corners as a plausible table."""
     if corners is None or len(corners) != 4:
         return False
     area = cv2.contourArea(corners.reshape(-1, 1, 2).astype(np.float32))
@@ -76,7 +71,6 @@ def _valid_table(corners, frame_h=0, frame_w=0, min_area=2000, aspect_range=(1.4
     aspect = tw / (th + 1e-6)
     if not (aspect_range[0] <= aspect <= aspect_range[1]):
         return False
-    # Table should NOT fill most of the frame — it's a table, not the arena
     if frame_w > 0 and tw > frame_w * 0.50:
         return False
     if frame_h > 0 and th > frame_h * 0.40:
@@ -85,22 +79,311 @@ def _valid_table(corners, frame_h=0, frame_w=0, min_area=2000, aspect_range=(1.4
 
 
 # ============================================================
+# STRATEGY 0: Find table surface first, then find the 5 lines
+# (4 edges + net) on it. Surface constrains where to look.
+# ============================================================
+
+def _find_surface_roi(frame):
+    """
+    Quickly find the approximate bounding box of the table playing surface
+    using color segmentation. Returns (y_top, y_bot, x_left, x_right) or None.
+    """
+    h, w = frame.shape[:2]
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # Table surface: dark blue / dark green / teal
+    blue = cv2.inRange(hsv, (90, 30, 20), (130, 255, 200))
+    green = cv2.inRange(hsv, (35, 30, 20), (90, 255, 200))
+    teal = cv2.inRange(hsv, (80, 20, 15), (135, 255, 220))
+    mask = blue | green | teal
+
+    # Center zone only
+    zone = np.zeros_like(mask)
+    y1z, y2z = int(h * 0.10), int(h * 0.85)
+    x1z, x2z = int(w * 0.05), int(w * 0.95)
+    zone[y1z:y2z, x1z:x2z] = 255
+    mask = mask & zone
+
+    # Close small gaps
+    k5 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, k5, iterations=3)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, k5, iterations=2)
+
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return None
+
+    # Find largest roughly-centered contour
+    best = None
+    best_area = h * w * 0.015  # min 1.5% of frame
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if area < best_area:
+            continue
+        M = cv2.moments(cnt)
+        if M['m00'] == 0:
+            continue
+        cx = M['m10'] / M['m00']
+        cy = M['m01'] / M['m00']
+        if w * 0.15 < cx < w * 0.85 and h * 0.15 < cy < h * 0.80:
+            if area > best_area:
+                best_area = area
+                best = cnt
+
+    if best is None:
+        return None
+
+    x, y, bw, bh = cv2.boundingRect(best)
+    return (y, y + bh, x, x + bw)
+
+
+def _strategy_find_table_lines(frame):
+    """
+    Two-phase approach:
+      Phase 1: Find approximate table surface using color -> defines search region
+      Phase 2: Find the actual white edge lines & net ONLY near that surface
+    """
+    h, w = frame.shape[:2]
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # --- Phase 1: Find approximate table surface region ---
+    roi = _find_surface_roi(frame)
+    if roi is None:
+        return None, None
+
+    sy_top, sy_bot, sx_left, sx_right = roi
+    surf_w = sx_right - sx_left
+    surf_h = sy_bot - sy_top
+    print(f"    Surface ROI: x=[{sx_left},{sx_right}] y=[{sy_top},{sy_bot}]"
+          f" ({surf_w}x{surf_h})")
+
+    if surf_w < 40 or surf_h < 15:
+        return None, None
+
+    # --- Phase 2: Search for edge lines ONLY near the surface border ---
+    # Add a small margin around the surface (lines are AT the edges)
+    margin_x = int(surf_w * 0.15)
+    margin_y = int(surf_h * 0.25)
+    search_y1 = max(0, sy_top - margin_y)
+    search_y2 = min(h, sy_bot + margin_y)
+    search_x1 = max(0, sx_left - margin_x)
+    search_x2 = min(w, sx_right + margin_x)
+
+    # Build edge mask restricted to the search zone
+    zone = np.zeros((h, w), dtype=np.uint8)
+    zone[search_y1:search_y2, search_x1:search_x2] = 255
+
+    # White lines on table (high brightness, low saturation)
+    white = cv2.inRange(hsv, (0, 0, 150), (180, 80, 255))
+    # Light grey (net, edge markings)
+    light = cv2.inRange(hsv, (0, 0, 110), (180, 50, 210))
+
+    line_mask = (white | light) & zone
+
+    # Light cleanup
+    k3 = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    line_mask = cv2.morphologyEx(line_mask, cv2.MORPH_CLOSE, k3, iterations=1)
+
+    # Canny edges from grayscale (catches contrast boundaries at table edges)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    canny = cv2.Canny(blurred, 50, 150) & zone
+
+    # Combined edges
+    combined_edges = cv2.Canny(line_mask, 30, 100) | canny
+
+    # --- Find line segments with Hough ---
+    min_len = max(25, min(surf_w, surf_h) // 5)
+    max_gap = max(15, min(surf_w, surf_h) // 8)
+
+    all_segs = []
+    for thresh in [40, 25, 15]:
+        segs = cv2.HoughLinesP(combined_edges, 1, np.pi / 180, thresh,
+                               minLineLength=min_len, maxLineGap=max_gap)
+        if segs is not None:
+            all_segs.extend(segs.reshape(-1, 4).tolist())
+        if len(all_segs) >= 10:
+            break
+
+    if len(all_segs) < 4:
+        print("    Not enough line segments found")
+        return None, None
+
+    # --- Classify into horizontal and near-vertical (allow perspective slant) ---
+    horizontals = []  # (y_mid, length, seg)
+    verticals = []    # (x_mid, length, seg)
+
+    for seg in all_segs:
+        x1, y1, x2, y2 = seg
+        angle = _angle_deg(float(x2 - x1), float(y2 - y1))
+        length = _seg_length(seg)
+        y_mid = (y1 + y2) / 2.0
+        x_mid = (x1 + x2) / 2.0
+
+        if angle < 25:  # horizontal
+            horizontals.append((y_mid, length, seg))
+        elif angle > 55:  # vertical / near-vertical
+            verticals.append((x_mid, length, seg))
+
+    if len(horizontals) < 2:
+        print("    Not enough horizontal lines")
+        return None, None
+
+    # --- Group by position (cluster nearby segments) ---
+    merge_dist_y = max(10, surf_h * 0.10)
+    merge_dist_x = max(10, surf_w * 0.08)
+
+    h_groups = _group_lines(horizontals, merge_dist_y)
+    v_groups = _group_lines(verticals, merge_dist_x)
+
+    # --- Determine the 4 edge lines ---
+    # For horizontal: find the top edge and bottom edge of the SURFACE
+    # The top-h line should be near sy_top, bottom-h near sy_bot
+    h_groups.sort(key=lambda g: g[0])
+    v_groups.sort(key=lambda g: g[0])
+
+    # Find the horizontal line closest to the surface top edge
+    top_line = None
+    top_dist = float('inf')
+    for grp in h_groups:
+        d = abs(grp[0] - sy_top)
+        if d < top_dist and grp[0] < sy_top + surf_h * 0.35:
+            top_dist = d
+            top_line = grp
+
+    # Find the horizontal line closest to the surface bottom edge
+    bot_line = None
+    bot_dist = float('inf')
+    for grp in h_groups:
+        if grp is top_line:
+            continue
+        d = abs(grp[0] - sy_bot)
+        if d < bot_dist and grp[0] > sy_top + surf_h * 0.5:
+            bot_dist = d
+            bot_line = grp
+
+    if top_line is None or bot_line is None:
+        print("    Could not find top/bottom edge lines")
+        return None, None
+
+    # Find left and right vertical lines closest to surface edges
+    left_line = None
+    left_dist = float('inf')
+    for grp in v_groups:
+        d = abs(grp[0] - sx_left)
+        if d < left_dist and grp[0] < sx_left + surf_w * 0.35:
+            left_dist = d
+            left_line = grp
+
+    right_line = None
+    right_dist = float('inf')
+    for grp in v_groups:
+        if grp is left_line:
+            continue
+        d = abs(grp[0] - sx_right)
+        if d < right_dist and grp[0] > sx_left + surf_w * 0.5:
+            right_dist = d
+            right_line = grp
+
+    # --- Build corners ---
+    top_y = top_line[0]
+    bot_y = bot_line[0]
+
+    if left_line is not None and right_line is not None:
+        left_x = left_line[0]
+        right_x = right_line[0]
+    else:
+        # Fall back to surface edges if vertical lines not found
+        left_x = float(sx_left)
+        right_x = float(sx_right)
+        print("    Using surface edges for left/right (vertical lines weak)")
+
+    # Try intersection-based corners for perspective accuracy
+    top_seg = max(top_line[2], key=lambda s: _seg_length(s))
+    bot_seg = max(bot_line[2], key=lambda s: _seg_length(s))
+
+    if left_line is not None and right_line is not None:
+        left_seg = max(left_line[2], key=lambda s: _seg_length(s))
+        right_seg = max(right_line[2], key=lambda s: _seg_length(s))
+
+        tl = _line_intersection(
+            (top_seg[0], top_seg[1]), (top_seg[2], top_seg[3]),
+            (left_seg[0], left_seg[1]), (left_seg[2], left_seg[3]))
+        tr = _line_intersection(
+            (top_seg[0], top_seg[1]), (top_seg[2], top_seg[3]),
+            (right_seg[0], right_seg[1]), (right_seg[2], right_seg[3]))
+        bl = _line_intersection(
+            (bot_seg[0], bot_seg[1]), (bot_seg[2], bot_seg[3]),
+            (left_seg[0], left_seg[1]), (left_seg[2], left_seg[3]))
+        br = _line_intersection(
+            (bot_seg[0], bot_seg[1]), (bot_seg[2], bot_seg[3]),
+            (right_seg[0], right_seg[1]), (right_seg[2], right_seg[3]))
+
+        if all(c is not None for c in [tl, tr, bl, br]):
+            corners = np.array([tl, tr, br, bl], dtype=np.float32)
+        else:
+            corners = np.array([
+                [left_x, top_y], [right_x, top_y],
+                [right_x, bot_y], [left_x, bot_y]
+            ], dtype=np.float32)
+    else:
+        corners = np.array([
+            [left_x, top_y], [right_x, top_y],
+            [right_x, bot_y], [left_x, bot_y]
+        ], dtype=np.float32)
+
+    if not _valid_table(corners, h, w, aspect_range=(1.3, 5.5)):
+        print("    Lines found but rectangle invalid")
+        return None, None
+
+    # --- Find the net ---
+    net_y = None
+    for grp in h_groups:
+        if grp is top_line or grp is bot_line:
+            continue
+        ny = grp[0]
+        if top_y + (bot_y - top_y) * 0.2 < ny < bot_y - (bot_y - top_y) * 0.2:
+            net_y = int(ny)
+            break
+
+    tw = np.linalg.norm(corners[1] - corners[0])
+    th_t = np.linalg.norm(corners[3] - corners[0])
+    msg = f"  [Strategy 0: surface+lines] Table {tw:.0f}x{th_t:.0f}"
+    if net_y:
+        msg += f", net at y={net_y}"
+    print(msg)
+    return corners, net_y
+
+
+def _group_lines(items, merge_dist):
+    """Group line segments by position (first element of tuple). Returns list of [avg_pos, total_length, [segs]]."""
+    groups = []
+    for pos, length, seg in items:
+        merged = False
+        for grp in groups:
+            if abs(pos - grp[0]) < merge_dist:
+                n = len(grp[2])
+                grp[0] = (grp[0] * n + pos) / (n + 1)
+                grp[1] += length
+                grp[2].append(seg)
+                merged = True
+                break
+        if not merged:
+            groups.append([pos, length, [seg]])
+    return groups
+
+
+# ============================================================
 # DENSE-BLOCK X-EXTENT FINDER
 # ============================================================
 
 def _find_dense_extent(col_counts, min_px=2, max_gap=30):
-    """
-    Find the longest contiguous block of occupied columns.
-    Merges nearby segments (gap <= max_gap columns apart) into runs,
-    then returns the longest run. Filters out far-away noise pixels
-    (e.g. arena decoration 400+ columns from the actual table border).
-    """
+    """Find the longest contiguous block of occupied columns, ignoring scattered noise."""
     occupied = col_counts >= min_px
     runs = []
     run_start = None
     run_end = 0
     gap_count = 0
-
     for x in range(len(col_counts)):
         if occupied[x]:
             if run_start is None:
@@ -112,13 +395,10 @@ def _find_dense_extent(col_counts, min_px=2, max_gap=30):
             if run_start is not None and gap_count > max_gap:
                 runs.append((run_start, run_end))
                 run_start = None
-
     if run_start is not None:
         runs.append((run_start, run_end))
-
     if not runs:
         return None, None
-
     longest = max(runs, key=lambda r: r[1] - r[0])
     return longest[0], longest[1]
 
@@ -128,17 +408,13 @@ def _find_dense_extent(col_counts, min_px=2, max_gap=30):
 # ============================================================
 
 def _add_band(mask, row_smooth, band_start, band_end, w, h_bands):
-    """Compute band properties and append to h_bands list."""
     peak_val = float(np.max(row_smooth[band_start:band_end + 1]))
     center = band_start + int(np.argmax(row_smooth[band_start:band_end + 1]))
-
-    # Compute x-extent using dense-block finder
     band_rows = mask[band_start:band_end + 1, :]
     band_col = np.sum(band_rows > 0, axis=0)
     band_thick = band_end - band_start + 1
     min_px = max(2, band_thick // 3)
     xl, xr = _find_dense_extent(band_col, min_px=min_px, max_gap=30)
-
     if xl is not None and xr is not None:
         h_bands.append({
             'center': center, 'peak': peak_val,
@@ -148,7 +424,6 @@ def _add_band(mask, row_smooth, band_start, band_end, w, h_bands):
 
 
 def _find_h_bands(mask, row_smooth, above, w, h):
-    """Find connected horizontal bands where 'above' is True."""
     h_bands = []
     in_band = False
     band_start = 0
@@ -165,26 +440,19 @@ def _find_h_bands(mask, row_smooth, above, w, h):
 
 
 def _best_band_pair(h_bands, min_peak_sep, row_max, frame_h, frame_w):
-    """Try all pairs of bands, return (top, bot, left, right) of best table."""
     best = None
     best_score = -1
-
     for i in range(len(h_bands)):
         for j in range(i + 1, len(h_bands)):
             bi, bj = h_bands[i], h_bands[j]
             top_b = bi if bi['center'] < bj['center'] else bj
             bot_b = bj if bi['center'] < bj['center'] else bi
-
             top_y = top_b['center']
             bot_y = bot_b['center']
-
             if bot_y - top_y < min_peak_sep:
                 continue
-
-            # x-extent: union of both bands
             left = min(top_b['xl'], bot_b['xl'])
             right = max(top_b['xr'], bot_b['xr'])
-
             tw = right - left
             th = bot_y - top_y
             if tw < 30 or th < 15:
@@ -192,20 +460,13 @@ def _best_band_pair(h_bands, min_peak_sep, row_max, frame_h, frame_w):
             aspect = tw / (th + 1e-6)
             if not (1.4 <= aspect <= 5.0):
                 continue
-
-            # Reject if too large for a table
             if frame_w > 0 and tw > frame_w * 0.50:
                 continue
             if frame_h > 0 and th > frame_h * 0.40:
                 continue
-
-            # Score 1: x-span similarity (KEY discriminator)
-            # Two table borders have similar width. A barrier is much wider.
             top_span = top_b['xspan']
             bot_span = bot_b['xspan']
             span_sim = min(top_span, bot_span) / (max(top_span, bot_span) + 1)
-
-            # Score 2: x-overlap (table borders overlap horizontally)
             overlap_left = max(top_b['xl'], bot_b['xl'])
             overlap_right = min(top_b['xr'], bot_b['xr'])
             if overlap_right > overlap_left:
@@ -213,77 +474,41 @@ def _best_band_pair(h_bands, min_peak_sep, row_max, frame_h, frame_w):
                 overlap_ratio = overlap / (max(top_span, bot_span) + 1)
             else:
                 overlap_ratio = 0
-
-            # Score 3: position (table center in middle area of frame)
             cy = (top_y + bot_y) / 2
             pos_score = max(0, 1.0 - abs(cy - frame_h * 0.45) / (frame_h * 0.5))
-
-            # Score 4: combined peak strength
             strength = (top_b['peak'] + bot_b['peak']) / (2 * row_max + 1)
-
-            # Score 5: aspect near standard table (1.8) — avoids picking net as an edge
-            aspect_score = max(0, 1.0 - abs(aspect - TABLE_ASPECT) / 0.5)
-
-            score = (span_sim * 0.30 + overlap_ratio * 0.25 + pos_score * 0.18 +
-                     strength * 0.17 + aspect_score * 0.10)
-
+            score = (span_sim * 0.35 + overlap_ratio * 0.25 +
+                     pos_score * 0.20 + strength * 0.20)
             if score > best_score:
                 best_score = score
                 best = (top_y, bot_y, left, right)
-
     return best
 
 
 def _peak_border_scan(mask, min_peak_height=80, min_peak_sep=20):
-    """
-    Find table borders by detecting horizontal bands and pairing them.
-
-    Two key problems solved:
-      1. Background barriers (pink LED barriers) create bands spanning 82%
-         of frame width, while table borders span only ~35%. Pairing scores
-         by x-span similarity to reject barrier+border pairs.
-      2. At low thresholds, table top and bottom borders MERGE into one band
-         (connected by side-border pixels). Multiple thresholds from high to
-         low split merged bands: higher thresholds separate the peaks.
-
-    Returns (top, bot, left, right) or None.
-    """
+    """Find table borders via horizontal band detection + pair scoring."""
     h, w = mask.shape[:2]
     row_counts = np.sum(mask > 0, axis=1).astype(np.float64)
-
-    # Smooth to merge adjacent rows (border lines are a few pixels thick)
     kernel = np.ones(5) / 5.0
     row_smooth = np.convolve(row_counts, kernel, mode='same')
-
     row_max = np.max(row_smooth)
     if row_max < min_peak_height:
         return None
-
-    # Try thresholds from high to low.
-    # Higher thresholds split merged bands (table top+bottom joined by
-    # side-border pixels at ~80-100 px/row, while borders peak at 300+).
+    # Multi-threshold: high thresholds split merged bands
     thresholds = sorted(set([
-        row_max * 0.7,
-        row_max * 0.5,
-        row_max * 0.3,
-        row_max * 0.2,
-        float(min_peak_height),
+        row_max * 0.7, row_max * 0.5, row_max * 0.3,
+        row_max * 0.2, float(min_peak_height),
     ]), reverse=True)
-
     for row_thresh in thresholds:
         if row_thresh < min_peak_height:
             continue
-
         above = row_smooth >= row_thresh
         h_bands = _find_h_bands(mask, row_smooth, above, w, h)
-
         if len(h_bands) < 2:
             continue
-
         result = _best_band_pair(h_bands, min_peak_sep, row_max, h, w)
         if result is not None:
             return result
-
     return None
 
 
@@ -292,7 +517,6 @@ def _peak_border_scan(mask, min_peak_height=80, min_peak_sep=20):
 # ============================================================
 
 def _refine_edge_hough(mask, pos, direction, margin, w, h):
-    """Refine an approximate edge position using Hough in a narrow band."""
     if direction == 'horizontal':
         y1b = max(0, pos - margin)
         y2b = min(h, pos + margin + 1)
@@ -319,7 +543,7 @@ def _refine_edge_hough(mask, pos, direction, margin, w, h):
                 best = ((float(x1), float(y1s + y1b)),
                         (float(x2), float(y2s + y1b)))
         return best
-    else:  # vertical
+    else:
         x1b = max(0, pos - margin)
         x2b = min(w, pos + margin + 1)
         band = mask[:, x1b:x2b]
@@ -348,11 +572,8 @@ def _refine_edge_hough(mask, pos, direction, margin, w, h):
 
 
 def _try_hough_refine(mask, top, bot, left, right, h, w):
-    """Try to refine peak-scan borders using Hough line detection."""
     margin = max(15, min(w, h) // 50)
     refine_pad = margin * 3
-
-    # Restrict mask to table neighborhood
     mask_refine = mask.copy()
     rzone = np.zeros_like(mask_refine)
     ry1 = max(0, top - refine_pad)
@@ -368,44 +589,37 @@ def _try_hough_refine(mask, top, bot, left, right, h, w):
     right_line = _refine_edge_hough(mask_refine, right, 'vertical', margin, w, h)
 
     if all(l is not None for l in [top_line, bot_line, left_line, right_line]):
-        tl = _line_intersection(top_line[0], top_line[1],
-                                left_line[0], left_line[1])
-        tr = _line_intersection(top_line[0], top_line[1],
-                                right_line[0], right_line[1])
-        bl = _line_intersection(bot_line[0], bot_line[1],
-                                left_line[0], left_line[1])
-        br = _line_intersection(bot_line[0], bot_line[1],
-                                right_line[0], right_line[1])
+        tl = _line_intersection(top_line[0], top_line[1], left_line[0], left_line[1])
+        tr = _line_intersection(top_line[0], top_line[1], right_line[0], right_line[1])
+        bl = _line_intersection(bot_line[0], bot_line[1], left_line[0], left_line[1])
+        br = _line_intersection(bot_line[0], bot_line[1], right_line[0], right_line[1])
         if all(c is not None for c in [tl, tr, bl, br]):
             return np.array([tl, tr, br, bl], dtype=np.float32)
     return None
 
 
 # ============================================================
-# MASK BUILDERS
+# MASKS
 # ============================================================
 
 def _build_pink_mask(frame):
-    """Pink/magenta borders only — strongest signal for professional tables."""
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    pink = cv2.inRange(hsv, (130, 40, 25), (180, 255, 255))
-    red = cv2.inRange(hsv, (0, 40, 25), (15, 255, 255))
+    pink = cv2.inRange(hsv, (130, 50, 30), (175, 255, 255))
+    red = cv2.inRange(hsv, (0, 50, 30), (12, 255, 255))
     return pink | red
 
 
 def _build_color_mask(frame):
-    """All border colors: pink + white + yellow + cyan."""
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    pink = cv2.inRange(hsv, (130, 40, 25), (180, 255, 255))
-    red = cv2.inRange(hsv, (0, 40, 25), (15, 255, 255))
+    pink = cv2.inRange(hsv, (130, 50, 30), (175, 255, 255))
+    red = cv2.inRange(hsv, (0, 50, 30), (12, 255, 255))
     white = cv2.inRange(hsv, (0, 0, 180), (180, 50, 255))
     yellow = cv2.inRange(hsv, (15, 40, 150), (35, 255, 255))
     cyan = cv2.inRange(hsv, (80, 40, 150), (100, 255, 255))
     return pink | red | white | yellow | cyan
 
 
-def _apply_zone(mask, h, w, y_frac=(0.18, 0.80), x_frac=(0.12, 0.88)):
-    """Zero out pixels outside the given percentage zone."""
+def _apply_zone(mask, h, w, y_frac, x_frac):
     y1 = int(h * y_frac[0])
     y2 = int(h * y_frac[1])
     x1 = int(w * x_frac[0])
@@ -415,16 +629,10 @@ def _apply_zone(mask, h, w, y_frac=(0.18, 0.80), x_frac=(0.12, 0.88)):
     return cv2.bitwise_and(mask, zone), (y1, y2, x1, x2)
 
 
-# ============================================================
-# PROFILE SCAN (zone-based row/column counting)
-# ============================================================
-
 def _profile_scan(mask, y1z, y2z, x1z, x2z, row_thresh_pct=0.08, col_thresh_pct=0.04):
-    """Row/column profile scanning to find approximate table edges."""
     h_full, w_full = mask.shape[:2]
     row_counts = np.sum(mask > 0, axis=1)
     col_counts = np.sum(mask > 0, axis=0)
-
     zone_w = x2z - x1z
     zone_h = y2z - y1z
     min_row_px = max(5, zone_w * row_thresh_pct)
@@ -433,20 +641,16 @@ def _profile_scan(mask, y1z, y2z, x1z, x2z, row_thresh_pct=0.08, col_thresh_pct=
     top = bot = left = right = None
     for y in range(y1z, y2z):
         if row_counts[y] >= min_row_px:
-            top = y
-            break
+            top = y; break
     for y in range(y2z - 1, y1z - 1, -1):
         if row_counts[y] >= min_row_px:
-            bot = y
-            break
+            bot = y; break
     for x in range(x1z, x2z):
         if col_counts[x] >= min_col_px:
-            left = x
-            break
+            left = x; break
     for x in range(x2z - 1, x1z - 1, -1):
         if col_counts[x] >= min_col_px:
-            right = x
-            break
+            right = x; break
 
     if any(v is None for v in [top, bot, left, right]):
         return None
@@ -465,21 +669,14 @@ def _profile_scan(mask, y1z, y2z, x1z, x2z, row_thresh_pct=0.08, col_thresh_pct=
 
 
 # ============================================================
-# STRATEGY 1: Pink/white peak-based detection (MOST RELIABLE)
+# STRATEGY 1: Peak + Profile + Hough (MOST RELIABLE)
 # ============================================================
 
 def _strategy_border_lines(frame):
-    """
-    Peak-based border detection with 4 passes:
-      Pass 1: Pink-only mask + peak detection (best for professional tables)
-      Pass 2: All-color mask + peak detection (for non-pink borders)
-      Pass 3: All-color mask + zone profile scan (fallback)
-      Pass 4: Hough-only fallback
-    """
     h, w = frame.shape[:2]
     k3 = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
 
-    # === Pass 1: Pink-only peak detection ===
+    # Pass 1: Pink-only peak detection
     pink_mask = _build_pink_mask(frame)
     pink_clean = cv2.morphologyEx(pink_mask, cv2.MORPH_CLOSE, k3, iterations=1)
 
@@ -492,15 +689,12 @@ def _strategy_border_lines(frame):
             th_c = np.linalg.norm(corners[3] - corners[0])
             print(f"  [Strategy 1: Pink peak+Hough] {tw_c:.0f}x{th_c:.0f}")
             return corners
-        corners = np.array([
-            [left, top], [right, top],
-            [right, bot], [left, bot]
-        ], dtype=np.float32)
+        corners = np.array([[left, top], [right, top], [right, bot], [left, bot]], dtype=np.float32)
         if _valid_table(corners, h, w):
             print(f"  [Strategy 1: Pink peak scan] {right - left}x{bot - top}")
             return corners
 
-    # === Pass 2: All-color peak detection ===
+    # Pass 2: All-color peak detection
     color_mask = _build_color_mask(frame)
     color_clean = cv2.morphologyEx(color_mask, cv2.MORPH_CLOSE, k3, iterations=2)
     color_clean = cv2.morphologyEx(color_clean, cv2.MORPH_OPEN, k3, iterations=1)
@@ -514,28 +708,22 @@ def _strategy_border_lines(frame):
             th_c = np.linalg.norm(corners[3] - corners[0])
             print(f"  [Strategy 1: Color peak+Hough] {tw_c:.0f}x{th_c:.0f}")
             return corners
-        corners = np.array([
-            [left, top], [right, top],
-            [right, bot], [left, bot]
-        ], dtype=np.float32)
+        corners = np.array([[left, top], [right, top], [right, bot], [left, bot]], dtype=np.float32)
         if _valid_table(corners, h, w):
             print(f"  [Strategy 1: Color peak scan] {right - left}x{bot - top}")
             return corners
 
-    # === Pass 3: Zone profile scan ===
+    # Pass 3: Zone profile scan (tight -> medium -> wide)
     zone_passes = [
-        ((0.30, 0.62), (0.24, 0.68), 0.10, 0.04),   # tight (proven params)
-        ((0.25, 0.68), (0.18, 0.82), 0.06, 0.03),    # medium
-        ((0.20, 0.75), (0.10, 0.90), 0.04, 0.02),    # wide
+        ((0.30, 0.62), (0.24, 0.68), 0.10, 0.04),
+        ((0.25, 0.68), (0.18, 0.82), 0.06, 0.03),
+        ((0.20, 0.75), (0.10, 0.90), 0.04, 0.02),
     ]
-
     edges_approx = None
     for (yf, xf, row_t, col_t) in zone_passes:
-        mask_z, (y1, y2, x1, x2) = _apply_zone(color_clean, h, w,
-                                                 y_frac=yf, x_frac=xf)
+        mask_z, (y1, y2, x1, x2) = _apply_zone(color_clean, h, w, y_frac=yf, x_frac=xf)
         edges_approx = _profile_scan(mask_z, y1, y2, x1, x2,
-                                      row_thresh_pct=row_t,
-                                      col_thresh_pct=col_t)
+                                      row_thresh_pct=row_t, col_thresh_pct=col_t)
         if edges_approx is not None:
             break
 
@@ -547,56 +735,29 @@ def _strategy_border_lines(frame):
             th_c = np.linalg.norm(corners[3] - corners[0])
             print(f"  [Strategy 1: Profile+Hough] {tw_c:.0f}x{th_c:.0f}")
             return corners
-
-        corners = np.array([
-            [left, top], [right, top],
-            [right, bot], [left, bot]
-        ], dtype=np.float32)
+        corners = np.array([[left, top], [right, top], [right, bot], [left, bot]], dtype=np.float32)
         if _valid_table(corners, h, w):
-            tw = right - left
-            th_t = bot - top
-            print(f"  [Strategy 1: Profile scan] {tw}x{th_t}")
+            print(f"  [Strategy 1: Profile scan] {right - left}x{bot - top}")
             return corners
 
-    # === Pass 4: Hough-only fallback ===
-    mask_hough, _ = _apply_zone(color_clean, h, w,
-                                 y_frac=(0.20, 0.75),
-                                 x_frac=(0.15, 0.85))
+    # Pass 4: Hough-only fallback
+    mask_hough, _ = _apply_zone(color_clean, h, w, y_frac=(0.20, 0.75), x_frac=(0.15, 0.85))
     min_dim = min(w, h)
-    param_sets = [
-        (30, max(30, min_dim // 12), max(40, min_dim // 15)),
-        (20, max(20, min_dim // 18), max(60, min_dim // 10)),
-        (12, max(10, min_dim // 30), max(80, min_dim // 6)),
-    ]
-
-    for thresh, minLen, maxGap in param_sets:
+    for thresh, minLen, maxGap in [(30, max(30, min_dim // 12), max(40, min_dim // 15)),
+                                    (20, max(20, min_dim // 18), max(60, min_dim // 10)),
+                                    (12, max(10, min_dim // 30), max(80, min_dim // 6))]:
         segs = cv2.HoughLinesP(mask_hough, 1, np.pi / 180, thresh,
                                minLineLength=minLen, maxLineGap=maxGap)
         if segs is not None and len(segs) >= 4:
             corners = _median_split_corners(segs.reshape(-1, 4), h, w)
             if corners is not None and _valid_table(corners, h, w):
-                tw_c = np.linalg.norm(corners[1] - corners[0])
-                th_c = np.linalg.norm(corners[3] - corners[0])
-                print(f"  [Strategy 1: Hough on mask] {tw_c:.0f}x{th_c:.0f}")
-                return corners
-
-    edges = cv2.Canny(mask_hough, 30, 100)
-    for thresh, minLen, maxGap in param_sets:
-        segs = cv2.HoughLinesP(edges, 1, np.pi / 180, thresh,
-                               minLineLength=minLen, maxLineGap=maxGap)
-        if segs is not None and len(segs) >= 4:
-            corners = _median_split_corners(segs.reshape(-1, 4), h, w)
-            if corners is not None and _valid_table(corners, h, w):
-                tw_c = np.linalg.norm(corners[1] - corners[0])
-                th_c = np.linalg.norm(corners[3] - corners[0])
-                print(f"  [Strategy 1: Hough on edges] {tw_c:.0f}x{th_c:.0f}")
+                print(f"  [Strategy 1: Hough fallback]")
                 return corners
 
     return None
 
 
 def _median_split_corners(segs, h, w):
-    """Classify Hough segments via median split, pick longest per group, intersect."""
     horizontals = []
     verticals = []
     for seg in segs:
@@ -607,26 +768,20 @@ def _median_split_corners(segs, h, w):
             horizontals.append(((y1 + y2) / 2.0, length, seg))
         elif angle > 65:
             verticals.append(((x1 + x2) / 2.0, length, seg))
-
     if len(horizontals) < 2 or len(verticals) < 2:
         return None
-
     y_med = np.median([h_[0] for h_ in horizontals])
     x_med = np.median([v_[0] for v_ in verticals])
-
     top_segs = [(y, l, s) for y, l, s in horizontals if y < y_med]
     bot_segs = [(y, l, s) for y, l, s in horizontals if y >= y_med]
     left_segs = [(x, l, s) for x, l, s in verticals if x < x_med]
     right_segs = [(x, l, s) for x, l, s in verticals if x >= x_med]
-
     if not all([top_segs, bot_segs, left_segs, right_segs]):
         return None
-
     top_s = max(top_segs, key=lambda t: t[1])[2]
     bot_s = max(bot_segs, key=lambda t: t[1])[2]
     left_s = max(left_segs, key=lambda t: t[1])[2]
     right_s = max(right_segs, key=lambda t: t[1])[2]
-
     tl = _line_intersection((top_s[0], top_s[1]), (top_s[2], top_s[3]),
                             (left_s[0], left_s[1]), (left_s[2], left_s[3]))
     tr = _line_intersection((top_s[0], top_s[1]), (top_s[2], top_s[3]),
@@ -635,33 +790,28 @@ def _median_split_corners(segs, h, w):
                             (left_s[0], left_s[1]), (left_s[2], left_s[3]))
     br = _line_intersection((bot_s[0], bot_s[1]), (bot_s[2], bot_s[3]),
                             (right_s[0], right_s[1]), (right_s[2], right_s[3]))
-
     if any(c is None for c in [tl, tr, bl, br]):
         return None
-
     return np.array([tl, tr, br, bl], dtype=np.float32)
 
 
 # ============================================================
-# STRATEGY 2: Rectangle detection (detect-rectangles.cpp)
+# STRATEGY 2: Rectangle detection
 # ============================================================
 
 def _strategy_rectangle(frame):
-    """Port of detect-rectangles.cpp."""
     h, w = frame.shape[:2]
     pyr = cv2.pyrDown(frame)
     timg = cv2.pyrUp(pyr, dstsize=(w, h))
-
     candidates = []
     for c in range(3):
         gray0 = timg[:, :, c]
-        N = 11
-        for lev in range(N):
+        for lev in range(11):
             if lev == 0:
                 gray = cv2.Canny(gray0, 0, 50, apertureSize=5)
                 gray = cv2.dilate(gray, None)
             else:
-                _, gray = cv2.threshold(gray0, int((lev + 1) * 255 / N), 255, cv2.THRESH_BINARY)
+                _, gray = cv2.threshold(gray0, int((lev + 1) * 255 / 11), 255, cv2.THRESH_BINARY)
             contours, _ = cv2.findContours(gray, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
             for cnt in contours:
                 peri = cv2.arcLength(cnt, True)
@@ -675,16 +825,15 @@ def _strategy_rectangle(frame):
                     continue
                 pts = approx.reshape(4, 2).astype(float)
                 max_cosine = 0
-                for j_idx in range(2, 5):
-                    v1 = pts[j_idx % 4] - pts[(j_idx - 1) % 4]
-                    v2 = pts[(j_idx - 2) % 4] - pts[(j_idx - 1) % 4]
+                for j in range(2, 5):
+                    v1 = pts[j % 4] - pts[(j - 1) % 4]
+                    v2 = pts[(j - 2) % 4] - pts[(j - 1) % 4]
                     cosine = abs(np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2) + 1e-10))
                     max_cosine = max(max_cosine, cosine)
                 if max_cosine < 0.3:
                     corners = _order_corners(pts)
                     if _valid_table(corners, h, w):
                         candidates.append((area, corners))
-
     if not candidates:
         return None
     candidates.sort(key=lambda x: x[0], reverse=True)
@@ -697,14 +846,12 @@ def _strategy_rectangle(frame):
 # ============================================================
 
 def _kmeans_binarize(frame):
-    """K-means (k=4) → brightest cluster → opening → subtract → closing."""
     h, w = frame.shape[:2]
     blurred = cv2.GaussianBlur(frame, (15, 15), 0)
     pixels = blurred.reshape(-1, 3).astype(np.float32)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     _, labels, centers = cv2.kmeans(pixels, 4, None, criteria, 3, cv2.KMEANS_PP_CENTERS)
-    brightness = np.sum(centers, axis=1)
-    line_idx = int(np.argmax(brightness))
+    line_idx = int(np.argmax(np.sum(centers, axis=1)))
     labels = labels.reshape(h, w)
     bin_img = np.uint8((labels == line_idx) * 255)
     kern_open = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
@@ -718,7 +865,6 @@ def _kmeans_binarize(frame):
 
 
 def _hough_classify_intersect(edge_img, w, h):
-    """HoughLinesP → classify → intersect → pick farthest from center."""
     cx, cy = w / 2, h / 2
     for (thresh, minLen, maxGap) in [(50, max(80, w // 6), 100),
                                       (30, max(40, w // 10), 150),
@@ -730,22 +876,16 @@ def _hough_classify_intersect(edge_img, w, h):
     if segs is None or len(segs) < 4:
         return None
     segs = segs.reshape(-1, 4)
-
     h_up, h_down, v_left, v_right = [], [], [], []
     for seg in segs:
         x1, y1, x2, y2 = seg
         angle = _angle_deg(float(x2 - x1), float(y2 - y1))
         if angle < 15:
-            if y1 < cy and y2 < cy:
-                h_up.append(seg)
-            elif y1 > cy and y2 > cy:
-                h_down.append(seg)
+            if y1 < cy and y2 < cy: h_up.append(seg)
+            elif y1 > cy and y2 > cy: h_down.append(seg)
         elif angle > 75:
-            if x1 < cx and x2 < cx:
-                v_left.append(seg)
-            elif x1 > cx and x2 > cx:
-                v_right.append(seg)
-
+            if x1 < cx and x2 < cx: v_left.append(seg)
+            elif x1 > cx and x2 > cx: v_right.append(seg)
     if not (h_up and h_down and v_left and v_right):
         h_up, h_down, v_left, v_right = [], [], [], []
         for seg in segs:
@@ -769,32 +909,27 @@ def _hough_classify_intersect(edge_img, w, h):
                     pts.append(p)
         return pts
 
-    pts_tl = intersect_all(h_up, v_left)
-    pts_tr = intersect_all(h_up, v_right)
-    pts_br = intersect_all(h_down, v_right)
-    pts_bl = intersect_all(h_down, v_left)
-
     center = np.array([cx, cy])
     def farthest(pts):
-        if not pts:
-            return None
+        if not pts: return None
         return max(pts, key=lambda p: np.linalg.norm(np.array(p) - center))
 
-    tl, tr, br, bl = farthest(pts_tl), farthest(pts_tr), farthest(pts_br), farthest(pts_bl)
+    tl = farthest(intersect_all(h_up, v_left))
+    tr = farthest(intersect_all(h_up, v_right))
+    br = farthest(intersect_all(h_down, v_right))
+    bl = farthest(intersect_all(h_down, v_left))
     if any(c is None for c in [tl, tr, br, bl]):
         return None
     return np.array([tl, tr, br, bl], dtype=np.float32)
 
 
 def _strategy_kmeans_hough(frame):
-    """K-means binarize → Canny → Hough → classify → intersect."""
     h, w = frame.shape[:2]
     line_bin = _kmeans_binarize(frame)
     edges = cv2.Canny(line_bin, 50, 150)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     edges2 = cv2.Canny(gray, 50, 200, apertureSize=3)
     combined = cv2.bitwise_or(edges, edges2)
-
     corners = _hough_classify_intersect(combined, w, h)
     if corners is not None and _valid_table(corners, h, w):
         print("  [Strategy 3: K-means+Hough] Table found!")
@@ -807,7 +942,7 @@ def _strategy_kmeans_hough(frame):
 
 
 # ============================================================
-# STRATEGY 4: Direct Canny → Hough
+# STRATEGY 4: Direct Canny + Hough
 # ============================================================
 
 def _strategy_direct_hough(frame):
@@ -822,7 +957,7 @@ def _strategy_direct_hough(frame):
 
 
 # ============================================================
-# STRATEGY 5: Table surface color (last resort)
+# STRATEGY 5: Surface color (last resort)
 # ============================================================
 
 def _strategy_surface_color(frame):
@@ -830,22 +965,18 @@ def _strategy_surface_color(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     blue_mask = cv2.inRange(hsv, (95, 60, 40), (125, 255, 200))
     green_mask = cv2.inRange(hsv, (40, 60, 40), (80, 255, 200))
-    table_mask = cv2.bitwise_or(blue_mask, green_mask)
-
+    table_mask = blue_mask | green_mask
     zone = np.zeros_like(table_mask)
     y1z, y2z = int(h * 0.20), int(h * 0.70)
     x1z, x2z = int(w * 0.20), int(w * 0.80)
     zone[y1z:y2z, x1z:x2z] = 255
-    table_mask = cv2.bitwise_and(table_mask, zone)
-
+    table_mask = table_mask & zone
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
     table_mask = cv2.morphologyEx(table_mask, cv2.MORPH_CLOSE, k, iterations=3)
     table_mask = cv2.morphologyEx(table_mask, cv2.MORPH_OPEN, k, iterations=2)
-
     contours, _ = cv2.findContours(table_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if not contours:
         return None
-
     for cnt in sorted(contours, key=cv2.contourArea, reverse=True)[:3]:
         area = cv2.contourArea(cnt)
         if area < h * w * 0.03:
@@ -867,122 +998,72 @@ def _strategy_surface_color(frame):
 
 
 # ============================================================
-# REFINE TO PLAYING SURFACE (accurate court tracking)
-# ============================================================
-
-# Standard table tennis playing surface: 274 cm x 152.5 cm → aspect ≈ 1.797
-TABLE_ASPECT = 274.0 / 152.5
-
-
-def _refine_corners_to_playing_surface(corners):
-    """
-    Refine detected table quad so it tracks the playing surface accurately:
-    1. Enforce standard table aspect ratio (avoid box too tall/short or including net as edge).
-    2. Shrink slightly inward so we follow the inner playing surface, not the outer rim.
-    corners: (4,2) TL, TR, BR, BL. Returns refined (4,2).
-    """
-    if corners is None or len(corners) != 4:
-        return corners
-    pts = np.array(corners, dtype=np.float64)
-
-    # Width = avg of top and bottom edge lengths; height = avg of left and right
-    w_top = np.linalg.norm(pts[1] - pts[0])
-    w_bot = np.linalg.norm(pts[2] - pts[3])
-    h_left = np.linalg.norm(pts[3] - pts[0])
-    h_right = np.linalg.norm(pts[2] - pts[1])
-    width = (w_top + w_bot) * 0.5
-    height = (h_left + h_right) * 0.5
-    if height < 1:
-        return corners
-    aspect = width / height
-
-    # 1) Aspect correction: if box is too tall (aspect too small) or too flat (aspect too large),
-    #    refit to standard table aspect so the box doesn't include net/extra area
-    if aspect < 1.55 or aspect > 2.05:
-        target_height = width / TABLE_ASPECT
-        center_y = (pts[0, 1] + pts[1, 1] + pts[2, 1] + pts[3, 1]) / 4
-        half_h = target_height * 0.5
-        top_y = center_y - half_h
-        bot_y = center_y + half_h
-        # Interpolate new corners along left edge (TL→BL) and right edge (TR→BR)
-        # Left: TL (0) to BL (3); right: TR (1) to BR (2)
-        t_above = (top_y - pts[0, 1]) / (pts[3, 1] - pts[0, 1] + 1e-8)
-        t_below = (bot_y - pts[0, 1]) / (pts[3, 1] - pts[0, 1] + 1e-8)
-        t_above = max(0, min(1, t_above))
-        t_below = max(0, min(1, t_below))
-        new_tl = pts[0] + t_above * (pts[3] - pts[0])
-        new_bl = pts[0] + t_below * (pts[3] - pts[0])
-        t_above_r = (top_y - pts[1, 1]) / (pts[2, 1] - pts[1, 1] + 1e-8)
-        t_below_r = (bot_y - pts[1, 1]) / (pts[2, 1] - pts[1, 1] + 1e-8)
-        t_above_r = max(0, min(1, t_above_r))
-        t_below_r = max(0, min(1, t_below_r))
-        new_tr = pts[1] + t_above_r * (pts[2] - pts[1])
-        new_br = pts[1] + t_below_r * (pts[2] - pts[1])
-        pts = np.array([new_tl, new_tr, new_br, new_bl], dtype=np.float64)
-
-    # 2) Shrink toward center so we sit on the playing surface, not the outer rim (more accurate)
-    center = np.mean(pts, axis=0)
-    pts = center + (pts - center) * 0.98
-
-    return pts.astype(np.float32)
-
-
-# ============================================================
 # PUBLIC API
 # ============================================================
 
 def detect_table_corners(frame):
     """
-    Detect table tennis table corners using multiple strategies.
-    Refines result to playing surface (aspect ratio + slight shrink) for accurate tracking.
-    Returns np.array shape (4,2) [TL, TR, BR, BL] in pixel coords, or None.
+    Returns (corners, net_y) or just corners for backward compat.
+    corners: np.array (4,2) [TL, TR, BR, BL] or None.
+    net_y: int y-coordinate of detected net, or None.
     """
     print("  Court detection: trying strategies...")
 
-    corners = _strategy_border_lines(frame)
+    # Strategy 0: Find 5 lines (4 edges + net) that form the table rectangle
+    corners, net_y = _strategy_find_table_lines(frame)
     if corners is not None:
-        return _refine_corners_to_playing_surface(corners)
+        return corners, net_y
 
-    corners = _strategy_rectangle(frame)
-    if corners is not None:
-        return _refine_corners_to_playing_surface(corners)
-
-    corners = _strategy_kmeans_hough(frame)
-    if corners is not None:
-        return _refine_corners_to_playing_surface(corners)
-
-    corners = _strategy_direct_hough(frame)
-    if corners is not None:
-        return _refine_corners_to_playing_surface(corners)
-
-    corners = _strategy_surface_color(frame)
-    if corners is not None:
-        return _refine_corners_to_playing_surface(corners)
+    # Fallback strategies (return corners only, net_y=None)
+    for strategy in [_strategy_border_lines, _strategy_rectangle,
+                     _strategy_kmeans_hough, _strategy_direct_hough,
+                     _strategy_surface_color]:
+        corners = strategy(frame)
+        if corners is not None:
+            return corners, None
 
     print("  All strategies failed.")
-    return None
+    return None, None
 
 
-# Backward-compatible alias
 def detect_table_corners_kmean_hough(frame, gray=None):
-    return detect_table_corners(frame)
+    corners, _ = detect_table_corners(frame)
+    return corners
 
 
-def draw_court_overlay(frame, corners, color=(0, 255, 0), thickness=2):
-    """Draw table edges (green), then NET (cyan) and center line (white). corners: (4,2) TL, TR, BR, BL."""
+def draw_court_overlay(frame, corners, color=(0, 255, 0), thickness=2, net_y=None):
+    """Draw table edges + net + center line. corners: (4,2) TL, TR, BR, BL."""
     if corners is None or len(corners) != 4:
         return frame
     pts = np.int32(corners)
-    # Table border only (the 4 edges of the playing surface)
+    # 4 edges (green)
     for i in range(4):
         cv2.line(frame, tuple(pts[i]), tuple(pts[(i + 1) % 4]), color, thickness, cv2.LINE_AA)
+    # Corner dots (red)
     for p in pts:
         cv2.circle(frame, tuple(p), 4, (0, 0, 255), -1, cv2.LINE_AA)
-    # NET: distinct cyan line (not part of the table box — separates the two halves)
-    mid_L = ((pts[0][0] + pts[3][0]) // 2, (pts[0][1] + pts[3][1]) // 2)
-    mid_R = ((pts[1][0] + pts[2][0]) // 2, (pts[1][1] + pts[2][1]) // 2)
-    cv2.line(frame, mid_L, mid_R, (255, 255, 0), 3, cv2.LINE_AA)  # BGR cyan, thick
-    # Center line (doubles): thin white
+
+    # Net line
+    if net_y is not None:
+        # Use detected net y-position — interpolate left and right x at that y
+        # Left edge: TL(0) to BL(3), Right edge: TR(1) to BR(2)
+        def _interp_x(p_top, p_bot, y):
+            if abs(p_bot[1] - p_top[1]) < 1:
+                return int(p_top[0])
+            t = (y - p_top[1]) / (p_bot[1] - p_top[1])
+            t = max(0, min(1, t))
+            return int(p_top[0] + t * (p_bot[0] - p_top[0]))
+
+        net_xl = _interp_x(pts[0], pts[3], net_y)
+        net_xr = _interp_x(pts[1], pts[2], net_y)
+        cv2.line(frame, (net_xl, net_y), (net_xr, net_y), (255, 255, 255), 2, cv2.LINE_AA)
+    else:
+        # Fallback: net at midpoint of left and right edges
+        mid_L = ((pts[0][0] + pts[3][0]) // 2, (pts[0][1] + pts[3][1]) // 2)
+        mid_R = ((pts[1][0] + pts[2][0]) // 2, (pts[1][1] + pts[2][1]) // 2)
+        cv2.line(frame, mid_L, mid_R, (255, 255, 255), 1, cv2.LINE_AA)
+
+    # Center line (white, thin) — midpoints of top and bottom edges
     mid_T = ((pts[0][0] + pts[1][0]) // 2, (pts[0][1] + pts[1][1]) // 2)
     mid_B = ((pts[2][0] + pts[3][0]) // 2, (pts[2][1] + pts[3][1]) // 2)
     cv2.line(frame, mid_T, mid_B, (255, 255, 255), 1, cv2.LINE_AA)
