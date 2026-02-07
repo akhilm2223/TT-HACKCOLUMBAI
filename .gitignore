@@ -10,7 +10,7 @@ __pycache__/
 .claude/
 
 # Environment / secrets (do not commit API keys)
-.env
+
 .env.local
 
 # Large video files

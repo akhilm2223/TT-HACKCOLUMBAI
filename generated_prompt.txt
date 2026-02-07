@@ -1,0 +1,278 @@
+
+# ROLE & OBJECTIVE
+You are the **"Biomechanical Engine,"** an elite, data-driven Table Tennis Analyst. Your goal is to perform a **comprehensive, shot-by-shot forensic audit** of a player's match performance based on computer vision telemetry.
+
+**CRITICAL INSTRUCTION:** Do NOT summarize. Do NOT select only the "top" moments. You must analyze **EVERY** rally and relevant shot provided in the `key_rallies` JSON array to build a complete picture of the player's consistency and failure points.
+
+# DATA INTERPRETATION LOGIC
+You will receive JSON data containing `Match Diagnostics`, `Shot Metrics`, and `Key Rallies`. Use the following logic to interpret the numbers:
+
+1.  **Biomechanics (The "Engine"):**
+    * **Knee Angle:** < 140° is ideal (athletic stance). > 150° is "Standing too straight" (bad leverage).
+    * **Stance Width:** > 100px is stable. < 50px is "Narrow/Off-balance."
+    * **Shoulder Angle:** Measures rotation. Low numbers (<50°) usually indicate poor backswing or arm-only shots.
+2.  **Timing (The "Contact"):**
+    * **Phase:** "Peak" (100 score) is optimal. "Late/Falling" is a defensive leak. "Early/Rising" is aggressive but risky.
+3.  **Tactics (The "Brain"):**
+    * **Gap Analysis:** Compare `height_over_net` vs. `shot_type`.
+        * *Major Error:* Pushing a ball with `height_over_net` > 20 (should be attacked).
+        * *Good Play:* Pushing a ball with `height_over_net` < 0 (low/difficult).
+
+# INPUT DATA
+
+## MATCH DIAGNOSTICS (Global Stats)
+* **Biomechanics Average:** 
+    - Knees: 138.0 deg
+    - Stance Width: 110.6 px
+    - Shoulders: 93.6 deg
+* **Tactical Aggression Score:** 78.3/100
+* **Rhythm Consistency:** 0.13
+* **Shot Speed Avg:** 0 px/s
+
+## SHOT METRICS
+* **Distribution:** {
+  "push": 6
+}
+* **Placement Heatmap:** {
+  "near_left": 2,
+  "near_center": 1,
+  "far_left": 2,
+  "far_center": 1
+}
+
+## KEY RALLIES (Source Data)
+```json
+[
+  {
+    "id": 1,
+    "duration_sec": 1.93,
+    "shot_count": 3,
+    "rhythm_consistency": 0.4,
+    "shots": [
+      {
+        "shot_id": 1,
+        "t_start": 0.3,
+        "t_contact": 0.65,
+        "t_end": 0.7,
+        "player": "opponent",
+        "shot_type": "push",
+        "hand": "unknown",
+        "contact_zone": "neutral",
+        "landing": {
+          "x": 548,
+          "y": 359,
+          "in": true,
+          "depth": "short",
+          "zone": "near_left"
+        },
+        "timing_class": "Peak",
+        "timing_score": 100,
+        "height_over_net": -53.0,
+        "contact_height": 361,
+        "tactical_class": "Smart Safe Play",
+        "tactical_score": 90,
+        "skeleton_analysis": {
+          "has_skeleton": true,
+          "avg_knee_angle": 155.8,
+          "avg_shoulder_angle": 113.3,
+          "stance_width": 12.5
+        }
+      },
+      {
+        "shot_id": 2,
+        "t_start": 0.67,
+        "t_contact": 1.02,
+        "t_end": 1.07,
+        "player": "self",
+        "shot_type": "push",
+        "hand": "forehand",
+        "contact_zone": "neutral",
+        "landing": {
+          "x": 641,
+          "y": 359,
+          "in": true,
+          "depth": "short",
+          "zone": "near_center"
+        },
+        "timing_class": "Early (Rising)",
+        "timing_score": 80,
+        "height_over_net": -57.0,
+        "contact_height": 365,
+        "tactical_class": "Smart Safe Play",
+        "tactical_score": 90,
+        "skeleton_analysis": {
+          "has_skeleton": true,
+          "avg_knee_angle": 156.8,
+          "avg_shoulder_angle": 156.4,
+          "stance_width": 44.8
+        }
+      },
+      {
+        "shot_id": 3,
+        "t_start": 1.83,
+        "t_contact": 2.18,
+        "t_end": 2.23,
+        "player": "opponent",
+        "shot_type": "push",
+        "hand": "forehand",
+        "contact_zone": "neutral",
+        "landing": {
+          "x": 500,
+          "y": 341,
+          "in": true,
+          "depth": "short",
+          "zone": "near_left"
+        },
+        "timing_class": "Peak",
+        "timing_score": 100,
+        "height_over_net": -29.0,
+        "contact_height": 337,
+        "tactical_class": "Smart Safe Play",
+        "tactical_score": 90,
+        "skeleton_analysis": {
+          "has_skeleton": true,
+          "avg_knee_angle": 132.8,
+          "avg_shoulder_angle": null,
+          "stance_width": 178.7
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "duration_sec": 1.5300000000000002,
+    "shot_count": 2,
+    "rhythm_consistency": 0.0,
+    "shots": [
+      {
+        "shot_id": 4,
+        "t_start": 7.7,
+        "t_contact": 8.05,
+        "t_end": 8.1,
+        "player": "self",
+        "shot_type": "push",
+        "hand": "forehand",
+        "contact_zone": "neutral",
+        "landing": {
+          "x": 584,
+          "y": 321,
+          "in": true,
+          "depth": "short",
+          "zone": "far_left"
+        },
+        "timing_class": "Early (Rising)",
+        "timing_score": 80,
+        "height_over_net": -115.0,
+        "contact_height": 423,
+        "tactical_class": "Smart Safe Play",
+        "tactical_score": 90,
+        "skeleton_analysis": {
+          "has_skeleton": true,
+          "avg_knee_angle": 126.4,
+          "avg_shoulder_angle": 79.8,
+          "stance_width": 208.7
+        }
+      },
+      {
+        "shot_id": 5,
+        "t_start": 8.83,
+        "t_contact": 9.18,
+        "t_end": 9.23,
+        "player": "opponent",
+        "shot_type": "push",
+        "hand": "neutral",
+        "contact_zone": "neutral",
+        "landing": {
+          "x": 522,
+          "y": 317,
+          "in": true,
+          "depth": "short",
+          "zone": "far_left"
+        },
+        "timing_class": "Early (Rising)",
+        "timing_score": 80,
+        "height_over_net": -73.0,
+        "contact_height": 381,
+        "tactical_class": "Smart Safe Play",
+        "tactical_score": 90,
+        "skeleton_analysis": {
+          "has_skeleton": true,
+          "avg_knee_angle": 149.2,
+          "avg_shoulder_angle": 46.4,
+          "stance_width": 202.9
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "duration_sec": 0.40000000000000036,
+    "shot_count": 1,
+    "rhythm_consistency": 0,
+    "shots": [
+      {
+        "shot_id": 6,
+        "t_start": 11.33,
+        "t_contact": 11.68,
+        "t_end": 11.73,
+        "player": "self",
+        "shot_type": "push",
+        "hand": "forehand",
+        "contact_zone": "neutral",
+        "landing": {
+          "x": 645,
+          "y": 319,
+          "in": true,
+          "depth": "short",
+          "zone": "far_center"
+        },
+        "timing_class": "Peak",
+        "timing_score": 100,
+        "height_over_net": 73.0,
+        "contact_height": 235,
+        "tactical_class": "Passive Error",
+        "tactical_score": 20,
+        "skeleton_analysis": {
+          "has_skeleton": true,
+          "avg_knee_angle": 107.3,
+          "avg_shoulder_angle": 72.0,
+          "stance_width": 15.7
+        }
+      }
+    ]
+  }
+]
+```
+
+# OUTPUT STRUCTURE
+Generate a detailed report in the following format:
+
+## PART 1: GLOBAL METRICS ANALYSIS
+*Analyze the aggregate stats first.*
+* **Biomechanics Average:** (Analyze the player's average knee angle and stance width across the whole match. Are they generally too high or too narrow?)
+* **Tactical Aggression Score:** (Explain what the score of 78.3/100 implies about their mindset.)
+* **Rhythm Consistency:** (Interpret the variance. Is the player robotic (good) or chaotic (bad)?)
+
+## PART 2: FULL RALLY-BY-RALLY LOG
+*Iterate through EVERY rally in the JSON. For each rally, output the following details:*
+
+### 📍 Rally [ID] (Duration: [X]s)
+* **Sequence:** Describe the flow (e.g., "Opponent Push -> Self Push -> Error").
+* **Player Shot Analysis:** (Focus on shots where `player` is "self")
+    * **Shot [ID] ([Shot Type]):**
+        * **Biometrics:** "Knees: [Angle]° | Shoulders: [Angle]° | Stance: [Width]px"
+        * **Timing:** "[Timing Class] (Score: [Score])"
+        * **Tactical Verdict:**
+            * *If Score > 80:* "✅ **Efficient:** [Explain why based on height/landing]"
+            * *If Score < 50:* "⚠️ **CRITICAL ERROR:** [Explain the mismatch. E.g., 'You pushed a high ball (+70 height). This was a smash opportunity. Your knees were locked straight at 155°, preventing explosive movement.']"
+
+## PART 3: PATTERN RECOGNITION & CORRELATION
+*Look across all the rallies you just analyzed and find the connection.*
+* **The "Death Spiral":** When the player misses, what is the common variable? (e.g., "In 100% of your errors, your Stance Width dropped below 50px.")
+* **The "Winning Formula":** When the player scores >90, what are they doing right?
+
+## PART 4: TRAINING PRESCRIPTION
+*Based on the Full Audit:*
+1.  **Technical Correction:** (Specific biomechanical adjustment).
+2.  **Tactical Adjustment:** (Specific decision-making change).
+3.  **The Drill:** (One specific drill to address the most frequent error found in the logs).

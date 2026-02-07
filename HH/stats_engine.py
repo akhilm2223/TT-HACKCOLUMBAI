@@ -16,7 +16,7 @@ class StatsEngine:
         Main pipeline: Enriched JSON -> Enhanced Stats
         match_data: Single JSON object containing 'frames', 'shots', 'rallies', 'court'
         """
-        if not match_data or "shots" not in match_data:
+        if not match_data:
             return {"error": "Invalid match data format"}
 
         # Extract core data
@@ -27,15 +27,17 @@ class StatsEngine:
         enriched_rallies = []
         
         # Process rallies existing in the input
+        # Handle new format where rallies is a list of dicts with 'shots' as IDs
         for rally in match_data.get("rallies", []):
             rally_id = rally.get("rally_id")
             # Find shots for this rally
             rally_shot_ids = rally.get("shots", [])
             
-            # Get actual shot objects
+            # Get actual shot objects from the top-level 'shots' list
+            all_shots = match_data.get("shots", [])
             rally_shots_data = [
-                s for s in match_data.get("shots", []) 
-                if s["shot_id"] in rally_shot_ids
+                s for s in all_shots 
+                if s.get("shot_id") in rally_shot_ids
             ]
             
             # Analyze this rally
@@ -58,7 +60,7 @@ class StatsEngine:
         intervals = []
         if len(shots_data) > 1:
             # Sort by time just in case
-            sorted_shots = sorted(shots_data, key=lambda x: x['t_contact'])
+            sorted_shots = sorted(shots_data, key=lambda x: x.get('t_contact', 0))
             for i in range(1, len(sorted_shots)):
                 interval = sorted_shots[i]['t_contact'] - sorted_shots[i-1]['t_contact']
                 intervals.append(interval) 
@@ -71,8 +73,10 @@ class StatsEngine:
         for shot in shots_data:
             # 1. Contact Height & Timing Analysis
             # We need ball trajectory AROUND the contact time to find peak
-            contact_t = shot['t_contact']
-            trajectory = self._get_trajectory_segment(full_data['frame_level_perception']['samples'], contact_t - 0.5, contact_t + 0.5)
+            contact_t = shot.get('t_contact')
+            # Handle list vs dict for samples (JSON structure check)
+            samples = full_data.get('frame_level_perception', {}).get('samples', [])
+            trajectory = self._get_trajectory_segment(samples, contact_t - 0.5, contact_t + 0.5)
             
             # Timing Score
             timing_stats = self._calculate_timing_metrics(shot, trajectory)
@@ -86,6 +90,7 @@ class StatsEngine:
             shot_enriched.update(tactical_stats)
             
             # Add Skeleton Analysis if available (at contact frame)
+            # Make sure shot dict has 'skeleton_analysis' key
             shot_enriched['skeleton_analysis'] = self._analyze_skeleton(full_data, contact_t)
             
             enriched_shots.append(shot_enriched)
@@ -104,6 +109,7 @@ class StatsEngine:
         for f in frames:
             if t_start <= f['t'] <= t_end:
                 b = f.get('ball', {})
+                # Handle simplified ball object in new JSON
                 if b and b.get('x') is not None:
                     segment.append({'t': f['t'], 'y': b['y'], 'x': b['x']})
         return segment
@@ -117,7 +123,7 @@ class StatsEngine:
             return {"timing": "Unknown", "contact_height": 0, "timing_score": 0}
             
         # Find contact frame (closest matching timestamp)
-        contact_t = shot['t_contact']
+        contact_t = shot.get('t_contact', 0)
         contact_point = min(trajectory, key=lambda p: abs(p['t'] - contact_t))
         contact_y = contact_point['y']
         
@@ -142,10 +148,6 @@ class StatsEngine:
             score = max(0, 100 - (drop_pixels / 2)) # Penalty for dropping too low
             
         # Ball Height relative to Net (Positive = Above Net)
-        # Net Y is typically "lower" in screen (higher Y value) than a high ball? 
-        # Wait, Y=0 is top. Net Y is e.g. 335. 
-        # If Ball Y is 200, it is ABOVE the net (200 < 335).
-        # Height Over Net = Net_Y - Ball_Y
         height_over_net = self.net_y - contact_y
             
         return {
@@ -192,7 +194,7 @@ class StatsEngine:
 
     def _analyze_skeleton(self, full_data, contact_t):
         """
-        Extract Knee/Shoulder data at contact time if available.
+        Extract pre-calculated Knee/Shoulder angles at contact time if available.
         """
         # Find frame samples near contact
         samples = full_data.get('frame_level_perception', {}).get('samples', [])
@@ -201,20 +203,33 @@ class StatsEngine:
         if not frame: return {}
         
         player = frame.get('player', {})
-        knees = player.get('knees') # [[x,y], [x,y]]
-        shoulders = player.get('shoulders')
+        if not player: return {}
         
-        # Simple Knee Bend Metric (Vertical distance between Hip/Knee or just absolute Y comparison?)
-        # For now, let's just return raw availability or a simple score
-        # Ideally we calculate angle: Hip-Knee-Ankle. 
-        # Without full skeleton, let's look at "Stance Width" (Left Knee X - Right Knee X)
+        # New format has explicit angles
+        knee_left = player.get('knee_angle_left')
+        knee_right = player.get('knee_angle_right')
+        shoulder_left = player.get('shoulder_angle_left')
+        shoulder_right = player.get('shoulder_angle_right')
         
-        stance_width = 0
-        if knees and len(knees) == 2:
-            stance_width = abs(knees[0][0] - knees[1][0])
+        # Calculate averages if both present, or use single value
+        avg_knee = None
+        if knee_left and knee_right:
+            avg_knee = (knee_left + knee_right) / 2
+        elif knee_left: avg_knee = knee_left
+        elif knee_right: avg_knee = knee_right
+            
+        avg_shoulder = None
+        if shoulder_left and shoulder_right:
+            avg_shoulder = (shoulder_left + shoulder_right) / 2
+        elif shoulder_left: avg_shoulder = shoulder_left
+        elif shoulder_right: avg_shoulder = shoulder_right
+            
+        stance_width = player.get('stance_width', 0)
             
         return {
-            "has_skeleton": True if knees else False,
+            "has_skeleton": True if avg_knee is not None else False,
+            "avg_knee_angle": round(avg_knee, 1) if avg_knee else None,
+            "avg_shoulder_angle": round(avg_shoulder, 1) if avg_shoulder else None,
             "stance_width": stance_width
         }
 
@@ -229,17 +244,56 @@ class StatsEngine:
         avg_rhythm = np.mean(rhythms) if rhythms else 0
         
         # Timing Stats
-        timings = [s['timing_score'] for r in rally_stats for s in r['shots'] if 'timing_score' in s]
+        timings = [s.get('timing_score', 0) for r in rally_stats for s in r['shots']]
         avg_timing = np.mean(timings) if timings else 0
 
         # Tactical Stats
-        tactics = [s['tactical_score'] for r in rally_stats for s in r['shots'] if 'tactical_score' in s]
+        tactics = [s.get('tactical_score', 0) for r in rally_stats for s in r['shots']]
         avg_tactics = np.mean(tactics) if tactics else 0
+
+        # Shot stats
+        shot_types = defaultdict(int)
+        landing_zones = defaultdict(int)
+        difficulty_scores = []
+        knee_angles = []
+        shoulder_angles = []
+        stance_widths = []
+        speeds = []
+        
+        for r in rally_stats:
+            for s in r['shots']:
+                shot_types[s.get('shot_type', 'unknown')] += 1
+                # Estimate difficulty if not present (could be added to _analyze_rally_enriched)
+                difficulty_scores.append(s.get('difficulty_score', 0))
+                
+                # Biomechanics
+                skel = s.get('skeleton_analysis', {})
+                if skel.get('has_skeleton'):
+                    if skel.get('avg_knee_angle'): knee_angles.append(skel['avg_knee_angle'])
+                    if skel.get('avg_shoulder_angle'): shoulder_angles.append(skel['avg_shoulder_angle'])
+                    if skel.get('stance_width'): stance_widths.append(skel['stance_width'])
+                    
+                # Speed
+                # If speed is in shot object
+                if s.get('speed'): speeds.append(s['speed'])
+                # Or try to extract from raw JSON if available (but 's' here is the shot object)
+                
+                # Landing Zone Heatmap
+                landing = s.get('landing', {})
+                if landing and landing.get('zone'):
+                    landing_zones[landing['zone']] += 1
 
         return {
             "total_rallies": len(rally_stats),
             "total_shots": total_shots,
             "avg_rhythm_score": round(avg_rhythm, 2),
             "avg_timing_score": round(avg_timing, 1),
-            "avg_tactical_score": round(avg_tactics, 1)
+            "avg_tactical_score": round(avg_tactics, 1),
+            "avg_shot_speed": round(np.mean(speeds), 1) if speeds else 0,
+            "avg_knee_angle": round(np.mean(knee_angles), 1) if knee_angles else 0,
+            "avg_shoulder_angle": round(np.mean(shoulder_angles), 1) if shoulder_angles else 0,
+            "avg_stance_width": round(np.mean(stance_widths), 1) if stance_widths else 0,
+            "shot_type_distribution": dict(shot_types),
+            "landing_zone_heatmap": dict(landing_zones),
+            "avg_shot_difficulty": round(np.mean(difficulty_scores), 1) if difficulty_scores else 0
         }
