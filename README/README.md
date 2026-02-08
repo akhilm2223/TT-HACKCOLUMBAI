@@ -63,40 +63,69 @@ graph TD
 This diagram shows the flow from raw video capture to the final user dashboard, highlighting how **VARIANT** data types, **Snowpark**, and **Cortex AI** work together within the Snowflake Data Cloud.
 
 ```mermaid
-graph LR
-    %% Inputs
-    Video[Raw Match Video]
+graph TD
+    %% Global Styling
+    classDef box fill:#fff,stroke:#333,stroke-width:1px,color:#333;
+    classDef snow fill:#29B5E8,stroke:#005c87,stroke-width:2px,color:white;
+    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:1px,color:#0277bd;
 
-    subgraph "Edge / Local Processing"
-        CV["Computer Vision Pipeline<br/>(Python/Mediapipe)"]
-        JSON{"Raw JSON Stream<br/>(Ball x,y, Skeleton)"}
+    %% ---------------------------------------------------------
+    %% LAYER 1: INGESTION
+    %% ---------------------------------------------------------
+    subgraph Ingest [Ingestion Layer]
+        direction LR
+        Video[Raw Video] --> CV["Computer Vision (Python)"]
+        CV --> JSON{"Raw JSON Stream"}
     end
 
-    subgraph "Snowflake Data Cloud (Secure Boundary)"
-        %% Storage
-        RawTable[("TRACKING_EVENTS Table<br/>Data Type: VARIANT")]
-
-        %% Compute / Transformation
-        Snowpark[["Snowpark Python<br/>Metric Calculation"]]
-        StatsTable[("MATCH_STATS_VIEW<br/>Structured Data")]
-
-        %% AI Enrichment
-        Cortex[["Cortex AI<br/>Vector Embeddings"]]
-        VectorIndex[(Vector Search Index)]
-
-        %% Application Logic
-        SiS["Streamlit in Snowflake<br/>(Dashboard App)"]
+    %% ---------------------------------------------------------
+    %% LAYER 2: SNOWFLAKE DATA CLOUD
+    %% ---------------------------------------------------------
+    subgraph Cloud [Snowflake Data Cloud]
+        direction TB
+        
+        subgraph Storage [Storage Layer]
+            direction TB
+            RawTable[("TRACKING_EVENTS (VARIANT)")]
+        end
+        
+        subgraph Intelligence [Intelligence Layer]
+            direction TB
+            Snowpark[["Snowpark (Feature Eng.)"]]
+            StatsTable[("MATCH_STATS (Structured)")]
+            Cortex[["Cortex AI (Embeddings)"]]
+        end
+        
+        subgraph Serving [App Layer]
+            direction TB
+            VectorIndex[("Vector Index")]
+            SiS["Streamlit in Snowflake"]
+        end
     end
 
-    %% Flow Connections
-    Video --> CV
-    CV -->|Extracts| JSON
-    JSON -->|Snowpipe Streaming| RawTable
+    %% ---------------------------------------------------------
+    %% CONNECTIONS
+    %% ---------------------------------------------------------
+    JSON -->|Snowpipe| RawTable
+    
+    RawTable --> Snowpark
+    Snowpark --> StatsTable
+    
+    StatsTable --> Cortex
+    Cortex --> VectorIndex
+    
+    StatsTable --> SiS
+    VectorIndex -.->|Semantic Search| SiS
 
-    RawTable -->|Flatten & Compute| Snowpark
-    Snowpark -->|Save Metrics| StatsTable
+    %% Output
+    User([User])
+    SiS --> User
 
-    StatsTable -->|Generate Semantic Embeddings| Cortex
+    %% Apply Styles
+    class RawTable,StatsTable,VectorIndex snow;
+    class CV,Snowpark,Cortex,SiS process;
+    class Video,JSON,User box;
+```
     Cortex -->|Store Vectors| VectorIndex
 
     StatsTable -->|Query Metrics| SiS
