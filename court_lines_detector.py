@@ -134,6 +134,39 @@ def _find_surface_roi(frame):
         return None
 
     x, y, bw, bh = cv2.boundingRect(best)
+
+    # Trim front panel / skirt below the playing surface.
+    # The surface has the widest rows; the skirt is narrower.
+    # Use a sustained-drop approach: the surface ends where rows stay
+    # below threshold for many consecutive rows (not just a net-line dip).
+    row_counts = np.sum(mask[y:y + bh, x:x + bw] > 0, axis=1)
+    if len(row_counts) > 30:
+        peak_width = np.max(row_counts)
+        # Find the main surface plateau (top-most wide rows)
+        cutoff = peak_width * 0.30
+        first_wide = 0
+        for ri in range(len(row_counts)):
+            if row_counts[ri] >= cutoff:
+                first_wide = ri
+                break
+        # Walk down from peak: surface ends when rows stay below cutoff
+        # for 25+ consecutive rows (gaps for net/white lines are OK, ~21 rows)
+        last_wide = first_wide
+        gap_run = 0
+        for ri in range(first_wide, len(row_counts)):
+            if row_counts[ri] >= cutoff:
+                last_wide = ri
+                gap_run = 0
+            else:
+                gap_run += 1
+                if gap_run >= 25:
+                    break
+        clipped_top = first_wide
+        clipped_bot = last_wide + 1
+        if clipped_bot - clipped_top > 20:
+            y = y + clipped_top
+            bh = clipped_bot - clipped_top
+
     return (y, y + bh, x, x + bw)
 
 

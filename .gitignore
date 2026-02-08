@@ -1,5 +1,9 @@
-# Exclude tt/ directory
-tt/
+
+# Node.js
+node_modules/
+breakpoint-ui/node_modules/
+package-lock.json
+npm-debug.log
 
 # Python
 __pycache__/
@@ -9,9 +13,13 @@ __pycache__/
 # IDE
 .claude/
 
-# Environment / secrets (do not commit API keys)
+# Environment / secrets
 .env
 .env.local
 
 # Large video files
-Recording 2026-02-05 165944.mp4
+*.mp4
+*.avi
+output_videos/
+input_videos/
+live_frames/

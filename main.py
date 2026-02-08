@@ -722,7 +722,7 @@ class TableTennisBallDetector:
 # ============================================================
 
 def main(video_path, output_path=None, table_calibration_path=None, show_preview=True, use_kimi=False,
-         use_ttnet_table=False, ttnet_checkpoint_path=None, use_cortex_coach=False):
+         use_ttnet_table=False, ttnet_checkpoint_path=None, use_cortex_coach=False, live_stream=False):
     """
     Table tennis analysis pipeline.
 
@@ -734,7 +734,14 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         use_kimi: Use Kimi K2.5 AI for detection
         use_ttnet_table: Use TTNet (tt/) segmentation to detect table lines (same code as tt)
         ttnet_checkpoint_path: Path to TTNet .pth checkpoint (required if use_ttnet_table)
+        live_stream: Save frames to live_frames/current.jpg for browser streaming
     """
+    
+    # Live stream setup: save frames for browser to poll
+    live_frame_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'live_frames')
+    if live_stream:
+        os.makedirs(live_frame_dir, exist_ok=True)
+        print(f"[LIVE] Streaming frames to: {live_frame_dir}")
     print("=" * 60)
     print("TABLE TENNIS ANALYSIS PIPELINE")
     if use_kimi:
@@ -826,9 +833,21 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
     # === LOCAL CV DETECTION (fallback) ===
     if table_info is None and homography is None:
         if os.path.exists(calib_path):
-            table_data = load_table_calibration(calib_path)
+            calib_data = load_table_calibration(calib_path)
             print(f"Loaded manual table calibration: {calib_path}")
-            homography, _ = create_table_homography(table_data)
+            # Support both 'corners' format (modern) and 'lines' format (legacy)
+            if calib_data and 'corners' in calib_data:
+                corners_list = calib_data['corners']
+                corners_arr = np.array(corners_list, dtype=np.float32).reshape(4, 2)
+                table_info = {
+                    'corners': corners_arr,
+                    'net_y': calib_data.get('net_y'),
+                }
+                homography = create_table_homography_from_corners(corners_arr)
+                print(f"  Table corners loaded: {corners_arr.tolist()}")
+            elif calib_data and 'lines' in calib_data:
+                table_data = calib_data
+                homography, _ = create_table_homography(table_data)
             use_keypoint_detector = False
         elif use_ttnet_table and TTNET_TABLE_AVAILABLE:
             if ttnet_checkpoint_path is None:
@@ -1368,6 +1387,24 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
             if frame.shape[1] != out_size[0] or frame.shape[0] != out_size[1]:
                 frame = cv2.resize(frame, out_size, interpolation=cv2.INTER_LINEAR)
             out.write(frame)
+            
+            # Live stream: save frame for browser to poll (every 2nd frame to reduce I/O)
+            if live_stream and frame_count % 2 == 0:
+                live_path = os.path.join(live_frame_dir, 'current.jpg')
+                temp_path = os.path.join(live_frame_dir, 'temp.jpg')
+                # Resize for faster streaming (max 720p width)
+                stream_frame = frame
+                if frame.shape[1] > 720:
+                    scale = 720 / frame.shape[1]
+                    stream_frame = cv2.resize(frame, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+                # Atomic write: write to temp, then rename to avoid partial reads
+                cv2.imwrite(temp_path, stream_frame, [cv2.IMWRITE_JPEG_QUALITY, 75])
+                try:
+                    if os.path.exists(live_path):
+                        os.remove(live_path)
+                    os.rename(temp_path, live_path)
+                except Exception:
+                    pass  # Ignore race conditions
 
             # Preview
             if show_preview:
@@ -1634,21 +1671,17 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
             if success:
                 print("[Snowflake] Full analysis + vector embedding stored in ANALYSIS_OUTPUT")
 
-                # Optionally run Cortex coaching (if --coach flag)
+                # Optionally run Gemini coaching (if --coach flag)
                 if use_cortex_coach:
                     try:
-                        from modules.llm_coach import CortexCoach
-                        coach = CortexCoach()
-                        coach.db = tracking_db.db  # reuse connection
-                        print("\n[Cortex] Generating AI coaching insight...")
-                        insight = coach.analyze_match(match_id)
-                        print(f"\n{'=' * 60}")
-                        print("AI COACHING INSIGHT (Cortex)")
-                        print(f"{'=' * 60}")
-                        print(insight)
-                        print(f"{'=' * 60}\n")
+                        from modules.llm_coach import GeminiCoach, print_coaching_result
+                        coach = GeminiCoach()
+                        coach.db = tracking_db.db  # reuse Snowflake connection
+                        print("\n[Gemini] Generating AI coaching insight...")
+                        result = coach.analyze_match(match_id)
+                        print_coaching_result(result)
                     except Exception as e:
-                        print(f"[Cortex] Coaching failed: {e}")
+                        print(f"[Gemini] Coaching failed: {e}")
         except Exception as e:
             print(f"[Snowflake] Push failed: {e}")
 
@@ -1669,6 +1702,8 @@ if __name__ == "__main__":
                         help='Path to TTNet .pth checkpoint (required for --ttnet; e.g. tt/checkpoints/ttnet_best.pth)')
     parser.add_argument('--coach', action='store_true',
                         help='Run Cortex AI coaching after analysis (requires Snowflake + Cortex)')
+    parser.add_argument('--live-stream', action='store_true',
+                        help='Stream processed frames to live_frames/ for browser real-time display')
 
     args = parser.parse_args()
 
@@ -1678,4 +1713,5 @@ if __name__ == "__main__":
          use_kimi=args.kimi,
          use_ttnet_table=args.ttnet,
          ttnet_checkpoint_path=args.ttnet_checkpoint,
-         use_cortex_coach=args.coach)
+         use_cortex_coach=args.coach,
+         live_stream=args.live_stream)
