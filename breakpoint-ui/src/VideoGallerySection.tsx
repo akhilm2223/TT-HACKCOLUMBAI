@@ -77,14 +77,14 @@ export function VideoGallerySection() {
         let frameCounter = 0;
         const frameInterval = setInterval(() => {
             frameCounter++;
-            setLiveFrameUrl(`http://localhost:5000/live-frame-latest?t=${Date.now()}`);
+            setLiveFrameUrl(`http://localhost:5001/live-frame-latest?t=${Date.now()}`);
         }, 150); // Poll ~6-7 fps
 
         const formData = new FormData();
         formData.append("video", file);
 
         try {
-            const response = await fetch("http://localhost:5000/analyze", {
+            const response = await fetch("http://localhost:5001/analyze", {
                 method: "POST",
                 body: formData,
             });
@@ -109,7 +109,7 @@ export function VideoGallerySection() {
                 const videoMatch = text.match(/===VIDEO_OUTPUT===(.+?)===/);
                 if (videoMatch) {
                     const videoFile = videoMatch[1];
-                    setOutputVideo(`http://localhost:5000/output-videos/${videoFile}`);
+                    setOutputVideo(`http://localhost:5001/output-videos/${videoFile}`);
 
                     // Extract matchId for fetching JSON analysis
                     const matchId = videoFile.match(/analysis_(\d+)\.mp4/)?.[1];
@@ -132,7 +132,7 @@ export function VideoGallerySection() {
         } catch (err) {
             console.error("Upload error:", err);
             setUploadProgress("Error: " + (err instanceof Error ? err.message : "Could not complete analysis"));
-            setAnalysisOutput((prev) => [...prev, "\n\nError occurred. Make sure the server is running on port 5000."]);
+            setAnalysisOutput((prev) => [...prev, "\n\nError occurred. Make sure the server is running on port 5001."]);
         } finally {
             clearInterval(frameInterval);
             setIsUploading(false);
