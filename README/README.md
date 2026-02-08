@@ -10,7 +10,7 @@ This diagram illustrates how the **Dedalus Orchestrator** receives a user query,
 graph TD
     %% Nodes
     User([User / Player])
-    Orchestrator{Dedalus Orchestrator<br/>(The Head Coach)}
+    Orchestrator{"Dedalus Orchestrator<br/>(The Head Coach)"}
 
     subgraph "Specialized Agents (The Team)"
         Bio[Biomechanics Agent]
@@ -68,24 +68,24 @@ graph LR
     Video[Raw Match Video]
 
     subgraph "Edge / Local Processing"
-        CV[Computer Vision Pipeline<br/>(Python/Mediapipe)]
-        JSON{Raw JSON Stream<br/>(Ball x,y, Skeleton)}
+        CV["Computer Vision Pipeline<br/>(Python/Mediapipe)"]
+        JSON{"Raw JSON Stream<br/>(Ball x,y, Skeleton)"}
     end
 
     subgraph "Snowflake Data Cloud (Secure Boundary)"
         %% Storage
-        RawTable[(TRACKING_EVENTS Table<br/>Data Type: VARIANT)]
+        RawTable[("TRACKING_EVENTS Table<br/>Data Type: VARIANT")]
 
         %% Compute / Transformation
-        Snowpark[[Snowpark Python<br/>Metric Calculation]]
-        StatsTable[(MATCH_STATS_VIEW<br/>Structured Data)]
+        Snowpark[["Snowpark Python<br/>Metric Calculation"]]
+        StatsTable[("MATCH_STATS_VIEW<br/>Structured Data")]
 
         %% AI Enrichment
-        Cortex[[Cortex AI<br/>Vector Embeddings]]
+        Cortex[["Cortex AI<br/>Vector Embeddings"]]
         VectorIndex[(Vector Search Index)]
 
         %% Application Logic
-        SiS[Streamlit in Snowflake<br/>(Dashboard App)]
+        SiS["Streamlit in Snowflake<br/>(Dashboard App)"]
     end
 
     %% Flow Connections
