@@ -11,7 +11,9 @@ export interface CoachMessage {
   timestamp: number;
 }
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || "");
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+if (!apiKey) console.warn("Missing VITE_GEMINI_API_KEY in environment variables");
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export function useAICoach() {
   const [messages, setMessages] = useState<CoachMessage[]>([]);
@@ -25,7 +27,7 @@ export function useAICoach() {
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       const systemPrompt = buildSystemPrompt();
       const matchContext = serializeMatchContext(match, MATCHES);
 
@@ -56,6 +58,7 @@ export function useAICoach() {
       };
       setMessages(prev => [...prev, coachMsg]);
     } catch (err) {
+      console.error("Gemini API Error:", err);
       const msg = err instanceof Error ? err.message : "Failed to get coaching response";
       setError(msg);
       const errMsg: CoachMessage = {

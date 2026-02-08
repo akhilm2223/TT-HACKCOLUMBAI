@@ -4,6 +4,7 @@ import type { Match } from "./lib/matchData";
 import { useAICoach } from "./hooks/useAICoach";
 import type { CoachMessage } from "./hooks/useAICoach";
 import { useVoiceCoach } from "./hooks/useVoiceCoach";
+import { useSpeechRecognition } from "./hooks/useSpeechRecognition";
 
 const C = {
   white: "rgba(255,255,255,0.95)",
@@ -36,6 +37,13 @@ export function AICoachSection() {
 
   const { messages, isLoading, askCoach, clearChat } = useAICoach();
   const voice = useVoiceCoach();
+  const { isListening, transcript, startListening, stopListening, hasSupport } = useSpeechRecognition();
+
+  useEffect(() => {
+    if (transcript) {
+      setInput(transcript);
+    }
+  }, [transcript]);
 
   const match: Match = MATCHES[selectedMatch];
 
@@ -186,14 +194,32 @@ export function AICoachSection() {
             borderTop: `1px solid ${C.border}`,
             background: "rgba(255,255,255,0.02)",
           }}>
+            {hasSupport && (
+              <button
+                onClick={isListening ? stopListening : startListening}
+                style={{
+                   all: "unset", cursor: "pointer",
+                   width: 44, height: 44, borderRadius: 12,
+                   background: isListening ? C.greenDim : C.ghost,
+                   border: `1px solid ${isListening ? "rgba(74,222,128,0.4)" : C.border}`,
+                   display: "flex", alignItems: "center", justifyContent: "center",
+                   color: isListening ? C.green : C.dim,
+                   transition: "all 0.2s ease"
+                }}
+                title={isListening ? "Stop listening" : "Speak"}
+              >
+                  <span style={{ fontSize: 18 }}>{isListening ? "⏹" : "🎤"}</span>
+              </button>
+            )}
+
             <input
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") handleSend(); }}
-              placeholder="Ask anything about your match or next game..."
+              placeholder={isListening ? "Listening..." : "Ask anything about your match or next game..."}
               style={{
                 flex: 1, padding: "12px 18px",
-                background: C.ghost, border: `1px solid ${C.border}`, borderRadius: 12,
+                background: C.ghost, border: `1px solid ${isListening ? "rgba(74,222,128,0.4)" : C.border}`, borderRadius: 12,
                 color: "#fff", fontSize: 14, outline: "none",
                 transition: "border-color 0.2s ease",
               }}

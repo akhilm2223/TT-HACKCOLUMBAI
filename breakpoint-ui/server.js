@@ -70,9 +70,9 @@ app.post('/analyze', upload.single('video'), async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
 
-    // Run py -3 main.py --kimi --live-stream --video <video_path>
-    // --live-stream saves frames to live_frames/current.jpg for real-time viewing
-    const pythonProcess = spawn('py', ['-3', 'main.py', '--kimi', '--no-preview', '--live-stream', '--video', newPath], {
+    // Use venv python executable
+    const pythonExecutable = path.resolve(__dirname, '..', 'venv', 'bin', 'python');
+    const pythonProcess = spawn(pythonExecutable, ['main.py', '--kimi', '--no-preview', '--live-stream', '--video', newPath], {
         cwd: path.join(__dirname, '..'),
         env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
     });
@@ -109,7 +109,7 @@ app.post('/analyze', upload.single('video'), async (req, res) => {
     });
 });
 
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Analysis server running on http://localhost:${PORT}`);
 });
