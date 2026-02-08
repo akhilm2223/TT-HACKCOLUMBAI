@@ -1659,10 +1659,11 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         "match_context": match_context_json["match_context"],
         "semantic_summary": semantic_json["semantic_summary"],
     }
-    with open(json_path, 'w', encoding='utf-8') as f:
-        json.dump(analysis, f, indent=2, ensure_ascii=False)
-    print(f"Analysis JSON: {json_path}")
 
+
+
+
+    insight = None
 
     # --- Push full analysis + Cortex vector embedding to Snowflake ---
     if tracking_db is not None and match_id is not None:
@@ -1694,6 +1695,18 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         print("[DB] Closing connection...")
         tracking_db.close()
         print("[DB] Closed.")
+
+    if insight:
+        analysis["coaching_insight"] = insight
+
+    # Save analysis JSON to output_videos directory (served by backend)
+    # ensuring it contains the insight if available
+    json_filename = f"analysis_{match_id}.json"
+    json_path = os.path.join("output_videos", json_filename)
+    
+    with open(json_path, 'w', encoding='utf-8') as f:
+        json.dump(analysis, f, indent=2, ensure_ascii=False)
+    print(f"Analysis JSON: {json_path}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Table Tennis Analysis Pipeline')

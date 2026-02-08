@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { LatestAnalysis } from "./LatestAnalysis";
 
 const WHITE = "rgba(255,255,255,0.95)";
 
@@ -50,6 +51,7 @@ export function VideoGallerySection() {
     const [analysisOutput, setAnalysisOutput] = useState<string[]>([]);
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [outputVideo, setOutputVideo] = useState<string | null>(null);
+    const [latestMatchId, setLatestMatchId] = useState<string | null>(null);
     const [inputVideoUrl, setInputVideoUrl] = useState<string | null>(null);
     const [liveFrameUrl, setLiveFrameUrl] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -68,6 +70,7 @@ export function VideoGallerySection() {
         setIsUploading(true);
         setAnalysisOutput([]);
         setOutputVideo(null);
+        setLatestMatchId(null);
         setUploadProgress("Analyzing...");
 
         // Start polling live frames with unique URL to bust cache
@@ -91,14 +94,15 @@ export function VideoGallerySection() {
             if (!response.ok) throw new Error("Analysis failed: " + response.status);
 
             const reader = response.body?.getReader();
+            if (!reader) throw new Error("Processing failed: No response body");
             const decoder = new TextDecoder();
 
             setUploadProgress("Analyzing with AI...");
 
-            while (reader) {
+            while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                const text = decoder.decode(value);
+                const text = decoder.decode(value, { stream: true });
                 console.log("Received:", text);
 
                 // Check for video output marker
@@ -106,6 +110,11 @@ export function VideoGallerySection() {
                 if (videoMatch) {
                     const videoFile = videoMatch[1];
                     setOutputVideo(`http://localhost:5000/output-videos/${videoFile}`);
+
+                    // Extract matchId for fetching JSON analysis
+                    const matchId = videoFile.match(/analysis_(\d+)\.mp4/)?.[1];
+                    if (matchId) setLatestMatchId(matchId);
+
                     console.log("Output video:", videoFile);
                 }
 
@@ -182,59 +191,68 @@ export function VideoGallerySection() {
                     </div>
                 </div>
 
-                {/* Two Main Buttons */}
-                {!showPastVideos && (
+                {/* Latest Analysis Dashboard (replaces buttons when available) */}
+                {!showPastVideos && latestMatchId && outputVideo && (
+                    <LatestAnalysis videoUrl={outputVideo} matchId={latestMatchId} />
+                )}
+
+                {/* Two Main Buttons (Enhanced/Big) */}
+                {!showPastVideos && !latestMatchId && (
                     <div
                         style={{
                             display: "flex",
-                            gap: 30,
+                            gap: 40,
                             justifyContent: "center",
                             flexWrap: "wrap",
+                            marginTop: 20
                         }}
                     >
                         {/* Add New Video Button */}
                         <div
                             onClick={() => fileInputRef.current?.click()}
                             style={{
-                                background: "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))",
-                                border: "2px solid rgba(255,255,255,0.15)",
-                                borderRadius: 24,
-                                padding: "50px 60px",
+                                background: "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                                borderRadius: 32,
+                                padding: "80px 60px",
                                 cursor: "pointer",
-                                transition: "all 0.3s ease",
+                                transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                                 textAlign: "center",
-                                minWidth: 280,
+                                minWidth: 340,
                             }}
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.40)";
-                                e.currentTarget.style.transform = "translateY(-6px) scale(1.02)";
-                                e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.3)";
+                                e.currentTarget.style.transform = "translateY(-12px) scale(1.03)";
+                                e.currentTarget.style.boxShadow = "0 30px 60px rgba(0,0,0,0.5)";
+                                e.currentTarget.style.background = "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))";
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
                                 e.currentTarget.style.transform = "translateY(0) scale(1)";
                                 e.currentTarget.style.boxShadow = "none";
+                                e.currentTarget.style.background = "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))";
                             }}
                         >
                             <div
                                 style={{
-                                    width: 80,
-                                    height: 80,
+                                    width: 120,
+                                    height: 120,
                                     borderRadius: "50%",
-                                    border: "3px solid rgba(255,255,255,0.30)",
+                                    background: "rgba(255,255,255,0.05)",
+                                    border: "1px solid rgba(255,255,255,0.2)",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    margin: "0 auto 20px",
+                                    margin: "0 auto 30px",
                                 }}
                             >
-                                <span style={{ fontSize: 42, color: WHITE, fontWeight: 300 }}>+</span>
+                                <span style={{ fontSize: 60, color: WHITE, fontWeight: 200 }}>+</span>
                             </div>
-                            <div style={{ fontSize: 22, fontWeight: 700, color: WHITE, marginBottom: 8 }}>
+                            <div style={{ fontSize: 32, fontWeight: 800, color: WHITE, marginBottom: 12, letterSpacing: "-0.02em" }}>
                                 Add New Video
                             </div>
-                            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.45)" }}>
-                                Upload & analyze your match
+                            <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>
+                                Upload & analyze your match<br />to find your winning edge
                             </div>
                         </div>
 
@@ -242,45 +260,48 @@ export function VideoGallerySection() {
                         <div
                             onClick={() => setShowPastVideos(true)}
                             style={{
-                                background: "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))",
-                                border: "2px solid rgba(255,255,255,0.15)",
-                                borderRadius: 24,
-                                padding: "50px 60px",
+                                background: "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                                borderRadius: 32,
+                                padding: "80px 60px",
                                 cursor: "pointer",
-                                transition: "all 0.3s ease",
+                                transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                                 textAlign: "center",
-                                minWidth: 280,
+                                minWidth: 340,
                             }}
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.40)";
-                                e.currentTarget.style.transform = "translateY(-6px) scale(1.02)";
-                                e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.3)";
+                                e.currentTarget.style.transform = "translateY(-12px) scale(1.03)";
+                                e.currentTarget.style.boxShadow = "0 30px 60px rgba(0,0,0,0.5)";
+                                e.currentTarget.style.background = "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04))";
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
                                 e.currentTarget.style.transform = "translateY(0) scale(1)";
                                 e.currentTarget.style.boxShadow = "none";
+                                e.currentTarget.style.background = "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))";
                             }}
                         >
                             <div
                                 style={{
-                                    width: 80,
-                                    height: 80,
+                                    width: 120,
+                                    height: 120,
                                     borderRadius: "50%",
-                                    border: "3px solid rgba(255,255,255,0.30)",
+                                    background: "rgba(255,255,255,0.05)",
+                                    border: "1px solid rgba(255,255,255,0.2)",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    margin: "0 auto 20px",
+                                    margin: "0 auto 30px",
                                 }}
                             >
-                                <span style={{ fontSize: 32, color: WHITE }}>▶</span>
+                                <span style={{ fontSize: 50, color: WHITE }}>▶</span>
                             </div>
-                            <div style={{ fontSize: 22, fontWeight: 700, color: WHITE, marginBottom: 8 }}>
-                                See Past Analysis
+                            <div style={{ fontSize: 32, fontWeight: 800, color: WHITE, marginBottom: 12, letterSpacing: "-0.02em" }}>
+                                Past Analysis
                             </div>
-                            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.45)" }}>
-                                {PAST_MATCHES.length} videos analyzed
+                            <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>
+                                Review styles & stats from<br />{PAST_MATCHES.length} previous matches
                             </div>
                         </div>
                     </div>
@@ -436,29 +457,55 @@ export function VideoGallerySection() {
                             }}
                         >
                             {/* Close button */}
-                            {!isUploading && (
-                                <div
-                                    onClick={() => setShowUploadModal(false)}
-                                    style={{
-                                        position: "absolute",
-                                        top: 16,
-                                        right: 16,
-                                        width: 36,
-                                        height: 36,
-                                        borderRadius: "50%",
-                                        background: "rgba(255,255,255,0.10)",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        cursor: "pointer",
-                                        fontSize: 22,
-                                        color: WHITE,
-                                        zIndex: 10,
-                                    }}
-                                >
-                                    ×
-                                </div>
-                            )}
+                            {/* Close button (always visible) */}
+                            <div
+                                onClick={() => {
+                                    setShowUploadModal(false);
+                                    setIsUploading(false);
+                                    if (fileInputRef.current) fileInputRef.current.value = "";
+                                }}
+                                style={{
+                                    position: "absolute",
+                                    top: 16,
+                                    right: 16,
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: "50%",
+                                    background: "rgba(255,255,255,0.10)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    fontSize: 22,
+                                    color: WHITE,
+                                    zIndex: 20,
+                                }}
+                            >
+                                ×
+                            </div>
+
+                            {/* Back button (top left) */}
+                            <div
+                                onClick={() => {
+                                    setShowUploadModal(false);
+                                    setIsUploading(false);
+                                    if (fileInputRef.current) fileInputRef.current.value = "";
+                                }}
+                                style={{
+                                    position: "absolute",
+                                    top: 24,
+                                    left: 24,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 6,
+                                    color: "rgba(255,255,255,0.60)",
+                                    fontSize: 14,
+                                    cursor: "pointer",
+                                    zIndex: 20,
+                                }}
+                            >
+                                <span style={{ fontSize: 18 }}>←</span> Back
+                            </div>
 
                             {/* Show video player when available */}
                             {outputVideo ? (

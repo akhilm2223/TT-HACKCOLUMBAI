@@ -2,7 +2,9 @@
   color-scheme: dark;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   background: #000000;
@@ -11,10 +13,12 @@ html, body, #root {
   color: #ffffff;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 ::selection {
-  background: rgba(255,255,255,0.20);
+  background: rgba(255, 255, 255, 0.20);
 }

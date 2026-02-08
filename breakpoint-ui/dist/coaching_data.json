@@ -1,0 +1,194 @@
+[
+    {
+        "match_snapshot": {
+            "shots_analyzed": 22,
+            "rallies_analyzed": 17,
+            "dominant_style": "passive",
+            "pressure_behavior": "Footwork speed decreases noticeably."
+        },
+        "key_findings": [
+            {
+                "finding": "You primarily pushed the ball, with a low aggression index.",
+                "evidence": "Aggression index is 0.27. Forehand percentage is 36.4% and backhand percentage is 22.7%."
+            }
+        ],
+        "pattern_comparison": {
+            "similar_matches_found": 0,
+            "most_similar_match_id": null,
+            "similarity_score": null,
+            "shared_pattern": "Insufficient data for cross-match comparison."
+        },
+        "next_match_strategy": [
+            {
+                "action": "After your push, immediately step forward and prepare a forehand drive.",
+                "reason": "The opponent did not appear disrupted by pushes in this clip. Be ready to attack."
+            },
+            {
+                "action": "Vary the depth and placement of your pushes.",
+                "reason": "The opponent's shots landed predominantly in the far center and far right zones."
+            }
+        ],
+        "mental_pattern": {
+            "issue": "Hesitation after pushing leads to passive play.",
+            "moment": "Immediately after contact on a push.",
+            "fix": "Deep breath, step forward"
+        },
+        "confidence": {
+            "score": 0.85,
+            "based_on": [
+                "shot placement data",
+                "rally data",
+                "aggression index"
+            ]
+        },
+        "display_summary": {
+            "headline": "You're playing too passively; time to attack.",
+            "one_line_advice": "Step in and drive after pushing.",
+            "mental_cue": "Breathe, step, drive."
+        },
+        "plan": "elite",
+        "video_label": "Recording_224148"
+    },
+    {
+        "match_snapshot": {
+            "shots_analyzed": 6,
+            "rallies_analyzed": 3,
+            "dominant_style": "passive",
+            "pressure_behavior": "Not enough rallies to determine pressure behavior."
+        },
+        "key_findings": [
+            {
+                "finding": "You are frequently pushing the ball, with limited forehand drives observed.",
+                "evidence": "16.7% forehand usage across 6 shots."
+            }
+        ],
+        "pattern_comparison": {
+            "similar_matches_found": 0,
+            "most_similar_match_id": null,
+            "similarity_score": null,
+            "shared_pattern": "Insufficient data for cross-match comparison."
+        },
+        "next_match_strategy": [
+            {
+                "action": "After your push, immediately step forward and prepare a forehand drive.",
+                "reason": "To increase aggression and dictate rally tempo, instead of reacting."
+            }
+        ],
+        "mental_pattern": {
+            "issue": "Hesitation after pushing leads to passive play.",
+            "moment": "Immediately after making contact on a push.",
+            "fix": "Deep breath, step forward"
+        },
+        "confidence": {
+            "score": 0.75,
+            "based_on": [
+                "shot distribution",
+                "rally data",
+                "footwork data"
+            ]
+        },
+        "display_summary": {
+            "headline": "You're playing too passively; take control of the rally.",
+            "one_line_advice": "Prepare a forehand drive after every push.",
+            "mental_cue": "Breathe, step, drive."
+        },
+        "plan": "elite",
+        "video_label": "Recording_192747"
+    },
+    {
+        "match_snapshot": {
+            "shots_analyzed": 10,
+            "rallies_analyzed": 4,
+            "dominant_style": "passive",
+            "pressure_behavior": "No clear change in footwork drop was observed under pressure, but the limited number of rallies makes it difficult to draw definitive conclusions."
+        },
+        "key_findings": [
+            {
+                "finding": "You primarily pushed the ball to the opponent's left side.",
+                "evidence": "7 out of 10 shots landed in the near_left zone."
+            }
+        ],
+        "pattern_comparison": {
+            "similar_matches_found": 0,
+            "most_similar_match_id": null,
+            "similarity_score": null,
+            "shared_pattern": "Insufficient data for cross-match comparison. No similar matches were found."
+        },
+        "next_match_strategy": [
+            {
+                "action": "Vary your push placement to include the opponent's right side.",
+                "reason": "The opponent may anticipate pushes to the left, making them easier to attack."
+            },
+            {
+                "action": "After your push, immediately step forward and prepare a forehand drive.",
+                "reason": "To increase aggression and take control of the rally."
+            }
+        ],
+        "mental_pattern": {
+            "issue": "Hesitation after pushing, leading to a passive stance.",
+            "moment": "Immediately after contact on your push shot.",
+            "fix": "Deep breath, shift weight"
+        },
+        "confidence": {
+            "score": 0.8,
+            "based_on": [
+                "shot placement data",
+                "rally analysis",
+                "footwork metrics"
+            ]
+        },
+        "display_summary": {
+            "headline": "You're predictable with your push placement, making it easy for your opponent.",
+            "one_line_advice": "Mix up your push placement and prepare to attack.",
+            "mental_cue": "Breathe, shift, attack!"
+        },
+        "plan": "elite",
+        "video_label": "Recording_153355"
+    },
+    {
+        "match_snapshot": {
+            "shots_analyzed": 6,
+            "rallies_analyzed": 3,
+            "dominant_style": "passive",
+            "pressure_behavior": "Footwork speed decreased noticeably (35% footwork drop), suggesting hesitation or tentativeness."
+        },
+        "key_findings": [
+            {
+                "finding": "You primarily pushed the ball, with 100% of your shots being pushes.",
+                "evidence": "All shots recorded were pushes. Forehand percentage was 66.7%."
+            }
+        ],
+        "pattern_comparison": {
+            "similar_matches_found": 0,
+            "most_similar_match_id": null,
+            "similarity_score": null,
+            "shared_pattern": "Insufficient data for cross-match comparison."
+        },
+        "next_match_strategy": [
+            {
+                "action": "After your push, immediately step forward and prepare a forehand drive.",
+                "reason": "The opponent did not appear disrupted by pushes in this clip. Change the pace."
+            }
+        ],
+        "mental_pattern": {
+            "issue": "Hesitation after pushing, leading to a passive stance.",
+            "moment": "Immediately after contact on your push shot.",
+            "fix": "Deep breath, shift forward"
+        },
+        "confidence": {
+            "score": 0.75,
+            "based_on": [
+                "shot data",
+                "rally data",
+                "footwork metrics"
+            ]
+        },
+        "display_summary": {
+            "headline": "You're playing too passively; take control of the rally.",
+            "one_line_advice": "Step in and drive after your push.",
+            "mental_cue": "Push, Breathe, Step, Drive"
+        },
+        "plan": "elite",
+        "video_label": "Recording_134224"
+    }
+]

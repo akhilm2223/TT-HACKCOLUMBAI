@@ -2,9 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { Hero3D } from "./Hero3D";
 import { VideoGallerySection } from "./VideoGallerySection";
 import { PatternRecognitionSection } from "./Patternrecognitionsection";
-import { ThinkingSection } from "./Thinkingsection";
-import { CorrectionSection } from "./Correctionsection";
-import { UploadSection } from "./Uploadsection";
+import { AICoachSection } from "./AICoachSection";
 
 export default function App() {
   const scrollRootRef = useRef<HTMLDivElement | null>(null);
@@ -23,9 +21,9 @@ export default function App() {
   }, []);
 
   const goToVideoGallery = () => {
-    scrollRootRef.current?.querySelector('[data-section="videos"]')?.scrollIntoView({ 
-      behavior: "smooth", 
-      block: "start" 
+    scrollRootRef.current?.querySelector('[data-section="videos"]')?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
   };
 
@@ -59,31 +57,26 @@ export default function App() {
           height: "100vh",
           width: "100%",
           overflowY: "auto",
-          scrollSnapType: "y mandatory",
+          scrollSnapType: "y proximity",
         }}
       >
         <div style={{ scrollSnapAlign: "start" }}>
           <Hero3D onNext={goToVideoGallery} />
         </div>
 
+        {/* Page 2: See Past Video Analysis */}
         <div style={{ scrollSnapAlign: "start" }} data-section="videos">
           <VideoGallerySection />
         </div>
 
+        {/* Page 3: Pattern Recognition - Stats & Improvement */}
         <div style={{ scrollSnapAlign: "start" }} data-section="pattern">
           <PatternRecognitionSection />
         </div>
 
+        {/* Page 4: Interactive AI Coach */}
         <div style={{ scrollSnapAlign: "start" }}>
-          <ThinkingSection />
-        </div>
-
-        <div style={{ scrollSnapAlign: "start" }}>
-          <CorrectionSection />
-        </div>
-
-        <div style={{ scrollSnapAlign: "start" }}>
-          <UploadSection />
+          <AICoachSection />
         </div>
       </div>
 
