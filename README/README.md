@@ -7,53 +7,74 @@ Below are the detailed Mermaid flowcharts for the DedalusLabs "Multi-Agent Coach
 This diagram illustrates how the **Dedalus Orchestrator** receives a user query, delegates analysis to specialized sub-agents, cross-references with historical data via the Snowflake MCP tool, and synthesizes a final coaching report.
 
 ```mermaid
-graph TD
-    %% Nodes
-    User([User / Player])
-    Orchestrator{"Dedalus Orchestrator<br/>(The Head Coach)"}
+graph TB
+    %% High Contrast "Blueprint" Style
+    classDef box fill:#000,stroke:#fff,stroke-width:1px,color:#fff;
+    classDef proc fill:#000,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef db fill:#000,stroke:#fff,stroke-width:1px,stroke-dasharray: 5 5,color:#fff;
 
-    subgraph "Specialized Agents (The Team)"
-        Bio[Biomechanics Agent]
-        Tac[Tactical Agent]
-        Men[Mental Agent]
+    %% ---------------------------------------------------------
+    %% 1. USER INTERFACE LAYER
+    %% ---------------------------------------------------------
+    subgraph UI [USER INTERFACE]
+        direction TB
+        User([USER / PLAYER])
+        Query[/"MATCH QUERY"/]
+        Response[/"COACHING REPORT"/]
     end
 
-    subgraph "External Memory (Snowflake)"
-        MCP[(Snowflake MCP Tool)]
-        History[(Player History DB)]
+    %% ---------------------------------------------------------
+    %% 2. INTELLIGENCE LAYERS
+    %% ---------------------------------------------------------
+    subgraph Brain [DEDALUS ORCHESTRATION]
+        direction TB
+        Orchestrator{{HEAD COACH AGENT}}
+
+        subgraph Agents [SPECIALIZED SUB-AGENTS]
+            direction LR
+            Bio[BIOMECHANICS]
+            Tac[TACTICAL]
+            Men[MENTAL]
+        end
+
+        Synthesizer[INSIGHT SYNTHESIZER]
     end
 
-    Synthesis[Insight Synthesis]
-    Report([Final Coaching Report])
+    %% ---------------------------------------------------------
+    %% 3. KNOWLEDGE LAYER (SNOWFLAKE)
+    %% ---------------------------------------------------------
+    subgraph Memory [KNOWLEDGE BASE]
+        direction TB
+        MCP((SNOWFLAKE MCP))
+        Vectors[(VECTOR STORE)]
+        History[(MATCH HISTORY)]
+    end
 
-    %% Flows
-    User -->|Targeted Query: 'Why is my forehand weak?'| Orchestrator
+    %% CONNECTIONS
+    User --> Query
+    Query --> Orchestrator
 
-    Orchestrator -->|Analyze Posture| Bio
-    Bio -->|Calculate: Knee Angle, Stance Width| Orchestrator
+    Orchestrator -- "DELEGATE" --> Bio
+    Orchestrator -- "DELEGATE" --> Tac
+    Orchestrator -- "DELEGATE" --> Men
 
-    Orchestrator -->|Analyze Choices| Tac
-    Tac -->|Calculate: Aggression Index, Shot Placement| Orchestrator
+    Bio -- "ANGLE/STANCE" --> Orchestrator
+    Tac -- "AGGRESSION" --> Orchestrator
+    Men -- "FATIGUE" --> Orchestrator
 
-    Orchestrator -->|Analyze Psychology| Men
-    Men -->|Detect: Passive Streaks, Fatigue| Orchestrator
+    Orchestrator -.->|TOOL CALL| MCP
+    MCP <--> Vectors
+    MCP <--> History
+    MCP -.->|RETRIEVAL| Orchestrator
 
-    Orchestrator -.->|Tool Call: query_similar_matches| MCP
-    MCP <-->|SQL Query & Vector Search| History
-    MCP -.->|Return: Context from Past Matches| Orchestrator
+    Orchestrator --> Synthesizer
+    Synthesizer --> Response
+    Response --> User
 
-    Orchestrator -->|Aggregate All Insights| Synthesis
-    Synthesis -->|Generate Recommendations| Report
-    Report -->|Display Advice| User
-
-    %% Styling
-    classDef main fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef sub fill:#bbf,stroke:#333,stroke-width:1px;
-    classDef db fill:#29B5E8,stroke:#333,stroke-width:2px,color:white;
-
-    class Orchestrator,Synthesis main;
-    class Bio,Tac,Men sub;
-    class MCP,History db;
+    %% APPLY STYLES
+    class User,Query,Response,Bio,Tac,Men,Synthesizer box;
+    class Orchestrator,MCP proc;
+    class Vectors,History db;
 ```
 
 ---
@@ -63,86 +84,67 @@ graph TD
 This diagram shows the flow from raw video capture to the final user dashboard, highlighting how **VARIANT** data types, **Snowpark**, and **Cortex AI** work together within the Snowflake Data Cloud.
 
 ```mermaid
-graph TD
-    %% Global Styling
-    classDef box fill:#fff,stroke:#333,stroke-width:1px,color:#333;
-    classDef snow fill:#29B5E8,stroke:#005c87,stroke-width:2px,color:white;
-    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:1px,color:#0277bd;
+graph TB
+    %% High Contrast "Blueprint" Style
+    classDef box fill:#000,stroke:#fff,stroke-width:1px,color:#fff;
+    classDef proc fill:#000,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef db fill:#000,stroke:#fff,stroke-width:1px,stroke-dasharray: 5 5,color:#fff;
 
     %% ---------------------------------------------------------
-    %% LAYER 1: INGESTION
+    %% 1. INGESTION LAYER (EDGE)
     %% ---------------------------------------------------------
-    subgraph Ingest [Ingestion Layer]
-        direction LR
-        Video[Raw Video] --> CV["Computer Vision (Python)"]
-        CV --> JSON{"Raw JSON Stream"}
-    end
-
-    %% ---------------------------------------------------------
-    %% LAYER 2: SNOWFLAKE DATA CLOUD
-    %% ---------------------------------------------------------
-    subgraph Cloud [Snowflake Data Cloud]
+    subgraph Edge [EDGE PROCESSING]
         direction TB
-        
-        subgraph Storage [Storage Layer]
-            direction TB
-            RawTable[("TRACKING_EVENTS (VARIANT)")]
+        Camera[CAMERA INPUT]
+        CV[[COMPUTER VISION PIPELINE]]
+        JSON[RAW JSON STREAM]
+    end
+
+    %% ---------------------------------------------------------
+    %% 2. DATA CLOUD (SNOWFLAKE)
+    %% ---------------------------------------------------------
+    subgraph Snowflake [SNOWFLAKE DATA CLOUD]
+        direction TB
+
+        subgraph Storage [VARIANT STORAGE]
+            RawTable[(TRACKING_EVENTS)]
         end
-        
-        subgraph Intelligence [Intelligence Layer]
-            direction TB
-            Snowpark[["Snowpark (Feature Eng.)"]]
-            StatsTable[("MATCH_STATS (Structured)")]
-            Cortex[["Cortex AI (Embeddings)"]]
+
+        subgraph Compute [SNOWPARK COMPUTE]
+            FeatureEng[[METRIC CALCULATION]]
+            StatsTable[(MATCH_STATS_VIEW)]
         end
-        
-        subgraph Serving [App Layer]
-            direction TB
-            VectorIndex[("Vector Index")]
-            SiS["Streamlit in Snowflake"]
+
+        subgraph AI [CORTEX INTELLIGENCE]
+            Embed[[CORTEX EMBEDDING]]
+            VectorIndex[(VECTOR STORE)]
         end
     end
 
     %% ---------------------------------------------------------
-    %% CONNECTIONS
+    %% 3. SERVING LAYER (SIS)
     %% ---------------------------------------------------------
-    JSON -->|Snowpipe| RawTable
-    
-    RawTable --> Snowpark
-    Snowpark --> StatsTable
-    
-    StatsTable --> Cortex
-    Cortex --> VectorIndex
-    
+    subgraph App [SERVING LAYER]
+        SiS{{STREAMLIT IN SNOWFLAKE}}
+        Dashboard[INTERACTIVE DASHBOARD]
+    end
+
+    %% CONNECTIONS
+    Camera --> CV
+    CV --> JSON
+    JSON -->|SNOWPIPE| RawTable
+
+    RawTable --> FeatureEng
+    FeatureEng --> StatsTable
+
+    StatsTable --> Embed
+    Embed --> VectorIndex
+
     StatsTable --> SiS
-    VectorIndex -.->|Semantic Search| SiS
+    VectorIndex -.->|SEMANTIC SEARCH| SiS
+    SiS --> Dashboard
 
-    %% Output
-    User([User])
-    SiS --> User
-
-    %% Apply Styles
-    class RawTable,StatsTable,VectorIndex snow;
-    class CV,Snowpark,Cortex,SiS process;
-    class Video,JSON,User box;
-```
-    Cortex -->|Store Vectors| VectorIndex
-
-    StatsTable -->|Query Metrics| SiS
-    VectorIndex -.->|Semantic Search Query| SiS
-
-    %% Output
-    User([End User / Coach])
-    SiS -->|Interactive Dashboard| User
-
-    %% Styling
-    classDef source fill:#e1e1e1,stroke:#333,stroke-width:1px;
-    classDef ingest fill:#f9d5e5,stroke:#333,stroke-width:1px;
-    classDef snow fill:#29B5E8,stroke:#005c87,stroke-width:2px,color:white;
-    classDef app fill:#FF4B4B,stroke:#990000,stroke-width:2px,color:white;
-
-    class Video,CV,JSON source;
-    class RawTable,StatsTable,VectorIndex snow;
-    class Snowpark,Cortex ingest;
-    class SiS app;
+    %% APPLY STYLES
+    class Camera,CV,JSON,FeatureEng,Embed,SiS,Dashboard box;
+    class RawTable,StatsTable,VectorIndex db;
 ```
