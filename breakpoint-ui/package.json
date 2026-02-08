@@ -13,10 +13,14 @@
     "@flowglad/react": "^0.18.0",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
+<<<<<<< HEAD
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "framer-motion": "^12.33.0",
     "multer": "^2.0.2",
+=======
+    "framer-motion": "^12.33.0",
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.160.0"

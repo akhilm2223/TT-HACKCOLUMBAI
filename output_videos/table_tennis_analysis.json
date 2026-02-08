@@ -9,6 +9,7 @@
   "court": {
     "corners": [
       [
+<<<<<<< HEAD
         508.0,
         262.0
       ],
@@ -37,56 +38,131 @@
         "y": [
           262.0,
           361.0
+=======
+        414.0,
+        208.0
+      ],
+      [
+        816.0,
+        208.0
+      ],
+      [
+        816.0,
+        432.75
+      ],
+      [
+        414.0,
+        432.75
+      ]
+    ],
+    "net_y": 277.0,
+    "width_px": 402,
+    "height_px": 224,
+    "zones": {
+      "far_left": {
+        "x": [
+          414.0,
+          548.0
+        ],
+        "y": [
+          208.0,
+          277.0
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         ]
       },
       "far_center": {
         "x": [
+<<<<<<< HEAD
           600.7,
           693.3
         ],
         "y": [
           262.0,
           361.0
+=======
+          548.0,
+          682.0
+        ],
+        "y": [
+          208.0,
+          277.0
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         ]
       },
       "far_right": {
         "x": [
+<<<<<<< HEAD
           693.3,
           786.0
         ],
         "y": [
           262.0,
           361.0
+=======
+          682.0,
+          816.0
+        ],
+        "y": [
+          208.0,
+          277.0
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         ]
       },
       "near_left": {
         "x": [
+<<<<<<< HEAD
           508.0,
           600.7
         ],
         "y": [
           361.0,
           460.0
+=======
+          414.0,
+          548.0
+        ],
+        "y": [
+          277.0,
+          432.8
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         ]
       },
       "near_center": {
         "x": [
+<<<<<<< HEAD
           600.7,
           693.3
         ],
         "y": [
           361.0,
           460.0
+=======
+          548.0,
+          682.0
+        ],
+        "y": [
+          277.0,
+          432.8
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         ]
       },
       "near_right": {
         "x": [
+<<<<<<< HEAD
           693.3,
           786.0
         ],
         "y": [
           361.0,
           460.0
+=======
+          682.0,
+          816.0
+        ],
+        "y": [
+          277.0,
+          432.8
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         ]
       }
     }
@@ -98,6 +174,7 @@
         "t": 0.333,
         "frame_id": 10,
         "ball": {
+<<<<<<< HEAD
           "x": 739,
           "y": 388,
           "speed": 15.7,
@@ -220,6 +297,69 @@
           "body_lean": -7.1,
           "position_zone": "far_left",
           "confidence": 0.92,
+=======
+          "x": 790,
+          "y": 218,
+          "speed": 7.4,
+          "acceleration": 7.4,
+          "direction_deg": 38.3,
+          "height_above_table": -10.8,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -227,6 +367,7 @@
         "t": 0.667,
         "frame_id": 20,
         "ball": {
+<<<<<<< HEAD
           "x": 779,
           "y": 409,
           "speed": 32.9,
@@ -352,6 +493,69 @@
           "body_lean": -4.7,
           "position_zone": "far_left",
           "confidence": 0.97,
+=======
+          "x": 782,
+          "y": 217,
+          "speed": 7.2,
+          "acceleration": -0.2,
+          "direction_deg": 161.1,
+          "height_above_table": -9.9,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -359,6 +563,7 @@
         "t": 1.0,
         "frame_id": 30,
         "ball": {
+<<<<<<< HEAD
           "x": 768,
           "y": 401,
           "speed": 8.1,
@@ -484,6 +689,69 @@
           "body_lean": -5.2,
           "position_zone": "far_left",
           "confidence": 0.97,
+=======
+          "x": 774,
+          "y": 230,
+          "speed": 6.8,
+          "acceleration": -0.4,
+          "direction_deg": -135.4,
+          "height_above_table": -22.7,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -491,6 +759,7 @@
         "t": 1.333,
         "frame_id": 40,
         "ball": {
+<<<<<<< HEAD
           "x": 770,
           "y": 387,
           "speed": 17.8,
@@ -610,6 +879,69 @@
           "body_lean": -14.3,
           "position_zone": "far_left",
           "confidence": 0.96,
+=======
+          "x": 777,
+          "y": 245,
+          "speed": 10.0,
+          "acceleration": 3.2,
+          "direction_deg": -104.9,
+          "height_above_table": -37.2,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -617,6 +949,7 @@
         "t": 1.667,
         "frame_id": 50,
         "ball": {
+<<<<<<< HEAD
           "x": 459,
           "y": 182,
           "speed": 194.8,
@@ -736,6 +1069,69 @@
           "body_lean": -14.3,
           "position_zone": "far_left",
           "confidence": 0.96,
+=======
+          "x": 762,
+          "y": 238,
+          "speed": 8.6,
+          "acceleration": -1.4,
+          "direction_deg": -173.3,
+          "height_above_table": -30.1,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -743,16 +1139,162 @@
         "t": 2.0,
         "frame_id": 60,
         "ball": {
+<<<<<<< HEAD
           "x": null,
           "y": null,
           "speed": 0.0,
           "acceleration": -194.8,
           "direction_deg": null,
           "height_above_table": null,
+=======
+          "x": 767,
+          "y": 191,
+          "speed": 25.8,
+          "acceleration": 17.2,
+          "direction_deg": 92.6,
+          "height_above_table": 16.7,
           "zone": null,
-          "confidence": 0.0
+          "confidence": 0.85
         },
         "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "opponent"
+        }
+      },
+      {
+        "t": 2.333,
+        "frame_id": 70,
+        "ball": {
+          "x": 707,
+          "y": 166,
+          "speed": 38.8,
+          "acceleration": 13.0,
+          "direction_deg": 138.4,
+          "height_above_table": 41.1,
+          "zone": null,
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "opponent"
+        }
+      },
+      {
+        "t": 2.667,
+        "frame_id": 80,
+        "ball": {
+          "x": 689,
+          "y": 187,
+          "speed": 27.3,
+          "acceleration": -11.5,
+          "direction_deg": 166.6,
+          "height_above_table": 20.8,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
+          "zone": null,
+          "confidence": 0.85
+        },
+        "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             860,
             461
@@ -1120,6 +1662,59 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1127,16 +1722,26 @@
         "t": 3.0,
         "frame_id": 90,
         "ball": {
+<<<<<<< HEAD
           "x": 583,
           "y": 230,
           "speed": 8.0,
           "acceleration": 0.2,
           "direction_deg": 25.5,
           "height_above_table": 31.7,
+=======
+          "x": 661,
+          "y": 182,
+          "speed": 28.4,
+          "acceleration": 1.1,
+          "direction_deg": 172.5,
+          "height_above_table": 25.9,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
           "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             864,
             461
@@ -1246,6 +1851,59 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1253,6 +1911,7 @@
         "t": 3.333,
         "frame_id": 100,
         "ball": {
+<<<<<<< HEAD
           "x": 590,
           "y": 217,
           "speed": 13.1,
@@ -1285,6 +1944,23 @@
           ],
           "stance_width": 113.7,
           "footwork_speed": 1.33,
+=======
+          "x": 716,
+          "y": 226,
+          "speed": 23.9,
+          "acceleration": -4.5,
+          "direction_deg": -65.1,
+          "height_above_table": -18.4,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": [
               836,
@@ -1305,6 +1981,7 @@
               415
             ]
           },
+<<<<<<< HEAD
           "arm_speed": 10.57,
           "elbow_angle_left": 32.2,
           "elbow_angle_right": 71.5,
@@ -1378,6 +2055,46 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1385,6 +2102,7 @@
         "t": 3.667,
         "frame_id": 110,
         "ball": {
+<<<<<<< HEAD
           "x": 607,
           "y": 217,
           "speed": 17.6,
@@ -1417,11 +2135,29 @@
           ],
           "stance_width": 123.6,
           "footwork_speed": 2.03,
+=======
+          "x": 795,
+          "y": 233,
+          "speed": 47.7,
+          "acceleration": 23.8,
+          "direction_deg": -24.1,
+          "height_above_table": -25.1,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": null,
             "right": null
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               882,
               418
@@ -1430,10 +2166,15 @@
               913,
               452
             ]
+=======
+            "left": null,
+            "right": null
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           },
           "arm_speed": 0.0,
           "elbow_angle_left": null,
           "elbow_angle_right": null,
+<<<<<<< HEAD
           "knee_angle_left": 149.4,
           "knee_angle_right": 77.9,
           "shoulder_angle_left": 27.8,
@@ -1504,6 +2245,43 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1511,6 +2289,7 @@
         "t": 4.0,
         "frame_id": 120,
         "ball": {
+<<<<<<< HEAD
           "x": 590,
           "y": 216,
           "speed": 5.1,
@@ -1633,6 +2412,69 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "x": 799,
+          "y": 220,
+          "speed": 32.2,
+          "acceleration": -15.5,
+          "direction_deg": -13.0,
+          "height_above_table": -12.9,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1640,6 +2482,7 @@
         "t": 4.333,
         "frame_id": 130,
         "ball": {
+<<<<<<< HEAD
           "x": 597,
           "y": 208,
           "speed": 7.7,
@@ -1759,6 +2602,69 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "x": 771,
+          "y": 209,
+          "speed": 5.6,
+          "acceleration": -26.6,
+          "direction_deg": 33.5,
+          "height_above_table": -1.8,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1766,16 +2672,26 @@
         "t": 4.667,
         "frame_id": 140,
         "ball": {
+<<<<<<< HEAD
           "x": 636,
           "y": 195,
           "speed": 24.4,
           "acceleration": 16.7,
           "direction_deg": 13.4,
           "height_above_table": 66.5,
+=======
+          "x": 631,
+          "y": 196,
+          "speed": 62.2,
+          "acceleration": 56.6,
+          "direction_deg": 172.0,
+          "height_above_table": 11.9,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
           "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             806,
             447
@@ -1891,6 +2807,59 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -1898,6 +2867,7 @@
         "t": 5.0,
         "frame_id": 150,
         "ball": {
+<<<<<<< HEAD
           "x": 665,
           "y": 193,
           "speed": 29.1,
@@ -2023,6 +2993,69 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "x": 534,
+          "y": 214,
+          "speed": 84.9,
+          "acceleration": 22.7,
+          "direction_deg": -176.6,
+          "height_above_table": -6.9,
+          "zone": "far_left",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2030,16 +3063,26 @@
         "t": 5.333,
         "frame_id": 160,
         "ball": {
+<<<<<<< HEAD
           "x": 670,
           "y": 193,
           "speed": 20.5,
           "acceleration": -8.6,
           "direction_deg": 4.0,
           "height_above_table": 68.8,
+=======
+          "x": 488,
+          "y": 194,
+          "speed": 75.1,
+          "acceleration": -9.8,
+          "direction_deg": 174.4,
+          "height_above_table": 13.6,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
-          "confidence": 0.85
+          "confidence": 0.5
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             773,
             424
@@ -2155,6 +3198,59 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2162,6 +3258,7 @@
         "t": 5.667,
         "frame_id": 170,
         "ball": {
+<<<<<<< HEAD
           "x": 668,
           "y": 192,
           "speed": 10.8,
@@ -2194,11 +3291,29 @@
           ],
           "stance_width": 140.6,
           "footwork_speed": 0.68,
+=======
+          "x": 553,
+          "y": 259,
+          "speed": 33.6,
+          "acceleration": -41.5,
+          "direction_deg": -122.7,
+          "height_above_table": -51.4,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": null,
             "right": null
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               724,
               417
@@ -2207,10 +3322,15 @@
               805,
               411
             ]
+=======
+            "left": null,
+            "right": null
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           },
           "arm_speed": 0.0,
           "elbow_angle_left": null,
           "elbow_angle_right": null,
+<<<<<<< HEAD
           "knee_angle_left": 151.7,
           "knee_angle_right": 151.4,
           "shoulder_angle_left": 18.2,
@@ -2281,6 +3401,43 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2288,16 +3445,26 @@
         "t": 6.0,
         "frame_id": 180,
         "ball": {
+<<<<<<< HEAD
           "x": 675,
           "y": 183,
           "speed": 9.8,
           "acceleration": -1.0,
           "direction_deg": 24.0,
           "height_above_table": 78.1,
+=======
+          "x": 619,
+          "y": 160,
+          "speed": 38.4,
+          "acceleration": 4.8,
+          "direction_deg": 52.5,
+          "height_above_table": 47.7,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
           "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             760,
             426
@@ -2320,6 +3487,13 @@
           ],
           "stance_width": 147.9,
           "footwork_speed": 0.59,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": [
               693,
@@ -2328,15 +3502,20 @@
             "right": null
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               724,
               439
             ],
+=======
+            "left": null,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
             "right": null
           },
           "arm_speed": 0.0,
           "elbow_angle_left": 93.8,
           "elbow_angle_right": null,
+<<<<<<< HEAD
           "knee_angle_left": 122.6,
           "knee_angle_right": 171.0,
           "shoulder_angle_left": 19.9,
@@ -2407,6 +3586,43 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2414,16 +3630,26 @@
         "t": 6.333,
         "frame_id": 190,
         "ball": {
+<<<<<<< HEAD
           "x": 678,
           "y": 176,
           "speed": 7.3,
           "acceleration": -2.5,
           "direction_deg": 43.4,
           "height_above_table": 85.5,
+=======
+          "x": null,
+          "y": null,
+          "speed": 0.0,
+          "acceleration": -38.4,
+          "direction_deg": null,
+          "height_above_table": null,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
-          "confidence": 0.85
+          "confidence": 0.0
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             737,
             427
@@ -2446,6 +3672,13 @@
           ],
           "stance_width": 105.6,
           "footwork_speed": 2.35,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": [
               710,
@@ -2457,6 +3690,7 @@
             ]
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               724,
               439
@@ -2539,6 +3773,49 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2546,16 +3823,26 @@
         "t": 6.667,
         "frame_id": 200,
         "ball": {
+<<<<<<< HEAD
           "x": 675,
           "y": 178,
           "speed": 1.7,
           "acceleration": -5.6,
           "direction_deg": 67.7,
           "height_above_table": 83.2,
+=======
+          "x": 836,
+          "y": 200,
+          "speed": 94.9,
+          "acceleration": 94.9,
+          "direction_deg": -2.5,
+          "height_above_table": 7.2,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
           "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             701,
             422
@@ -2671,6 +3958,59 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2678,16 +4018,26 @@
         "t": 7.0,
         "frame_id": 210,
         "ball": {
+<<<<<<< HEAD
           "x": null,
           "y": null,
           "speed": 0.0,
           "acceleration": -1.7,
           "direction_deg": null,
           "height_above_table": null,
+=======
+          "x": 837,
+          "y": 224,
+          "speed": 64.6,
+          "acceleration": -30.3,
+          "direction_deg": -14.5,
+          "height_above_table": -16.5,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
           "confidence": 0.0
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             689,
             425
@@ -2803,6 +4153,59 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2810,6 +4213,7 @@
         "t": 7.333,
         "frame_id": 220,
         "ball": {
+<<<<<<< HEAD
           "x": 675,
           "y": 364,
           "speed": 72.5,
@@ -2842,6 +4246,23 @@
           ],
           "stance_width": 132.7,
           "footwork_speed": 1.98,
+=======
+          "x": 829,
+          "y": 233,
+          "speed": 36.8,
+          "acceleration": -27.8,
+          "direction_deg": -24.2,
+          "height_above_table": -25.9,
+          "zone": null,
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": [
               707,
@@ -2853,6 +4274,7 @@
             ]
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               703,
               393
@@ -2935,6 +4357,49 @@
           "body_lean": 2.5,
           "position_zone": "far_left",
           "confidence": 0.94,
+=======
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -2942,6 +4407,7 @@
         "t": 7.667,
         "frame_id": 230,
         "ball": {
+<<<<<<< HEAD
           "x": 702,
           "y": 371,
           "speed": 48.1,
@@ -3011,6 +4477,18 @@
           "id": "self"
         },
         "opponent": {
+=======
+          "x": 816,
+          "y": 348,
+          "speed": 63.5,
+          "acceleration": 26.7,
+          "direction_deg": -80.1,
+          "height_above_table": -140.2,
+          "zone": null,
+          "confidence": 0.85
+        },
+        "player": {
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "center_of_mass": [],
           "bbox": null,
           "foot_pos": [],
@@ -3029,6 +4507,36 @@
           "elbow_angle_right": null,
           "knee_angle_left": null,
           "knee_angle_right": null,
+<<<<<<< HEAD
+=======
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "shoulder_angle_left": null,
           "shoulder_angle_right": null,
           "hip_center": null,
@@ -3042,16 +4550,26 @@
         "t": 8.0,
         "frame_id": 240,
         "ball": {
+<<<<<<< HEAD
           "x": 715,
           "y": 370,
           "speed": 25.7,
           "acceleration": -22.4,
           "direction_deg": -68.1,
           "height_above_table": -108.2,
+=======
+          "x": 787,
+          "y": 352,
+          "speed": 39.7,
+          "acceleration": -23.8,
+          "direction_deg": -105.5,
+          "height_above_table": -144.1,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": "near_right",
           "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             713,
             432
@@ -3102,6 +4620,32 @@
           "body_lean": null,
           "position_zone": "near_right",
           "confidence": 0.82,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3136,6 +4680,7 @@
         "t": 8.333,
         "frame_id": 250,
         "ball": {
+<<<<<<< HEAD
           "x": 624,
           "y": 404,
           "speed": 43.4,
@@ -3196,6 +4741,42 @@
           "body_lean": null,
           "position_zone": "near_right",
           "confidence": 0.84,
+=======
+          "x": 781,
+          "y": 323,
+          "speed": 15.4,
+          "acceleration": -24.3,
+          "direction_deg": -150.8,
+          "height_above_table": -115.1,
+          "zone": "near_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3230,6 +4811,7 @@
         "t": 8.667,
         "frame_id": 260,
         "ball": {
+<<<<<<< HEAD
           "x": 616,
           "y": 450,
           "speed": 42.6,
@@ -3296,6 +4878,42 @@
           "body_lean": 49.2,
           "position_zone": "near_center",
           "confidence": 0.85,
+=======
+          "x": 781,
+          "y": 311,
+          "speed": 12.9,
+          "acceleration": -2.5,
+          "direction_deg": 154.5,
+          "height_above_table": -103.7,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3330,6 +4948,7 @@
         "t": 9.0,
         "frame_id": 270,
         "ball": {
+<<<<<<< HEAD
           "x": 617,
           "y": 422,
           "speed": 17.2,
@@ -3396,6 +5015,42 @@
           "body_lean": 86.9,
           "position_zone": "near_left",
           "confidence": 0.76,
+=======
+          "x": 781,
+          "y": 300,
+          "speed": 15.7,
+          "acceleration": 2.8,
+          "direction_deg": 129.1,
+          "height_above_table": -92.4,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3430,6 +5085,7 @@
         "t": 9.333,
         "frame_id": 280,
         "ball": {
+<<<<<<< HEAD
           "x": 558,
           "y": 391,
           "speed": 35.3,
@@ -3496,6 +5152,42 @@
           "body_lean": null,
           "position_zone": "near_left",
           "confidence": 0.77,
+=======
+          "x": 769,
+          "y": 289,
+          "speed": 19.6,
+          "acceleration": 3.9,
+          "direction_deg": 130.1,
+          "height_above_table": -81.5,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3530,6 +5222,7 @@
         "t": 9.667,
         "frame_id": 290,
         "ball": {
+<<<<<<< HEAD
           "x": 538,
           "y": 429,
           "speed": 28.0,
@@ -3596,6 +5289,42 @@
           "body_lean": null,
           "position_zone": "near_left",
           "confidence": 0.76,
+=======
+          "x": 761,
+          "y": 297,
+          "speed": 14.5,
+          "acceleration": -5.1,
+          "direction_deg": 150.9,
+          "height_above_table": -89.3,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3630,6 +5359,7 @@
         "t": 10.0,
         "frame_id": 300,
         "ball": {
+<<<<<<< HEAD
           "x": 521,
           "y": 415,
           "speed": 25.1,
@@ -3696,6 +5426,42 @@
           "body_lean": null,
           "position_zone": "near_left",
           "confidence": 0.78,
+=======
+          "x": 746,
+          "y": 273,
+          "speed": 23.5,
+          "acceleration": 9.0,
+          "direction_deg": 131.6,
+          "height_above_table": -65.9,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3730,6 +5496,7 @@
         "t": 10.333,
         "frame_id": 310,
         "ball": {
+<<<<<<< HEAD
           "x": 535,
           "y": 404,
           "speed": 13.0,
@@ -3787,6 +5554,42 @@
           "body_lean": null,
           "position_zone": "near_left",
           "confidence": 0.76,
+=======
+          "x": 741,
+          "y": 241,
+          "speed": 30.5,
+          "acceleration": 7.0,
+          "direction_deg": 115.4,
+          "height_above_table": -33.3,
+          "zone": "far_right",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3821,6 +5624,7 @@
         "t": 10.667,
         "frame_id": 320,
         "ball": {
+<<<<<<< HEAD
           "x": 544,
           "y": 405,
           "speed": 9.4,
@@ -3887,6 +5691,42 @@
           "body_lean": -11.9,
           "position_zone": "near_left",
           "confidence": 0.79,
+=======
+          "x": 772,
+          "y": 192,
+          "speed": 40.5,
+          "acceleration": 10.0,
+          "direction_deg": 80.0,
+          "height_above_table": 15.3,
+          "zone": null,
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -3921,6 +5761,7 @@
         "t": 11.0,
         "frame_id": 330,
         "ball": {
+<<<<<<< HEAD
           "x": 518,
           "y": 380,
           "speed": 18.9,
@@ -3987,6 +5828,42 @@
           "body_lean": -21.6,
           "position_zone": "near_left",
           "confidence": 0.87,
+=======
+          "x": 794,
+          "y": 186,
+          "speed": 30.1,
+          "acceleration": -10.4,
+          "direction_deg": 64.3,
+          "height_above_table": 21.2,
+          "zone": null,
+          "confidence": 0.5
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -4021,16 +5898,26 @@
         "t": 11.333,
         "frame_id": 340,
         "ball": {
+<<<<<<< HEAD
           "x": 547,
           "y": 462,
           "speed": 30.5,
           "acceleration": 11.6,
           "direction_deg": -64.3,
           "height_above_table": -200.4,
+=======
+          "x": 820,
+          "y": 322,
+          "speed": 51.1,
+          "acceleration": 21.0,
+          "direction_deg": -66.1,
+          "height_above_table": -114.2,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
           "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             500,
             424
@@ -4087,6 +5974,32 @@
           "body_lean": null,
           "position_zone": "near_left",
           "confidence": 0.81,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -4121,16 +6034,26 @@
         "t": 11.667,
         "frame_id": 350,
         "ball": {
+<<<<<<< HEAD
           "x": null,
           "y": null,
           "speed": 0.0,
           "acceleration": -30.5,
           "direction_deg": null,
           "height_above_table": null,
+=======
+          "x": 817,
+          "y": 281,
+          "speed": 15.8,
+          "acceleration": -35.3,
+          "direction_deg": -36.1,
+          "height_above_table": -73.1,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "zone": null,
-          "confidence": 0.0
+          "confidence": 0.85
         },
         "player": {
+<<<<<<< HEAD
           "center_of_mass": [
             492,
             412
@@ -4184,6 +6107,32 @@
           "body_lean": 21.0,
           "position_zone": "near_left",
           "confidence": 0.73,
+=======
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -4221,6 +6170,7 @@
         "t": 12.0,
         "frame_id": 360,
         "ball": {
+<<<<<<< HEAD
           "x": 549,
           "y": 374,
           "speed": 33.8,
@@ -4253,20 +6203,42 @@
           ],
           "stance_width": 9.4,
           "footwork_speed": 0.74,
+=======
+          "x": 775,
+          "y": 297,
+          "speed": 18.5,
+          "acceleration": 2.7,
+          "direction_deg": -128.1,
+          "height_above_table": -89.3,
+          "zone": "far_right",
+          "confidence": 0.5
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": null,
             "right": null
           },
           "elbow_pos": {
             "left": null,
+<<<<<<< HEAD
             "right": [
               565,
               457
             ]
+=======
+            "right": null
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           },
           "arm_speed": 0.0,
           "elbow_angle_left": null,
           "elbow_angle_right": null,
+<<<<<<< HEAD
           "knee_angle_left": 153.8,
           "knee_angle_right": 146.7,
           "shoulder_angle_left": null,
@@ -4278,6 +6250,16 @@
           "body_lean": 84.1,
           "position_zone": "near_left",
           "confidence": 0.69,
+=======
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -4315,6 +6297,7 @@
         "t": 12.333,
         "frame_id": 370,
         "ball": {
+<<<<<<< HEAD
           "x": 567,
           "y": 369,
           "speed": 26.3,
@@ -4381,6 +6364,42 @@
           "body_lean": null,
           "position_zone": "near_left",
           "confidence": 0.8,
+=======
+          "x": 613,
+          "y": 259,
+          "speed": 78.4,
+          "acceleration": 59.9,
+          "direction_deg": 174.4,
+          "height_above_table": -51.9,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -4418,6 +6437,7 @@
         "t": 12.667,
         "frame_id": 380,
         "ball": {
+<<<<<<< HEAD
           "x": 554,
           "y": 402,
           "speed": 3.8,
@@ -4484,6 +6504,42 @@
           "body_lean": -41.8,
           "position_zone": "near_left",
           "confidence": 0.81,
+=======
+          "x": 572,
+          "y": 241,
+          "speed": 68.1,
+          "acceleration": -10.3,
+          "direction_deg": 167.0,
+          "height_above_table": -33.5,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "self"
         },
         "opponent": {
@@ -4521,6 +6577,7 @@
         "t": 13.0,
         "frame_id": 390,
         "ball": {
+<<<<<<< HEAD
           "x": 500,
           "y": 428,
           "speed": 25.8,
@@ -4635,6 +6692,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 522,
+          "y": 247,
+          "speed": 62.9,
+          "acceleration": -5.2,
+          "direction_deg": 173.6,
+          "height_above_table": -39.4,
+          "zone": "far_left",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         },
         "context": {
@@ -4645,6 +6765,7 @@
         "t": 13.333,
         "frame_id": 400,
         "ball": {
+<<<<<<< HEAD
           "x": 498,
           "y": 413,
           "speed": 14.7,
@@ -4677,6 +6798,23 @@
           ],
           "stance_width": 172.3,
           "footwork_speed": 2.28,
+=======
+          "x": 539,
+          "y": 253,
+          "speed": 28.8,
+          "acceleration": -34.1,
+          "direction_deg": 178.5,
+          "height_above_table": -45.6,
+          "zone": "far_left",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": [
               559,
@@ -4685,15 +6823,20 @@
             "right": null
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               565,
               371
             ],
+=======
+            "left": null,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
             "right": null
           },
           "arm_speed": 6.02,
           "elbow_angle_left": 99.9,
           "elbow_angle_right": null,
+<<<<<<< HEAD
           "knee_angle_left": 120.0,
           "knee_angle_right": 175.8,
           "shoulder_angle_left": 63.3,
@@ -4759,6 +6902,43 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         },
         "context": {
@@ -4769,6 +6949,7 @@
         "t": 13.667,
         "frame_id": 410,
         "ball": {
+<<<<<<< HEAD
           "x": 503,
           "y": 404,
           "speed": 7.4,
@@ -4801,6 +6982,23 @@
           ],
           "stance_width": 86.0,
           "footwork_speed": 1.33,
+=======
+          "x": 569,
+          "y": 267,
+          "speed": 7.7,
+          "acceleration": -21.1,
+          "direction_deg": -85.2,
+          "height_above_table": -60.0,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "wrist_pos": {
             "left": [
               542,
@@ -4812,6 +7010,7 @@
             ]
           },
           "elbow_pos": {
+<<<<<<< HEAD
             "left": [
               535,
               488
@@ -4889,6 +7088,49 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         },
         "context": {
@@ -4899,6 +7141,7 @@
         "t": 14.0,
         "frame_id": 420,
         "ball": {
+<<<<<<< HEAD
           "x": 519,
           "y": 383,
           "speed": 11.6,
@@ -5019,6 +7262,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 588,
+          "y": 242,
+          "speed": 18.0,
+          "acceleration": 10.3,
+          "direction_deg": 27.8,
+          "height_above_table": -35.0,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         },
         "context": {
@@ -5029,6 +7335,7 @@
         "t": 14.333,
         "frame_id": 430,
         "ball": {
+<<<<<<< HEAD
           "x": 532,
           "y": 384,
           "speed": 11.8,
@@ -5149,6 +7456,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 589,
+          "y": 249,
+          "speed": 14.8,
+          "acceleration": -3.2,
+          "direction_deg": 2.4,
+          "height_above_table": -41.5,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         },
         "context": {
@@ -5159,6 +7529,7 @@
         "t": 14.667,
         "frame_id": 440,
         "ball": {
+<<<<<<< HEAD
           "x": 650,
           "y": 401,
           "speed": 60.1,
@@ -5276,6 +7647,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 605,
+          "y": 251,
+          "speed": 19.7,
+          "acceleration": 4.9,
+          "direction_deg": 0.3,
+          "height_above_table": -43.8,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         },
         "context": {
@@ -5286,6 +7720,7 @@
         "t": 15.0,
         "frame_id": 450,
         "ball": {
+<<<<<<< HEAD
           "x": 693,
           "y": 382,
           "speed": 57.2,
@@ -5403,6 +7838,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 600,
+          "y": 251,
+          "speed": 13.7,
+          "acceleration": -6.0,
+          "direction_deg": 3.8,
+          "height_above_table": -43.3,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -5410,6 +7908,7 @@
         "t": 15.333,
         "frame_id": 460,
         "ball": {
+<<<<<<< HEAD
           "x": 665,
           "y": 362,
           "speed": 23.9,
@@ -5524,6 +8023,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 586,
+          "y": 245,
+          "speed": 6.1,
+          "acceleration": -7.6,
+          "direction_deg": 27.3,
+          "height_above_table": -37.4,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -5531,6 +8093,7 @@
         "t": 15.667,
         "frame_id": 470,
         "ball": {
+<<<<<<< HEAD
           "x": 651,
           "y": 423,
           "speed": 25.8,
@@ -5651,6 +8214,69 @@
           "body_lean": 30.8,
           "position_zone": "far_right",
           "confidence": 0.84,
+=======
+          "x": 676,
+          "y": 233,
+          "speed": 46.8,
+          "acceleration": 40.7,
+          "direction_deg": 9.1,
+          "height_above_table": -25.9,
+          "zone": "far_center",
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       },
@@ -5658,6 +8284,7 @@
         "t": 16.0,
         "frame_id": 480,
         "ball": {
+<<<<<<< HEAD
           "x": 629,
           "y": 333,
           "speed": 27.4,
@@ -7559,6 +10186,69 @@
           "body_lean": -23.3,
           "position_zone": "far_right",
           "confidence": 0.76,
+=======
+          "x": 778,
+          "y": 198,
+          "speed": 78.7,
+          "acceleration": 31.9,
+          "direction_deg": 15.4,
+          "height_above_table": 9.8,
+          "zone": null,
+          "confidence": 0.85
+        },
+        "player": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+          "id": "self"
+        },
+        "opponent": {
+          "center_of_mass": [],
+          "bbox": null,
+          "foot_pos": [],
+          "stance_width": null,
+          "footwork_speed": 0.0,
+          "wrist_pos": {
+            "left": null,
+            "right": null
+          },
+          "elbow_pos": {
+            "left": null,
+            "right": null
+          },
+          "arm_speed": 0.0,
+          "elbow_angle_left": null,
+          "elbow_angle_right": null,
+          "knee_angle_left": null,
+          "knee_angle_right": null,
+          "shoulder_angle_left": null,
+          "shoulder_angle_right": null,
+          "hip_center": null,
+          "body_lean": null,
+          "position_zone": null,
+          "confidence": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           "id": "opponent"
         }
       }
@@ -7567,6 +10257,7 @@
   "shots": [
     {
       "shot_id": 1,
+<<<<<<< HEAD
       "t_start": 0.57,
       "t_contact": 0.92,
       "t_end": 0.97,
@@ -7604,37 +10295,96 @@
       "t_start": 8.73,
       "t_contact": 9.08,
       "t_end": 9.13,
+=======
+      "t_start": 0.27,
+      "t_contact": 0.62,
+      "t_end": 0.67,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       "player": "opponent",
       "shot_type": "push",
       "hand": "unknown",
       "contact_zone": "neutral",
       "landing": {
+<<<<<<< HEAD
         "x": 548,
         "y": 418,
+=======
+        "x": 782,
+        "y": 217,
         "in": true,
-        "depth": "short",
-        "zone": "near_left"
+        "depth": "long",
+        "zone": "far_right"
+      }
+    },
+    {
+      "shot_id": 2,
+      "t_start": 1.03,
+      "t_contact": 1.38,
+      "t_end": 1.43,
+      "player": "self",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 768,
+        "y": 233,
+        "in": true,
+        "depth": "long",
+        "zone": "far_right"
+      }
+    },
+    {
+      "shot_id": 3,
+      "t_start": 3.9,
+      "t_contact": 4.25,
+      "t_end": 4.3,
+      "player": "opponent",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 779,
+        "y": 211,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
+        "in": true,
+        "depth": "long",
+        "zone": "far_right"
       }
     },
     {
       "shot_id": 4,
+<<<<<<< HEAD
       "t_start": 9.3,
       "t_contact": 9.65,
       "t_end": 9.7,
+=======
+      "t_start": 4.8,
+      "t_contact": 5.15,
+      "t_end": 5.2,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       "player": "self",
       "shot_type": "push",
-      "hand": "forehand",
+      "hand": "unknown",
       "contact_zone": "neutral",
       "landing": {
+<<<<<<< HEAD
         "x": 539,
         "y": 424,
         "in": true,
         "depth": "short",
         "zone": "near_left"
+=======
+        "x": 502,
+        "y": 206,
+        "in": true,
+        "depth": "long",
+        "zone": "far_left"
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       }
     },
     {
       "shot_id": 5,
+<<<<<<< HEAD
       "t_start": 11.47,
       "t_contact": 11.82,
       "t_end": 11.87,
@@ -7706,11 +10456,17 @@
       "t_start": 16.7,
       "t_contact": 17.05,
       "t_end": 17.1,
+=======
+      "t_start": 5.43,
+      "t_contact": 5.78,
+      "t_end": 5.83,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       "player": "opponent",
       "shot_type": "push",
-      "hand": "neutral",
+      "hand": "unknown",
       "contact_zone": "neutral",
       "landing": {
+<<<<<<< HEAD
         "x": 493,
         "y": 415,
         "in": true,
@@ -7723,24 +10479,121 @@
       "t_start": 17.4,
       "t_contact": 17.75,
       "t_end": 17.8,
+=======
+        "x": 584,
+        "y": 213,
+        "in": true,
+        "depth": "long",
+        "zone": "far_center"
+      }
+    },
+    {
+      "shot_id": 6,
+      "t_start": 8.23,
+      "t_contact": 8.58,
+      "t_end": 8.63,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       "player": "self",
       "shot_type": "push",
       "hand": "unknown",
       "contact_zone": "neutral",
       "landing": {
+<<<<<<< HEAD
         "x": 522,
         "y": 403,
         "in": true,
         "depth": "short",
         "zone": "near_left"
+=======
+        "x": 779,
+        "y": 315,
+        "in": true,
+        "depth": "short",
+        "zone": "far_right"
+      }
+    },
+    {
+      "shot_id": 7,
+      "t_start": 11.8,
+      "t_contact": 12.15,
+      "t_end": 12.2,
+      "player": "opponent",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 664,
+        "y": 266,
+        "in": true,
+        "depth": "long",
+        "zone": "far_center"
+      }
+    },
+    {
+      "shot_id": 8,
+      "t_start": 13.07,
+      "t_contact": 13.42,
+      "t_end": 13.47,
+      "player": "self",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 549,
+        "y": 250,
+        "in": true,
+        "depth": "long",
+        "zone": "far_center"
+      }
+    },
+    {
+      "shot_id": 9,
+      "t_start": 13.53,
+      "t_contact": 13.88,
+      "t_end": 13.93,
+      "player": "opponent",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 571,
+        "y": 254,
+        "in": true,
+        "depth": "long",
+        "zone": "far_center"
+      }
+    },
+    {
+      "shot_id": 10,
+      "t_start": 14.27,
+      "t_contact": 14.62,
+      "t_end": 14.67,
+      "player": "self",
+      "shot_type": "push",
+      "hand": "unknown",
+      "contact_zone": "neutral",
+      "landing": {
+        "x": 605,
+        "y": 251,
+        "in": true,
+        "depth": "long",
+        "zone": "far_center"
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       }
     }
   ],
   "rallies": [
     {
       "rally_id": 1,
+<<<<<<< HEAD
       "t_start": 0.57,
       "t_end": 2.93,
+      "shots": [
+        1,
+        2
+=======
+      "t_start": 0.27,
+      "t_end": 1.43,
       "shots": [
         1,
         2
@@ -7753,6 +10606,24 @@
       }
     },
     {
+      "rally_id": 2,
+      "t_start": 3.9,
+      "t_end": 5.83,
+      "shots": [
+        3,
+        4,
+        5
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
+      ],
+      "winner": "opponent",
+      "length": 2,
+      "pressure": {
+        "score": "unknown",
+        "is_game_point": false
+      }
+    },
+    {
+<<<<<<< HEAD
       "rally_id": 2,
       "t_start": 8.73,
       "t_end": 9.7,
@@ -7771,6 +10642,11 @@
       "rally_id": 3,
       "t_start": 11.47,
       "t_end": 14.9,
+=======
+      "rally_id": 3,
+      "t_start": 8.23,
+      "t_end": 8.63,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       "shots": [
         5,
         6,
@@ -7798,19 +10674,45 @@
         "score": "unknown",
         "is_game_point": false
       }
+    },
+    {
+      "rally_id": 4,
+      "t_start": 11.8,
+      "t_end": 14.67,
+      "shots": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "winner": "opponent",
+      "length": 4,
+      "pressure": {
+        "score": "unknown",
+        "is_game_point": false
+      }
     }
   ],
   "behavioral_metrics": {
     "player": {
+<<<<<<< HEAD
       "footwork_drop_pct": 29,
       "avg_footwork_speed": 2.67,
       "avg_arm_speed": 5.69,
       "aggression_index": {
         "value": 0.36,
+=======
+      "footwork_drop_pct": 100,
+      "avg_footwork_speed": 0.0,
+      "avg_arm_speed": 0.0,
+      "aggression_index": {
+        "value": 0.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         "scale": "0_to_1"
       }
     },
     "opponent": {
+<<<<<<< HEAD
       "avg_footwork_speed": 2.39
     },
     "match": {
@@ -7822,6 +10724,19 @@
       "backhand_pct": 0.0,
       "short_pct": 90.0,
       "long_pct": 10.0,
+=======
+      "avg_footwork_speed": 0.0
+    },
+    "match": {
+      "avg_rally_duration": 0.79,
+      "total_shots": 10,
+      "total_rallies": 4,
+      "total_bounces": 10,
+      "forehand_pct": 0.0,
+      "backhand_pct": 0.0,
+      "short_pct": 10.0,
+      "long_pct": 90.0,
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       "baseline_distance": null
     }
   },
@@ -7831,5 +10746,9 @@
     "score_state": "unknown",
     "set": 1
   },
+<<<<<<< HEAD
   "semantic_summary": "Match analysis: 10 shots across 4 rallies (626 frames, 20.9s). Player footwork drop: 29%. Avg arm speed: 5.69 px/f. Shot distribution: 30.0% forehand, 0.0% backhand. Avg rally duration: 1.04s. Perception separated from reasoning: frames capture movement + joint angles, shots capture intent + placement, rallies capture pressure context, and the reasoning model infers tactical and mental patterns from these abstractions."
+=======
+  "semantic_summary": "Match analysis: 10 shots across 4 rallies (487 frames, 16.2s). Player footwork drop: 100%. Avg arm speed: 0.0 px/f. Shot distribution: 0.0% forehand, 0.0% backhand. Avg rally duration: 0.79s. Perception separated from reasoning: frames capture movement + joint angles, shots capture intent + placement, rallies capture pressure context, and the reasoning model infers tactical and mental patterns from these abstractions."
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
 }

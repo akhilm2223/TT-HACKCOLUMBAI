@@ -1424,9 +1424,8 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
             cv2.destroyAllWindows()
         
         if tracking_db:
-            print("[DB] Flushing data...")
-            tracking_db.close()
-            print("[DB] Closed.")
+            print("[DB] Flushing data for video segment...")
+            tracking_db.flush() # Just flush, don't close yet
 
     print(f"\n{'=' * 60}")
     print(f"Done! {frame_count} frames processed")
@@ -1664,6 +1663,11 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         json.dump(analysis, f, indent=2, ensure_ascii=False)
     print(f"Analysis JSON: {json_path}")
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
     # --- Push full analysis + Cortex vector embedding to Snowflake ---
     if tracking_db is not None and match_id is not None:
         try:
@@ -1671,6 +1675,7 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
             if success:
                 print("[Snowflake] Full analysis + vector embedding stored in ANALYSIS_OUTPUT")
 
+<<<<<<< HEAD
                 # Optionally run Gemini coaching (if --coach flag)
                 if use_cortex_coach:
                     try:
@@ -1685,6 +1690,31 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         except Exception as e:
             print(f"[Snowflake] Push failed: {e}")
 
+=======
+                # Optionally run Cortex coaching (if --coach flag)
+                if use_cortex_coach:
+                    try:
+                        from modules.llm_coach import CortexCoach
+                        coach = CortexCoach()
+                        coach.db = tracking_db.db  # reuse connection
+                        print("\n[Cortex] Generating AI coaching insight...")
+                        insight = coach.analyze_match(match_id)
+                        print(f"\n{'=' * 60}")
+                        print("AI COACHING INSIGHT (Cortex)")
+                        print(f"{'=' * 60}")
+                        print(insight)
+                        print(f"{'=' * 60}\n")
+                    except Exception as e:
+                        print(f"[Cortex] Coaching failed: {e}")
+        except Exception as e:
+            print(f"[Snowflake] Push failed: {e}")
+
+    # --- Cleanup DB connection at the very end ---
+    if tracking_db:
+        print("[DB] Closing connection...")
+        tracking_db.close()
+        print("[DB] Closed.")
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Table Tennis Analysis Pipeline')

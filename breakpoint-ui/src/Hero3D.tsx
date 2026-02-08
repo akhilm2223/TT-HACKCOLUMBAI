@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, useAnimations, Environment, OrbitControls } from "@react-three/drei";
@@ -67,6 +68,10 @@ function Loader() {
 }
 
 // ── Main Hero ──
+=======
+import { PingPongScene3D } from "./scene/PingPongScene";
+
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
 export function Hero3D({ onNext }: { onNext: () => void }) {
   return (
     <div
@@ -74,7 +79,11 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
         position: "relative",
         height: "100vh",
         width: "100%",
+<<<<<<< HEAD
         background: "#000000",
+=======
+        background: "#050506",
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         overflow: "hidden",
       }}
     >
@@ -84,17 +93,27 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
           position: "absolute",
           inset: 0,
           background:
+<<<<<<< HEAD
             "radial-gradient(700px 320px at 50% 35%, rgba(255,255,255,0.05), transparent 60%)," +
             "radial-gradient(900px 520px at 50% 70%, rgba(255,255,255,0.03), transparent 60%)",
+=======
+            "radial-gradient(700px 320px at 50% 35%, rgba(255,0,60,0.10), transparent 60%)," +
+            "radial-gradient(900px 520px at 50% 70%, rgba(255,255,255,0.04), transparent 60%)",
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           pointerEvents: "none",
         }}
       />
 
+<<<<<<< HEAD
       {/* 3D Animated GLB Stage */}
+=======
+      {/* 3D STAGE (smaller, clipped, background) */}
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       <div
         style={{
           position: "absolute",
           left: "50%",
+<<<<<<< HEAD
           top: "45%",
           transform: "translate(-50%, -50%)",
           width: "min(1200px, 95vw)",
@@ -158,18 +177,65 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
             height: 120,
             background:
               "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)",
+=======
+          top: "60%",
+          transform: "translate(-50%, -50%) scale(0.98)",
+          width: "min(1100px, 92vw)",
+          height: "min(560px, 62vh)",
+          borderRadius: 26,
+          overflow: "hidden",
+          opacity: 0.34, // <-- background feel
+          filter: "blur(0.6px)",
+          boxShadow: "0 50px 140px rgba(0,0,0,0.75)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          pointerEvents: "none",
+        }}
+      >
+        <PingPongScene3D />
+
+        {/* cinematic fade/vignette so 3D blends into UI */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to top, rgba(5,5,6,0.0) 40%, rgba(5,5,6,0.85) 85%, rgba(5,5,6,1) 100%)," +
+              "radial-gradient(70% 60% at 50% 60%, rgba(0,0,0,0.0), rgba(0,0,0,0.75) 70%)",
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
             pointerEvents: "none",
           }}
         />
       </div>
 
       {/* UI overlay */}
+<<<<<<< HEAD
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         {/* Top center brand with animation */}
+=======
+      <div style={{ position: "absolute", inset: 0 }}>
+        {/* Top center brand */}
+        <div
+  style={{
+    position: "absolute",
+    top: 22,
+    left: "50%",
+    transform: "translateX(-50%)",
+    fontSize: 28,                 // bigger
+    fontWeight: 900,
+    letterSpacing: "0.10em",
+    color: "rgba(255,255,255,0.96)",
+  }}
+>
+  Break Point
+</div>
+
+        {/* Top right pill */}
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         <div
           style={{
             position: "absolute",
             top: 22,
+<<<<<<< HEAD
             left: "50%",
             transform: "translateX(-50%)",
             fontSize: 48,
@@ -202,11 +268,48 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
               opacity: 0.92,
               lineHeight: 1,
               color: "#ffffff",
+=======
+            right: 36,
+            border: "1px solid rgba(255,0,60,0.55)",
+            color: "rgba(255,0,60,0.95)",
+            padding: "10px 14px",
+            borderRadius: 999,
+            fontSize: 12,
+            letterSpacing: "0.15em",
+            fontWeight: 700,
+            background: "rgba(0,0,0,0.15)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          LIVE ANALYSIS
+        </div>
+
+        {/* Center content */}
+        <div
+          style={{
+            position: "absolute",
+            top: 140,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            padding: "0 18px",
+          }}
+        >
+          {/* Score smaller */}
+          <div
+            style={{
+              fontSize: 84,
+              fontWeight: 900,
+              opacity: 0.92,
+              lineHeight: 1,
+              color: "rgba(255,255,255,0.94)",
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
             }}
           >
             10 <span style={{ opacity: 0.22 }}>–</span>{" "}
             <span style={{ opacity: 0.50 }}>9</span>
           </div>
+<<<<<<< HEAD
         </div>
 
         {/* Subtitle */}
@@ -233,6 +336,31 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
           >
             AI-powered performance coaching for individual sports. We analyze match video to turn mistakes, pressure patterns, and hesitation into clear, actionable winning advice.
           </div>
+=======
+
+          {/* Break point badge */}
+          <div
+            style={{
+              display: "inline-flex",
+              marginTop: 10,
+              padding: "8px 14px",
+              borderRadius: 999,
+              background: "rgba(255,0,60,0.92)",
+              color: "rgba(255,255,255,0.95)",
+              fontWeight: 900,
+              letterSpacing: "0.22em",
+              fontSize: 11,
+            }}
+          >
+            BREAK POINT
+          </div>
+
+          {/* Product one-liner (judge-friendly) */}
+          
+
+          {/* Micro-metrics (optional but makes it look premium) */}
+          
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         </div>
 
         {/* Bottom hint */}
@@ -249,13 +377,17 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
             opacity: 0.42,
             cursor: "pointer",
             userSelect: "none",
+<<<<<<< HEAD
             color: "rgba(255,255,255,0.55)",
             pointerEvents: "auto",
             animation: "fadeIn 1s ease-out 0.7s both",
+=======
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
           }}
         >
           SCROLL TO ANALYZE
         </div>
+<<<<<<< HEAD
 
         {/* Animations */}
         <style>{`
@@ -268,10 +400,59 @@ export function Hero3D({ onNext }: { onNext: () => void }) {
             to { opacity: 1; }
           }
         `}</style>
+=======
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
       </div>
     </div>
   );
 }
 
+<<<<<<< HEAD
 // Preload the GLB
 useGLTF.preload("/table_tennis_animation_ping_pong.glb");
+=======
+function Metric({
+  title,
+  value,
+  accent,
+}: {
+  title: string;
+  value: string;
+  accent?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        padding: "10px 14px",
+        borderRadius: 14,
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        minWidth: 175,
+        textAlign: "left",
+        backdropFilter: "blur(10px)",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          letterSpacing: "0.18em",
+          color: "rgba(255,255,255,0.45)",
+          fontWeight: 700,
+        }}
+      >
+        {title}
+      </div>
+      <div
+        style={{
+          fontSize: 16,
+          fontWeight: 900,
+          marginTop: 4,
+          color: accent ? "rgba(255,0,60,0.95)" : "rgba(255,255,255,0.90)",
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35

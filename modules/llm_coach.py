@@ -43,6 +43,7 @@ except ImportError:
     from .snowflake_db import SnowflakeDB
 
 
+<<<<<<< HEAD
 # ============================================================
 # SYSTEM PROMPT
 # ============================================================
@@ -161,6 +162,26 @@ class GeminiCoach:
     """
 
     def __init__(self):
+=======
+try:
+    from HH.stats_engine import StatsEngine
+except ImportError:
+    # Fallback if running from root
+    from HH.stats_engine import StatsEngine
+
+
+class CortexCoach:
+    """
+    AI coaching engine powered entirely by Snowflake Cortex.
+    - Pulls match data from ANALYSIS_OUTPUT (VARIANT)
+    - Finds similar past matches via vector search
+    - Reasons via Cortex COMPLETE (llama3.1-70b)
+    - Stores insights in COACHING_INSIGHTS
+    """
+
+    def __init__(self, model='llama3.1-70b'):
+
+>>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         self.db = SnowflakeDB()
         self.api_key = os.getenv("GEMINI_API_KEY")
         self.model = "gemini-2.0-flash"
