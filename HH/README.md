@@ -467,6 +467,15 @@ agent = Agent(
 )
 ```
 
+### 5. Interactive Chat with Coach
+
+The new **DedalusCoach** integration allows you to have a conversation with your AI coach. It uses the analysis data to answer specific questions.
+
+```
+USER: "Why did I lose the second set?"
+COACH: "I noticed your rhythm consistency dropped by 40% in the last 5 points. You also became passive (PRI < -0.3) when receiving short serves."
+```
+
 ---
 
 ## 🧗 Challenges We Faced
@@ -679,12 +688,13 @@ python main.py --video "path/to/match.mp4" --kimi
 # With Snowflake Cortex coaching
 python main.py --video "path/to/match.mp4" --coach
 
-# Full pipeline
-python main.py --video "path/to/match.mp4" --kimi --coach
+# Full pipeline with Dashboard
+streamlit run app.py
 ```
 
 ### Output
 
+- **Interactive Dashboard**: Browser-based UI with video, stats, and chat.
 - **Annotated Video**: `output_videos/table_tennis_analysis.mp4`
 - **JSON Analysis**: `table_tennis_analysis.json`
 - **Coaching Insights**: Console output + Snowflake storage (if configured)
