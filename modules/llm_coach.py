@@ -43,7 +43,6 @@ except ImportError:
     from .snowflake_db import SnowflakeDB
 
 
-<<<<<<< HEAD
 # ============================================================
 # SYSTEM PROMPT
 # ============================================================
@@ -162,26 +161,6 @@ class GeminiCoach:
     """
 
     def __init__(self):
-=======
-try:
-    from HH.stats_engine import StatsEngine
-except ImportError:
-    # Fallback if running from root
-    from HH.stats_engine import StatsEngine
-
-
-class CortexCoach:
-    """
-    AI coaching engine powered entirely by Snowflake Cortex.
-    - Pulls match data from ANALYSIS_OUTPUT (VARIANT)
-    - Finds similar past matches via vector search
-    - Reasons via Cortex COMPLETE (llama3.1-70b)
-    - Stores insights in COACHING_INSIGHTS
-    """
-
-    def __init__(self, model='llama3.1-70b'):
-
->>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
         self.db = SnowflakeDB()
         self.api_key = os.getenv("GEMINI_API_KEY")
         self.model = "gemini-2.0-flash"
@@ -529,7 +508,6 @@ HARD VALIDATION (your response will be rejected if violated):
                 )
                 print(f"[GeminiCoach] Insight saved to COACHING_INSIGHTS")
             except Exception as e:
-<<<<<<< HEAD
                 print(f"[GeminiCoach] Failed to save insight: {e}")
 
         return result
@@ -650,93 +628,3 @@ def print_coaching_result(result):
 # Backwards compatibility
 CortexCoach = GeminiCoach
 LLMCoach = GeminiCoach
-=======
-                print(f"Warning: Failed to save insight to DB: {e}")
-        
-        return response_text
-
-
-class K2Coach:
-    """
-    AI coaching engine powered by IFM K2-Think (LLM360).
-    - Uses the same 'Reasoning' API as the hybrid detector.
-    - Analyzes match statistics to provide strategic advice.
-    """
-    def __init__(self):
-        self.api_key = os.environ.get("MOONSHOT_API_KEY") or os.environ.get("KIMI_K2_API_KEY")
-        self.base_url = None
-        self.model = None
-        self.client = None
-        self.db = SnowflakeDB()
-        self.engine = StatsEngine()
-
-        if self.api_key:
-            # Re-use logic from detector to resolve URL/Model
-            if self.api_key.startswith("IFM-"):
-                self.base_url = (os.environ.get("IFM_K2_API_BASE_URL") or "").strip().rstrip("/")
-                self.model = os.environ.get("K2_THINK_MODEL", "k2-think")
-            else:
-                self.base_url = "https://api.moonshot.ai/v1"
-                self.model = "kimi-k2.5"
-            
-            try:
-                from openai import OpenAI
-                self.client = OpenAI(api_key=self.api_key, base_url=self.base_url, timeout=60.0)
-            except Exception as e:
-                print(f"Warning: Could not initialize K2 client: {e}")
-
-    def get_match_summary(self, match_id, db_save=True):
-        # Reuse CortexCoach's logic or typically this would be a shared base class
-        # For now, delegating to a temporary CortexCoach instance to reuse logic is easiest
-        # without refactoring the whole file
-        return CortexCoach().get_match_summary(match_id, db_save)
-
-    def get_ai_insight(self, match_id, db_save=True):
-        print(f"[K2-Think] Generating insight for Match {match_id}...")
-        
-        # 1. Get Stats (reuse logic)
-        stats = self.get_match_summary(match_id, db_save=db_save)
-        if isinstance(stats, str):
-            return stats
-            
-        # 2. Build Prompt (Reuse Cortex logic)
-        prompt = CortexCoach().generate_coach_prompt(stats)
-        
-        # 3. Call K2-Think
-        response_text = "Error: K2 Client not initialized."
-        if self.client:
-            try:
-                completion = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=[
-                        {"role": "system", "content": "You are a world-class Table Tennis Coach. Analyze the provided match statistics and give specific, actionable advice."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    max_tokens=600,
-                    temperature=0.7
-                )
-                response_text = completion.choices[0].message.content
-                # Strip thinking tokens if present
-                import re
-                response_text = re.sub(r'<think>.*?</think>', '', response_text, flags=re.DOTALL).strip()
-                
-            except Exception as e:
-                response_text = f"Error calling K2-Think: {e}"
-        
-        print(f"[K2-Think] Response Received: {response_text[:50]}...")
-
-        # 4. Save
-        if db_save:
-            try:
-                self.db.insert_coaching_insight(
-                    match_id,
-                    prompt,
-                    response_text,
-                    processed_json={"method": "k2-think"} 
-                )
-            except Exception as e:
-                print(f"Warning: Failed to save insight to DB: {e}")
-
-        return response_text
-
->>>>>>> baf5c4c (Feat: Implement K2-Think Hybrid Reasoning and FlowGlad Sponsor Track)

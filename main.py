@@ -81,6 +81,19 @@ except ImportError:
     pass
 
 
+# Optional: Database (Snowflake)
+try:
+    from modules.snowflake_db import TrackingDB
+    DB_AVAILABLE = True
+except ImportError:
+    try:
+        from snowflake_db import TrackingDB
+        DB_AVAILABLE = True
+    except ImportError:
+        TrackingDB = None
+        DB_AVAILABLE = False
+        print("[Warning] Database module not found. DB features disabled.")
+
 # ============================================================
 # TABLE DETECTION (automatic + manual fallback)
 # ============================================================
@@ -722,7 +735,11 @@ class TableTennisBallDetector:
 # ============================================================
 
 def main(video_path, output_path=None, table_calibration_path=None, show_preview=True, use_kimi=False,
+<<<<<<< HEAD
          use_ttnet_table=False, ttnet_checkpoint_path=None, use_cortex_coach=False, live_stream=False):
+=======
+         use_ttnet_table=False, ttnet_checkpoint_path=None, use_coach=False):
+>>>>>>> 9e0a16c (changes)
     """
     Table tennis analysis pipeline.
 
@@ -1664,6 +1681,7 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
     print(f"Analysis JSON: {json_path}")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -1706,8 +1724,83 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
                         print(f"{'=' * 60}\n")
                     except Exception as e:
                         print(f"[Cortex] Coaching failed: {e}")
+=======
+    # ---------------------------------------------------------
+    # EXTENDED PIPELINE: Stats, Coach, DB
+    # ---------------------------------------------------------
+
+    # 1. Pre-process Stats (StatsEngine)
+    match_stats = None
+    try:
+        from HH.stats_engine import StatsEngine
+        stats_engine = StatsEngine(fps=fps)
+        print("\n[Stats] Running StatsEngine Enrichment...")
+        match_stats = stats_engine.process_match(analysis)
+        
+        # Save Stats JSON
+        stats_path = output_path.replace('.mp4', '_stats.json').replace('.avi', '_stats.json')
+        with open(stats_path, 'w') as f:
+            json.dump(match_stats, f, indent=2)
+        print(f"[File] Stats JSON saved: {stats_path}")
+
+        # DB: Stats
+        if tracking_db and match_id and match_stats:
+             tracking_db.db.insert_match_stats(match_id, match_stats.get('match_summary', {}), match_stats.get('rallies', []))
+             print("[Snowflake] Match stats saved to MATCH_STATS")
+    except ImportError:
+        print("[Warning] StatsEngine not found, skipping stats enrichment.")
+    except Exception as e:
+        print(f"[Error] Stats processing failed: {e}")
+
+    # 2. Push Full Analysis to Snowflake (Cortex Embeddings)
+    if tracking_db and match_id:
+        try:
+            tracking_db.db.insert_full_analysis(match_id, analysis)
+>>>>>>> 9e0a16c (changes)
         except Exception as e:
-            print(f"[Snowflake] Push failed: {e}")
+            print(f"[Snowflake] Full Analysis push failed: {e}")
+
+    # 3. AI Coaching (DedalusCoach)
+    # Check args.coach usually, but since the user requested "run pipeline... prompt... response", we assume they want it if the module is there
+    # But strictly we should use the flag. The user said "run pipeline...", implying I will run the command WITH the flag.
+    # I need to access 'args' variable? No, I am inside 'main' function. I don't have 'args' here.
+    # 'main' function signature needs to accept 'use_coach'.
+    # I will modify 'main' signature in another chunk.
+    if use_coach and match_stats:
+        try:
+            from modules.dedalus_coach import DedalusCoach
+            print("\n[Coach] Initializing DedalusCoach...")
+            coach = DedalusCoach()
+            
+            # Generate Prompt
+            prompt = coach._prepare_input(match_stats)
+            prompt_path = output_path.replace('.mp4', '_prompt.txt')
+            with open(prompt_path, 'w') as f:
+                f.write(prompt)
+            print(f"[File] Prompt saved: {prompt_path}")
+
+            # Run Analysis
+            print("[Coach] Running Analysis (this may take a moment)...")
+            response = coach.analyze_match(match_stats)
+            
+            # Save Response
+            response_path = output_path.replace('.mp4', '_response.json')
+            with open(response_path, 'w') as f:
+                f.write(response)
+            print(f"[File] LLM Response saved: {response_path}")
+
+            # DB: Insight
+            if tracking_db and match_id:
+                # Try to parse response if it's JSON
+                try:
+                    processed = json.loads(response)
+                except:
+                    processed = None
+                tracking_db.db.insert_coaching_insight(match_id, prompt, response, processed)
+                print("[Snowflake] Coaching insight saved to COACHING_INSIGHTS")
+
+        except Exception as e:
+            print(f"[Coach] Error: {e}")
 
     # --- Cleanup DB connection at the very end ---
     if tracking_db:
@@ -1730,10 +1823,14 @@ if __name__ == "__main__":
                         help='Use TTNet (tt/) segmentation to track table lines (same code as tt)')
     parser.add_argument('--ttnet-checkpoint', type=str, default=None,
                         help='Path to TTNet .pth checkpoint (required for --ttnet; e.g. tt/checkpoints/ttnet_best.pth)')
+<<<<<<< HEAD
     parser.add_argument('--coach', action='store_true',
                         help='Run Cortex AI coaching after analysis (requires Snowflake + Cortex)')
     parser.add_argument('--live-stream', action='store_true',
                         help='Stream processed frames to live_frames/ for browser real-time display')
+=======
+    parser.add_argument('--coach', action='store_true', help='Enable AI Coaching (Dedalus/Cortex)')
+>>>>>>> 9e0a16c (changes)
 
     args = parser.parse_args()
 
@@ -1743,5 +1840,9 @@ if __name__ == "__main__":
          use_kimi=args.kimi,
          use_ttnet_table=args.ttnet,
          ttnet_checkpoint_path=args.ttnet_checkpoint,
+<<<<<<< HEAD
          use_cortex_coach=args.coach,
          live_stream=args.live_stream)
+=======
+         use_coach=args.coach)
+>>>>>>> 9e0a16c (changes)

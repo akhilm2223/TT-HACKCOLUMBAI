@@ -66,9 +66,79 @@ class SnowflakeDB:
             cursor.close()
             return None
 
+<<<<<<< HEAD
     # ----------------------------------------------------------
     # MATCHES
     # ----------------------------------------------------------
+=======
+    def create_tables(self):
+        """Create necessary tables if they don't exist."""
+        # MATCHES table
+        matches_ddl = """
+        CREATE TABLE IF NOT EXISTS MATCHES (
+            MATCH_ID VARCHAR(50) PRIMARY KEY,
+            PLAYER1_NAME VARCHAR(50),
+            PLAYER2_NAME VARCHAR(50),
+            VIDEO_FILE VARCHAR(255),
+            MATCH_DATE TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
+        )
+        """
+        
+        # TRACKING_EVENTS table
+        tracking_ddl = """
+        CREATE TABLE IF NOT EXISTS TRACKING_EVENTS (
+            EVENT_ID VARCHAR(50) PRIMARY KEY,
+            MATCH_ID VARCHAR(50),
+            RALLY_ID VARCHAR(50),
+            TIMESTAMP TIMESTAMP_NTZ,
+            RAW_DATA VARIANT,
+            FOREIGN KEY (MATCH_ID) REFERENCES MATCHES(MATCH_ID)
+        )
+        """
+
+        # MATCH_STATS table
+        stats_ddl = """
+        CREATE TABLE IF NOT EXISTS MATCH_STATS (
+            MATCH_ID VARCHAR(50) PRIMARY KEY,
+            SUMMARY_JSON VARIANT,
+            RALLIES_JSON VARIANT,
+            CREATED_AT TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP(),
+            FOREIGN KEY (MATCH_ID) REFERENCES MATCHES(MATCH_ID)
+        )
+        """
+
+        # COACHING_INSIGHTS table
+        insights_ddl = """
+        CREATE TABLE IF NOT EXISTS COACHING_INSIGHTS (
+            MATCH_ID VARCHAR(50),
+            PROMPT_TEXT TEXT,
+            LLM_RESPONSE_TEXT TEXT,
+            PROCESSED_RESPONSE_JSON VARIANT,
+            CREATED_AT TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP(),
+            FOREIGN KEY (MATCH_ID) REFERENCES MATCHES(MATCH_ID)
+        )
+        """
+
+        # ANALYSIS_OUTPUT table (Full Pipeline + Cortex Embeddings)
+        analysis_ddl = """
+        CREATE TABLE IF NOT EXISTS ANALYSIS_OUTPUT (
+            MATCH_ID VARCHAR(50) PRIMARY KEY,
+            FULL_ANALYSIS VARIANT,
+            SEMANTIC_SUMMARY TEXT,
+            SEMANTIC_VECTOR VECTOR(FLOAT, 768),
+            CREATED_AT TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP(),
+            FOREIGN KEY (MATCH_ID) REFERENCES MATCHES(MATCH_ID)
+        )
+        """
+        
+        self.execute_query(matches_ddl)
+        self.execute_query(tracking_ddl)
+        self.execute_query(stats_ddl)
+        self.execute_query(insights_ddl)
+        self.execute_query(analysis_ddl)
+        print("Tables checked/created.")
+
+>>>>>>> 9e0a16c (changes)
     def insert_match(self, match_id, p1_name, p2_name, video_file):
         query = """
         MERGE INTO MATCHES AS target
@@ -255,9 +325,146 @@ class SnowflakeDB:
         self.execute_query(query, (match_id, prompt, response, processed_str))
 
 
+<<<<<<< HEAD
 # ==============================================================
 # TrackingDB: high-level wrapper (used by main.py during processing)
 # ==============================================================
+=======
+
+    # ----------------------------------------------------------
+    # ANALYSIS_OUTPUT: full pipeline JSON + Cortex vector embedding
+    # ----------------------------------------------------------
+    def insert_full_analysis(self, match_id, analysis_dict):
+        """
+        Store the complete pipeline output as VARIANT + generate Cortex vector embedding
+        from the semantic_summary field.  Single source of truth for K2 / analytics.
+        """
+        if not self.conn:
+            if not self.connect():
+                return False
+        try:
+            import json
+            json_str = json.dumps(analysis_dict, default=str, ensure_ascii=False)
+            semantic = analysis_dict.get("semantic_summary", "")
+
+            # MERGE: insert or update; embed the semantic summary into a 768-dim vector
+            query = """
+            MERGE INTO ANALYSIS_OUTPUT AS target
+            USING (
+                SELECT
+                    %s AS mid,
+                    PARSE_JSON(%s) AS analysis,
+                    %s AS summary,
+                    SNOWFLAKE.CORTEX.EMBED_TEXT_768('snowflake-arctic-embed-m-v1.5', %s) AS vec
+            ) AS source
+            ON target.MATCH_ID = source.mid
+            WHEN MATCHED THEN UPDATE SET
+                FULL_ANALYSIS = source.analysis,
+                SEMANTIC_SUMMARY = source.summary,
+                SEMANTIC_VECTOR = source.vec,
+                CREATED_AT = CURRENT_TIMESTAMP()
+            WHEN NOT MATCHED THEN INSERT
+                (MATCH_ID, FULL_ANALYSIS, SEMANTIC_SUMMARY, SEMANTIC_VECTOR)
+                VALUES (source.mid, source.analysis, source.summary, source.vec)
+            """
+            cursor = self.execute_query(query, (match_id, json_str, semantic, semantic))
+            if cursor:
+                cursor.close()
+            self.conn.commit()
+            print(f"[Snowflake] Analysis + vector stored for match {match_id}")
+            return True
+        except Exception as e:
+            print(f"[Snowflake] insert_full_analysis error: {e}")
+            return False
+
+    # ----------------------------------------------------------
+    # CORTEX: Vector search — find similar matches
+    # ----------------------------------------------------------
+    def find_similar_matches(self, query_text, top_k=5):
+        """
+        Semantic search across all stored matches using Cortex EMBED + VECTOR_COSINE_SIMILARITY.
+        Returns list of dicts: [{match_id, video_file, similarity, semantic_summary}, ...]
+        """
+        query = """
+        SELECT
+            a.MATCH_ID,
+            m.VIDEO_FILE,
+            VECTOR_COSINE_SIMILARITY(
+                a.SEMANTIC_VECTOR,
+                SNOWFLAKE.CORTEX.EMBED_TEXT_768('snowflake-arctic-embed-m-v1.5', %s)
+            ) AS SIMILARITY,
+            a.SEMANTIC_SUMMARY
+        FROM ANALYSIS_OUTPUT a
+        JOIN MATCHES m ON a.MATCH_ID = m.MATCH_ID
+        WHERE a.SEMANTIC_VECTOR IS NOT NULL
+        ORDER BY SIMILARITY DESC
+        LIMIT %s
+        """
+        cursor = self.execute_query(query, (query_text, top_k))
+        if not cursor:
+            return []
+        rows = cursor.fetchall()
+        cursor.close()
+        return [
+            {"match_id": r[0], "video_file": r[1], "similarity": float(r[2]), "semantic_summary": r[3]}
+            for r in rows
+        ]
+
+    # ----------------------------------------------------------
+    # CORTEX: LLM reasoning via Cortex COMPLETE
+    # ----------------------------------------------------------
+    def cortex_complete(self, prompt, model='llama3.1-70b'):
+        """
+        Call Snowflake Cortex COMPLETE for LLM reasoning.
+        Returns the generated text string.
+        """
+        import json
+        query = """
+        SELECT SNOWFLAKE.CORTEX.COMPLETE(%s, %s) AS response
+        """
+        cursor = self.execute_query(query, (model, prompt))
+        if not cursor:
+            return None
+        row = cursor.fetchone()
+        cursor.close()
+        if row:
+            resp = row[0]
+            # Cortex returns JSON string or plain text depending on model
+            if isinstance(resp, str):
+                try:
+                    parsed = json.loads(resp)
+                    # Some models wrap in {"choices": [{"messages": "..."}]}
+                    if isinstance(parsed, dict) and "choices" in parsed:
+                        return parsed["choices"][0].get("messages", resp)
+                    return resp
+                except json.JSONDecodeError:
+                    return resp
+            return str(resp)
+        return None
+
+    # ----------------------------------------------------------
+    # CORTEX: Get full analysis from Snowflake for a match
+    # ----------------------------------------------------------
+    def get_analysis(self, match_id):
+        """Fetch the full analysis VARIANT for a match as a Python dict."""
+        import json
+        query = "SELECT FULL_ANALYSIS FROM ANALYSIS_OUTPUT WHERE MATCH_ID = %s"
+        cursor = self.execute_query(query, (match_id,))
+        if not cursor:
+            return None
+        row = cursor.fetchone()
+        cursor.close()
+        if row:
+            payload = row[0]
+            if isinstance(payload, str):
+                return json.loads(payload)
+            return payload
+        return None
+
+
+import uuid
+import datetime
+>>>>>>> 9e0a16c (changes)
 
 class TrackingDB:
     """Buffers frame-level events and provides match lifecycle."""

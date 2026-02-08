@@ -1,0 +1,115 @@
+Analyze this table tennis match clip:
+
+MATCH DATA:
+- Total Rallies: 4
+- Total Shots: 10
+- Rhythm Degradation: 0.00
+- Longest Passive Streak: 10 shots
+
+SHOT-BY-SHOT DATA:
+[
+  {
+    "rally_id": 1,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 60.0,
+    "timing_class": "Peak",
+    "timing_score": 100
+  },
+  {
+    "rally_id": 1,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 32.0,
+    "timing_class": "Late (Falling)",
+    "timing_score": 92
+  },
+  {
+    "rally_id": 2,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 68.0,
+    "timing_class": "Peak",
+    "timing_score": 100
+  },
+  {
+    "rally_id": 2,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 63.0,
+    "timing_class": "Early (Rising)",
+    "timing_score": 80
+  },
+  {
+    "rally_id": 2,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 18.0,
+    "timing_class": "Early (Rising)",
+    "timing_score": 80
+  },
+  {
+    "rally_id": 3,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": -34.0,
+    "timing_class": "Peak",
+    "timing_score": 100
+  },
+  {
+    "rally_id": 4,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": -20.0,
+    "timing_class": "Early (Rising)",
+    "timing_score": 80
+  },
+  {
+    "rally_id": 4,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 24.0,
+    "timing_class": "Peak",
+    "timing_score": 100
+  },
+  {
+    "rally_id": 4,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 35.0,
+    "timing_class": "Peak",
+    "timing_score": 100
+  },
+  {
+    "rally_id": 4,
+    "shot_type": "push",
+    "knee_angle": 140,
+    "shoulder_angle": 45,
+    "stance_width": 0,
+    "height_over_net": 26.0,
+    "timing_class": "Peak",
+    "timing_score": 100
+  }
+]
+
+Please use the available tools to analyze each shot's biomechanics, tactical decision, 
+and timing. Then detect any mental patterns and calculate the overall confidence score.
+Finally, provide your coaching insights in the required format.

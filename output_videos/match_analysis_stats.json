@@ -1,0 +1,313 @@
+{
+  "match_summary": {
+    "total_rallies": 4,
+    "total_shots": 10,
+    "avg_rhythm_score": 0.12,
+    "avg_timing_score": 93.2,
+    "avg_tactical_score": 49.0
+  },
+  "rallies": [
+    {
+      "id": 1,
+      "duration_sec": 1.16,
+      "shot_count": 2,
+      "rhythm_consistency": 0.0,
+      "shots": [
+        {
+          "shot_id": 1,
+          "t_start": 0.27,
+          "t_contact": 0.62,
+          "t_end": 0.67,
+          "player": "opponent",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 782,
+            "y": 217,
+            "in": true,
+            "depth": "long",
+            "zone": "far_right"
+          },
+          "timing_class": "Peak",
+          "timing_score": 100,
+          "height_over_net": 60.0,
+          "contact_height": 217,
+          "tactical_class": "Passive Error",
+          "tactical_score": 20,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        },
+        {
+          "shot_id": 2,
+          "t_start": 1.03,
+          "t_contact": 1.38,
+          "t_end": 1.43,
+          "player": "self",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 768,
+            "y": 233,
+            "in": true,
+            "depth": "long",
+            "zone": "far_right"
+          },
+          "timing_class": "Late (Falling)",
+          "timing_score": 92,
+          "height_over_net": 32.0,
+          "contact_height": 245,
+          "tactical_class": "Neutral",
+          "tactical_score": 50,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "duration_sec": 1.9300000000000002,
+      "shot_count": 3,
+      "rhythm_consistency": 0.14,
+      "shots": [
+        {
+          "shot_id": 3,
+          "t_start": 3.9,
+          "t_contact": 4.25,
+          "t_end": 4.3,
+          "player": "opponent",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 779,
+            "y": 211,
+            "in": true,
+            "depth": "long",
+            "zone": "far_right"
+          },
+          "timing_class": "Peak",
+          "timing_score": 100,
+          "height_over_net": 68.0,
+          "contact_height": 209,
+          "tactical_class": "Passive Error",
+          "tactical_score": 20,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        },
+        {
+          "shot_id": 4,
+          "t_start": 4.8,
+          "t_contact": 5.15,
+          "t_end": 5.2,
+          "player": "self",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 502,
+            "y": 206,
+            "in": true,
+            "depth": "long",
+            "zone": "far_left"
+          },
+          "timing_class": "Early (Rising)",
+          "timing_score": 80,
+          "height_over_net": 63.0,
+          "contact_height": 214,
+          "tactical_class": "Passive Error",
+          "tactical_score": 20,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        },
+        {
+          "shot_id": 5,
+          "t_start": 5.43,
+          "t_contact": 5.78,
+          "t_end": 5.83,
+          "player": "opponent",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 584,
+            "y": 213,
+            "in": true,
+            "depth": "long",
+            "zone": "far_center"
+          },
+          "timing_class": "Early (Rising)",
+          "timing_score": 80,
+          "height_over_net": 18.0,
+          "contact_height": 259,
+          "tactical_class": "Neutral",
+          "tactical_score": 50,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "duration_sec": 0.40000000000000036,
+      "shot_count": 1,
+      "rhythm_consistency": 0,
+      "shots": [
+        {
+          "shot_id": 6,
+          "t_start": 8.23,
+          "t_contact": 8.58,
+          "t_end": 8.63,
+          "player": "self",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 779,
+            "y": 315,
+            "in": true,
+            "depth": "short",
+            "zone": "far_right"
+          },
+          "timing_class": "Peak",
+          "timing_score": 100,
+          "height_over_net": -34.0,
+          "contact_height": 311,
+          "tactical_class": "Smart Safe Play",
+          "tactical_score": 90,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "duration_sec": 2.869999999999999,
+      "shot_count": 4,
+      "rhythm_consistency": 0.34,
+      "shots": [
+        {
+          "shot_id": 7,
+          "t_start": 11.8,
+          "t_contact": 12.15,
+          "t_end": 12.2,
+          "player": "opponent",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 664,
+            "y": 266,
+            "in": true,
+            "depth": "long",
+            "zone": "far_center"
+          },
+          "timing_class": "Early (Rising)",
+          "timing_score": 80,
+          "height_over_net": -20.0,
+          "contact_height": 297,
+          "tactical_class": "Smart Safe Play",
+          "tactical_score": 90,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        },
+        {
+          "shot_id": 8,
+          "t_start": 13.07,
+          "t_contact": 13.42,
+          "t_end": 13.47,
+          "player": "self",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 549,
+            "y": 250,
+            "in": true,
+            "depth": "long",
+            "zone": "far_center"
+          },
+          "timing_class": "Peak",
+          "timing_score": 100,
+          "height_over_net": 24.0,
+          "contact_height": 253,
+          "tactical_class": "Neutral",
+          "tactical_score": 50,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        },
+        {
+          "shot_id": 9,
+          "t_start": 13.53,
+          "t_contact": 13.88,
+          "t_end": 13.93,
+          "player": "opponent",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 571,
+            "y": 254,
+            "in": true,
+            "depth": "long",
+            "zone": "far_center"
+          },
+          "timing_class": "Peak",
+          "timing_score": 100,
+          "height_over_net": 35.0,
+          "contact_height": 242,
+          "tactical_class": "Neutral",
+          "tactical_score": 50,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        },
+        {
+          "shot_id": 10,
+          "t_start": 14.27,
+          "t_contact": 14.62,
+          "t_end": 14.67,
+          "player": "self",
+          "shot_type": "push",
+          "hand": "unknown",
+          "contact_zone": "neutral",
+          "landing": {
+            "x": 605,
+            "y": 251,
+            "in": true,
+            "depth": "long",
+            "zone": "far_center"
+          },
+          "timing_class": "Peak",
+          "timing_score": 100,
+          "height_over_net": 26.0,
+          "contact_height": 251,
+          "tactical_class": "Neutral",
+          "tactical_score": 50,
+          "skeleton_analysis": {
+            "has_skeleton": false,
+            "stance_width": 0
+          }
+        }
+      ]
+    }
+  ]
+}
