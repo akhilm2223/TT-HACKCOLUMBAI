@@ -7,15 +7,8 @@ Below are the detailed Mermaid flowcharts for the DedalusLabs "Multi-Agent Coach
 This diagram illustrates how the **Dedalus Orchestrator** receives a user query, delegates analysis to specialized sub-agents, cross-references with historical data via the Snowflake MCP tool, and synthesizes a final coaching report.
 
 ```mermaid
-graph TB
-    %% High Contrast "Blueprint" Style
-    classDef box fill:#000,stroke:#fff,stroke-width:1px,color:#fff;
-    classDef proc fill:#000,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef db fill:#000,stroke:#fff,stroke-width:1px,stroke-dasharray: 5 5,color:#fff;
-
-    %% ---------------------------------------------------------
+graph TD
     %% 1. USER INTERFACE LAYER
-    %% ---------------------------------------------------------
     subgraph UI [USER INTERFACE]
         direction TB
         User([USER / PLAYER])
@@ -23,9 +16,7 @@ graph TB
         Response[/"COACHING REPORT"/]
     end
 
-    %% ---------------------------------------------------------
     %% 2. INTELLIGENCE LAYERS
-    %% ---------------------------------------------------------
     subgraph Brain [DEDALUS ORCHESTRATION]
         direction TB
         Orchestrator{{HEAD COACH AGENT}}
@@ -40,9 +31,7 @@ graph TB
         Synthesizer[INSIGHT SYNTHESIZER]
     end
 
-    %% ---------------------------------------------------------
     %% 3. KNOWLEDGE LAYER (SNOWFLAKE)
-    %% ---------------------------------------------------------
     subgraph Memory [KNOWLEDGE BASE]
         direction TB
         MCP((SNOWFLAKE MCP))
@@ -70,11 +59,6 @@ graph TB
     Orchestrator --> Synthesizer
     Synthesizer --> Response
     Response --> User
-
-    %% APPLY STYLES
-    class User,Query,Response,Bio,Tac,Men,Synthesizer box;
-    class Orchestrator,MCP proc;
-    class Vectors,History db;
 ```
 
 ---
@@ -84,15 +68,8 @@ graph TB
 This diagram shows the flow from raw video capture to the final user dashboard, highlighting how **VARIANT** data types, **Snowpark**, and **Cortex AI** work together within the Snowflake Data Cloud.
 
 ```mermaid
-graph TB
-    %% High Contrast "Blueprint" Style
-    classDef box fill:#000,stroke:#fff,stroke-width:1px,color:#fff;
-    classDef proc fill:#000,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef db fill:#000,stroke:#fff,stroke-width:1px,stroke-dasharray: 5 5,color:#fff;
-
-    %% ---------------------------------------------------------
+graph TD
     %% 1. INGESTION LAYER (EDGE)
-    %% ---------------------------------------------------------
     subgraph Edge [EDGE PROCESSING]
         direction TB
         Camera[CAMERA INPUT]
@@ -100,9 +77,7 @@ graph TB
         JSON[RAW JSON STREAM]
     end
 
-    %% ---------------------------------------------------------
     %% 2. DATA CLOUD (SNOWFLAKE)
-    %% ---------------------------------------------------------
     subgraph Snowflake [SNOWFLAKE DATA CLOUD]
         direction TB
 
@@ -121,9 +96,7 @@ graph TB
         end
     end
 
-    %% ---------------------------------------------------------
     %% 3. SERVING LAYER (SIS)
-    %% ---------------------------------------------------------
     subgraph App [SERVING LAYER]
         SiS{{STREAMLIT IN SNOWFLAKE}}
         Dashboard[INTERACTIVE DASHBOARD]
@@ -143,8 +116,4 @@ graph TB
     StatsTable --> SiS
     VectorIndex -.->|SEMANTIC SEARCH| SiS
     SiS --> Dashboard
-
-    %% APPLY STYLES
-    class Camera,CV,JSON,FeatureEng,Embed,SiS,Dashboard box;
-    class RawTable,StatsTable,VectorIndex db;
 ```
