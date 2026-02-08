@@ -285,7 +285,7 @@ def main():
     # Sidebar Navigation
     with st.sidebar:
         st.title("Navigation")
-        page = st.radio("Go to:", ["Match Analysis", "Chat with Coach"])
+        page = st.radio("Go to:", ["Match Analysis", "Chat with Coach", "Sponsor Track"])
         
         st.divider()
         st.caption("System Status")
@@ -301,6 +301,108 @@ def main():
         <p>Powered by Dedalus Labs Multi-Agent System & Snowflake Cortex</p>
     </div>
     """, unsafe_allow_html=True)
+
+    # ═══════════════════════════════════════════════════════════
+    # PAGE: SPONSOR TRACK
+    # ═══════════════════════════════════════════════════════════
+    if page == "Sponsor Track":
+        st.markdown("### 🏆 Sponsor Track Verification")
+        st.info("Teams on the Sponsor Track get priority access to advanced coaching features.")
+        
+        # Initialize FlowGlad Client
+        try:
+            from modules.flowglad_client import FlowGladClient
+            client = FlowGladClient()
+            
+            # Helper to check status
+            def check_status():
+                if 'user_org_id' in st.session_state and st.session_state.user_org_id:
+                    with st.spinner("Verifying Org Status..."):
+                        customer = client.get_customer(st.session_state.user_org_id)
+                        if customer:
+                            st.session_state.flowglad_customer = customer
+                            # Check subscription
+                            sub = client.get_subscription_status(customer['id'])
+                            if sub:
+                                st.session_state.is_sponsor = True
+                                st.session_state.subscription = sub
+                            else:
+                                st.session_state.is_sponsor = False
+                        else:
+                             st.session_state.flowglad_customer = None
+
+            # Input for Org ID
+            org_id = st.text_input("Enter your Organization ID", 
+                                 value=st.session_state.get('user_org_id', ''),
+                                 help="This is the ID you used when registering your team.")
+            
+            if st.button("Verify Status"):
+                st.session_state.user_org_id = org_id
+                check_status()
+                st.rerun()
+
+            # Display Status
+            if 'flowglad_customer' in st.session_state:
+                cust = st.session_state.flowglad_customer
+                if cust:
+                    st.success(f"Organization Found: **{cust.get('name', 'Unknown')}**")
+                    
+                    if st.session_state.get('is_sponsor'):
+                        st.markdown("""
+                        <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                            <h4>✅ VERIFIED SPONSOR</h4>
+                            <p>You have full access to Pro features.</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Portal Link
+                        if st.button("Manage Billing & Subscription"):
+                            portal_url = client.get_portal_url(cust['id'])
+                            if portal_url:
+                                st.markdown(f"[**Click here to open Billing Portal**]({portal_url})")
+                            else:
+                                st.error("Could not retrieve portal URL.")
+                                
+                    else:
+                        st.warning("⚠️ Organization found, but no active 'Sponsor' subscription detected.")
+                        st.markdown("To qualify, please subscribe to the Sponsor Plan.")
+                        
+                        if st.button("Subscribe to Sponsor Track ($0/test)"):
+                            price_id = os.getenv("FLOWGLAD_PRICE_ID")
+                            if not price_id:
+                                st.error("Configuration Error: FLOWGLAD_PRICE_ID not set in .env")
+                            else:
+                                session = client.create_checkout_session(
+                                    customer_id=cust['id'],
+                                    price_id=price_id,
+                                    success_url="http://localhost:8501/?status=success",
+                                    cancel_url="http://localhost:8501/?status=cancel"
+                                )
+                                if session and 'url' in session:
+                                    st.markdown(f"[**👉 Click here to complete payment**]({session['url']})", unsafe_allow_html=True)
+                                else:
+                                    st.error("Failed to create checkout session.")
+                else:
+                    st.error("Organization not found.")
+                    st.markdown("### New Team?")
+                    with st.form("register_form"):
+                        new_name = st.text_input("Organization Name")
+                        new_email = st.text_input("Contact Email")
+                        submit = st.form_submit_button("Register Organization")
+                        
+                        if submit:
+                            if new_name and new_email and org_id:
+                                res = client.create_customer(org_id, new_name, new_email)
+                                if res and 'id' in res:
+                                    st.success("Registration Successful! Please Verify Status above.")
+                                else:
+                                    st.error("Registration failed.")
+                            else:
+                                st.warning("Please fill all fields.")
+        
+        except Exception as e:
+            st.error(f"Integration Error: {str(e)}")
+
 
     # ═══════════════════════════════════════════════════════════
     # PAGE: MATCH ANALYSIS

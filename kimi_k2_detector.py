@@ -1,8 +1,9 @@
 """
-Kimi K2 / Moonshot AI or IFM K2 Think vision detector for table tennis table and ball.
-- Moonshot (Kimi K2.5): set MOONSHOT_API_KEY (key usually starts with sk-).
-- IFM K2 Think (e.g. Columbia DevFest): set MOONSHOT_API_KEY=IFM-xxx and
-  IFM_K2_API_BASE_URL to the API base URL from the event (e.g. from api.png or team).
+IFM K2-Think (LLM360) "Hybrid Reasoning" Detector for Table Tennis.
+- Demonstrates K2-Think's reasoning capabilities by converting visual data (lines/colors) 
+  into a text-based spatial puzzle.
+- Set MOONSHOT_API_KEY starting with "IFM-" to enable this mode.
+- Set IFM_K2_API_BASE_URL to the provided endpoint.
 """
 
 import base64
@@ -606,7 +607,7 @@ class KimiK2Detector:
             completion = client.chat.completions.create(
                 model=self._model_name(),
                 messages=[
-                    {"role": "system", "content": "You are a computer vision expert. Output only valid JSON. No markdown."},
+                    {"role": "system", "content": "You are a spatial reasoning expert. You analyze text descriptions of geometric lines to identify table tennis tables."},
                     {"role": "user", "content": prompt},
                 ],
                 max_tokens=1024,
