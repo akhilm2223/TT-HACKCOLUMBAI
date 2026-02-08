@@ -8,57 +8,43 @@ This diagram illustrates how the **Dedalus Orchestrator** receives a user query,
 
 ```mermaid
 graph TD
-    %% 1. USER INTERFACE LAYER
-    subgraph UI [USER INTERFACE]
-        direction TB
-        User([USER / PLAYER])
-        Query[/"MATCH QUERY"/]
-        Response[/"COACHING REPORT"/]
-    end
+    %% Nodes
+    User([User / Player])
+    Query[Targeted Query]
+    Orchestrator{{Dedalus Orchestrator}}
 
-    %% 2. INTELLIGENCE LAYERS
-    subgraph Brain [DEDALUS ORCHESTRATION]
-        direction TB
-        Orchestrator{{HEAD COACH AGENT}}
+    %% Agents
+    Bio[Biomechanics Agent]
+    Tac[Tactical Agent]
+    Men[Mental Agent]
 
-        subgraph Agents [SPECIALIZED SUB-AGENTS]
-            direction LR
-            Bio[BIOMECHANICS]
-            Tac[TACTICAL]
-            Men[MENTAL]
-        end
+    %% Snowflake Tools
+    MCP[Snowflake MCP Tool]
+    History[(Player History DB)]
 
-        Synthesizer[INSIGHT SYNTHESIZER]
-    end
+    %% Output
+    Synthesis[Insight Synthesis]
+    Report[Coaching Report]
 
-    %% 3. KNOWLEDGE LAYER (SNOWFLAKE)
-    subgraph Memory [KNOWLEDGE BASE]
-        direction TB
-        MCP((SNOWFLAKE MCP))
-        Vectors[(VECTOR STORE)]
-        History[(MATCH HISTORY)]
-    end
-
-    %% CONNECTIONS
+    %% Connections
     User --> Query
     Query --> Orchestrator
 
-    Orchestrator -- "DELEGATE" --> Bio
-    Orchestrator -- "DELEGATE" --> Tac
-    Orchestrator -- "DELEGATE" --> Men
+    Orchestrator -->|Delegates| Bio
+    Orchestrator -->|Delegates| Tac
+    Orchestrator -->|Delegates| Men
 
-    Bio -- "ANGLE/STANCE" --> Orchestrator
-    Tac -- "AGGRESSION" --> Orchestrator
-    Men -- "FATIGUE" --> Orchestrator
+    Bio -->|Returns Analysis| Orchestrator
+    Tac -->|Returns Analysis| Orchestrator
+    Men -->|Returns Analysis| Orchestrator
 
-    Orchestrator -.->|TOOL CALL| MCP
-    MCP <--> Vectors
-    MCP <--> History
-    MCP -.->|RETRIEVAL| Orchestrator
+    Orchestrator -.->|Tool Call| MCP
+    MCP <-->|SQL & Vector Search| History
+    MCP -.->|Returns Context| Orchestrator
 
-    Orchestrator --> Synthesizer
-    Synthesizer --> Response
-    Response --> User
+    Orchestrator --> Synthesis
+    Synthesis --> Report
+    Report --> User
 ```
 
 ---
@@ -69,51 +55,38 @@ This diagram shows the flow from raw video capture to the final user dashboard, 
 
 ```mermaid
 graph TD
-    %% 1. INGESTION LAYER (EDGE)
-    subgraph Edge [EDGE PROCESSING]
-        direction TB
-        Camera[CAMERA INPUT]
-        CV[[COMPUTER VISION PIPELINE]]
-        JSON[RAW JSON STREAM]
-    end
+    %% Ingestion
+    Video[Raw Video]
+    CV[Computer Vision Pipeline]
+    JSON[Raw JSON Stream]
 
-    %% 2. DATA CLOUD (SNOWFLAKE)
-    subgraph Snowflake [SNOWFLAKE DATA CLOUD]
-        direction TB
+    %% Snowflake Data
+    RawTable[(TRACKING_EVENTS - VARIANT)]
 
-        subgraph Storage [VARIANT STORAGE]
-            RawTable[(TRACKING_EVENTS)]
-        end
+    %% Compute
+    Snowpark[[Snowpark Metric Calc]]
+    StatsTable[(MATCH_STATS - Structured)]
 
-        subgraph Compute [SNOWPARK COMPUTE]
-            FeatureEng[[METRIC CALCULATION]]
-            StatsTable[(MATCH_STATS_VIEW)]
-        end
+    %% AI
+    Cortex[[Cortex AI Embeddings]]
+    VectorIndex[(Vector Search Index)]
 
-        subgraph AI [CORTEX INTELLIGENCE]
-            Embed[[CORTEX EMBEDDING]]
-            VectorIndex[(VECTOR STORE)]
-        end
-    end
+    %% App
+    SiS[Streamlit in Snowflake]
+    UserNode([User / Coach])
 
-    %% 3. SERVING LAYER (SIS)
-    subgraph App [SERVING LAYER]
-        SiS{{STREAMLIT IN SNOWFLAKE}}
-        Dashboard[INTERACTIVE DASHBOARD]
-    end
-
-    %% CONNECTIONS
-    Camera --> CV
+    %% Flow
+    Video --> CV
     CV --> JSON
-    JSON -->|SNOWPIPE| RawTable
+    JSON -->|Snowpipe| RawTable
 
-    RawTable --> FeatureEng
-    FeatureEng --> StatsTable
+    RawTable --> Snowpark
+    Snowpark --> StatsTable
 
-    StatsTable --> Embed
-    Embed --> VectorIndex
+    StatsTable --> Cortex
+    Cortex --> VectorIndex
 
     StatsTable --> SiS
-    VectorIndex -.->|SEMANTIC SEARCH| SiS
-    SiS --> Dashboard
+    VectorIndex -.->|Semantic Search| SiS
+    SiS --> UserNode
 ```
