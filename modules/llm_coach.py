@@ -22,8 +22,25 @@ except ImportError:
     spec.loader.exec_module(stats_module)
     StatsEngine = stats_module.StatsEngine
 
-class LLMCoach:
-    def __init__(self):
+
+try:
+    from HH.stats_engine import StatsEngine
+except ImportError:
+    # Fallback if running from root
+    from HH.stats_engine import StatsEngine
+
+
+class CortexCoach:
+    """
+    AI coaching engine powered entirely by Snowflake Cortex.
+    - Pulls match data from ANALYSIS_OUTPUT (VARIANT)
+    - Finds similar past matches via vector search
+    - Reasons via Cortex COMPLETE (llama3.1-70b)
+    - Stores insights in COACHING_INSIGHTS
+    """
+
+    def __init__(self, model='llama3.1-70b'):
+
         self.db = SnowflakeDB()
         self.engine = StatsEngine()
 
