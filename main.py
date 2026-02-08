@@ -1663,11 +1663,7 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         json.dump(analysis, f, indent=2, ensure_ascii=False)
     print(f"Analysis JSON: {json_path}")
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
+
     # --- Push full analysis + Cortex vector embedding to Snowflake ---
     if tracking_db is not None and match_id is not None:
         try:
@@ -1675,22 +1671,6 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
             if success:
                 print("[Snowflake] Full analysis + vector embedding stored in ANALYSIS_OUTPUT")
 
-<<<<<<< HEAD
-                # Optionally run Gemini coaching (if --coach flag)
-                if use_cortex_coach:
-                    try:
-                        from modules.llm_coach import GeminiCoach, print_coaching_result
-                        coach = GeminiCoach()
-                        coach.db = tracking_db.db  # reuse Snowflake connection
-                        print("\n[Gemini] Generating AI coaching insight...")
-                        result = coach.analyze_match(match_id)
-                        print_coaching_result(result)
-                    except Exception as e:
-                        print(f"[Gemini] Coaching failed: {e}")
-        except Exception as e:
-            print(f"[Snowflake] Push failed: {e}")
-
-=======
                 # Optionally run Cortex coaching (if --coach flag)
                 if use_cortex_coach:
                     try:
@@ -1714,7 +1694,6 @@ def main(video_path, output_path=None, table_calibration_path=None, show_preview
         print("[DB] Closing connection...")
         tracking_db.close()
         print("[DB] Closed.")
->>>>>>> e5f71e94f5f64b882f6db0e1faece12978f80c35
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Table Tennis Analysis Pipeline')
